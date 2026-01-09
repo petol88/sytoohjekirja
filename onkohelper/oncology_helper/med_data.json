@@ -1,0 +1,249 @@
+{ 
+    "Osimertinibi (Tagrisso)": { 
+        "sykli": "Jatkuva hoito", 
+        "kontrollit": "Rutlab + EKG (QTc). 1kk kohdalla ja sitten 3kk välein", 
+        "lääkkeet": [ 
+            { 
+                "nimi": "Osimertinibi (PO)",  
+                "annos": 80,  
+                "yksikkö": "mg (kiinteä)",  
+                "päivät": "Jatkuva", 
+                "tablettikoot": ["80 mg", "40 mg"],  
+                "reseptiohje": "Kerran päivässä samaan aikaan." 
+            } 
+        ], 
+        "esilääkitys": "Tarvittaessa loperamidi." 
+    }, 
+    "Kapesitabiini (Xeloda)": { 
+        "sykli": "21 vrk (14 vrk lääkettä, 7 vrk tauko)", 
+        "kontrollit": "PVK + Neutr, Krea, ALAT.", 
+        "lääkkeet": [ 
+            { 
+                "nimi": "Kapesitabiini (PO)",  
+                "annos": 1250,  
+                "yksikkö": "mg/m2",  
+                "päivät": "D1-14", 
+                "tablettikoot": ["500 mg"],  
+                "reseptiohje": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
+            } 
+        ], 
+        "esilääkitys": "Tarvittaessa metoklopramidi." 
+    }, 
+    "R-CHOP (21 vrk)": { 
+        "sykli": "21 vrk", 
+        "kontrollit": "PVK, Neutr, Krea, Alat, Afos.", 
+        "lääkkeet": [ 
+            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Syklofosfamidi (IV)", "annos": 750, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Doksorubisiini (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Vinkristiini (IV)", "annos": 1.4, "yksikkö": "mg/m2", "päivät": "D1", "max_mg": 2.0}, 
+            { 
+                "nimi": "Prednisoloni (PO)",  
+                "annos": 100,  
+                "yksikkö": "mg (kiinteä)",  
+                "päivät": "D1-5", 
+                "tablettikoot": ["40 mg", "20 mg", "5 mg"], 
+                "reseptiohje": "Aamuisin." 
+            } 
+        ], 
+        "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg." 
+    }, 
+    "R-CHOEP (21 vrk)": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Neutr, Krea, Alat.", 
+        "lääkkeet": [ 
+            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Syklofosfamidi (IV)", "annos": 750, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Doksorubisiini (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Vinkristiini (IV)", "annos": 1.4, "yksikkö": "mg/m2", "päivät": "D1", "max_mg": 2.0}, 
+            {"nimi": "Etoposidi (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1-3"}, 
+            { 
+                "nimi": "Prednisoloni (PO)",  
+                "annos": 100,  
+                "yksikkö": "mg (kiinteä)",  
+                "päivät": "D1-5", 
+                "tablettikoot": ["40 mg", "20 mg", "5 mg"] 
+            } 
+        ], 
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
+    }, 
+    "R-Bendamustiini (28 vrk)": { 
+        "sykli": "28 vuorokautta", 
+        "kontrollit": "PVK, Krea, Alat.", 
+        "lääkkeet": [ 
+            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Bendamustiini (IV)", "annos": 90, "yksikkö": "mg/m2", "päivät": "D1, D2"} 
+        ], 
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
+    }, 
+    "R-GemOx (14 vrk)": { 
+        "sykli": "14 vuorokautta", 
+        "kontrollit": "PVK, Krea, Alat.", 
+        "lääkkeet": [ 
+            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Oksaliplatiini (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 4 mg, Ondansetroni 8mg, Parasetamoli 1 g, Setiritsiini 10 mg." 
+    }, 
+    "GDP (Gemsitabiini-Sisplatiini)": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea, Mg, K, Na.", 
+        "lääkkeet": [ 
+            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Sisplatiini (IV)", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D8"} 
+        ], 
+        "esilääkitys": "D1: Deksametasoni 4 mg, Filgrastiimi, Furosemidi.\nD8: Ondansetroni 8mg." 
+    }, 
+    "Pembrolitsumabi-Paklitakseli-Karboplatiini": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
+        "lääkkeet": [ 
+            {"nimi": "Pembrolitsumabi", "annos": 2, "yksikkö": "mg/kg", "päivät": "D1", "max_mg": 200}, 
+            {"nimi": "Paklitakseli", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Karboplatiini", "annos": 5, "yksikkö": "AUC", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 20mg, Akynzeo 1tbl, Pantopratsoli 1tbl, Setiritsiini 1tbl." 
+    }, 
+    "Pembrolitsumabi-Karboplatiini-Pemetreksedi": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
+        "lääkkeet": [ 
+            {"nimi": "Pembrolitsumabi", "annos": 2, "yksikkö": "mg/kg", "päivät": "D1", "max_mg": 200}, 
+            {"nimi": "Karboplatiini", "annos": 5, "yksikkö": "AUC", "päivät": "D1"}, 
+            {"nimi": "Pemetreksedi", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 4mg+4mg+4mg, Ondansetroni 8mg. (Muista foolihapon aloitus 1vk ennen ja B12-vitamiini-injektio joka kolmas infuusio)." 
+    }, 
+    "Irinotekaani-Fluorourasiili-Kalsiumfolinaatti-Panitumumabi": { 
+        "sykli": "14 vuorokautta", 
+        "kontrollit": "Rutlab, mg.", 
+        "lääkkeet": [ 
+            {"nimi": "Irinotekaani", "annos": 160, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Fluorourasiili", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
+            {"nimi": "Kalsiumfolinaatti", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
+            {"nimi": "Panitumumabi", "annos": 6, "yksikkö": "mg/kg", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
+    }, 
+    "Syklofosfamidi-Epirubisiini (EC75)": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea.", 
+        "lääkkeet": [ 
+            {"nimi": "Syklofosfamidi", "annos": 600, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Epirubisiini", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 4mg, Akynzeo 1 tbl." 
+    }, 
+    "mFOLFIRINOX / FOLFOXIRI": { 
+        "sykli": "14 vuorokautta", 
+        "kontrollit": "PVK, Krea, Alat, Afos.", 
+        "lääkkeet": [ 
+            {"nimi": "Irinotekaani", "annos": 150, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Kalsiumfolinaatti", "annos": 400, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Oksaliplatiini", "annos": 85, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Fluorourasiili", "annos": 2400, "yksikkö": "mg/m2", "päivät": "D1 (46h infuusio)"} 
+        ], 
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Akynzeo 1 tbl, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
+    }, 
+    "ABVD": { 
+        "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)", 
+        "kontrollit": "PVK, Krea.", 
+        "lääkkeet": [ 
+            {"nimi": "Doksorubisiini", "annos": 25, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Bleomysiini", "annos": 10, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Vinblastiini", "annos": 6, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Dakarbatsiini", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg, Netupitantti." 
+    }, 
+    "Trastutsumabi-derukstekaani (Enhertu)": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea.", 
+        "lääkkeet": [ 
+            {"nimi": "Trastutsumabi-derukstekaani", "annos": 5.4, "yksikkö": "mg/kg", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
+    }, 
+    "Abraxane (nab-Paklitakseli)": { 
+        "sykli": "Viikoittainen", 
+        "kontrollit": "PVK, Neutr.", 
+        "lääkkeet": [ 
+            {"nimi": "Nab-paklitakseli", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Ondansetroni 8 mg." 
+    }, 
+    "Dosetakseli": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK + Neutr.", 
+        "lääkkeet": [ 
+            {"nimi": "Dosetakseli", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg+8mg+8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
+    }, 
+    "Doksorubisiini (Monoterapia)": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Krea.", 
+        "lääkkeet": [ 
+            {"nimi": "Doksorubisiini (IV)", "annos": 70, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
+    }, 
+    "BEP": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "Rutlab.", 
+        "lääkkeet": [ 
+            {"nimi": "Etoposidi (IV)", "annos": 120, "yksikkö": "mg/m2", "päivät": "D1-3"}, 
+            {"nimi": "Bleomysiinisulfaatti (IV)", "annos": 30, "yksikkö": "mg (kiinteä)", "päivät": "D1+D5+D15"},  
+            {"nimi": "Sisplatiini (IV)", "annos": 20, "yksikkö": "mg/m2", "päivät": "D1-5"} 
+        ], 
+        "esilääkitys": "Deksametasoni 10mg+8mg+8mg+8mg+8mg, Akynzeo pv1, parasetamoli 1g pv 1 ja pv 5." 
+    }, 
+    "FLOT (Modifioitu)": { 
+        "sykli": "14 vuorokautta", 
+        "kontrollit": "PVK + Neutr, Krea, Alat, Afos.", 
+        "lääkkeet": [ 
+            {"nimi": "Oksaliplatiini (IV)", "annos": 85, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Fluorourasiili (IV)", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
+            {"nimi": "Kalsiumfolinaatti (IV)", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
+            {"nimi": "Dosetakseli (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
+    }, 
+    "KARE": { 
+        "sykli": "28 vuorokautta", 
+        "kontrollit": "PVK, Krea (GFR).", 
+        "lääkkeet": [ 
+            {"nimi": "Karboplatiini (IV)", "annos": 5, "yksikkö": "AUC", "päivät": "D1"}, 
+            {"nimi": "Etoposidi (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            { 
+                "nimi": "Etoposidi (PO Kapseli)",  
+                "annos": 200,  
+                "yksikkö": "mg/m2",  
+                "päivät": "D2, D3", 
+                "tablettikoot": ["50 mg"] 
+            } 
+        ], 
+        "esilääkitys": "Deksametasoni 8mg, Ondansetroni 8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
+    }, 
+    "Bevasitsumabi + FOLFIRI": { 
+        "sykli": "14 vuorokautta", 
+        "kontrollit": "PVK, Krea, U-Prot.", 
+        "lääkkeet": [ 
+            {"nimi": "Bevasitsumabi (IV)", "annos": 5, "yksikkö": "mg/kg", "päivät": "D1"}, 
+            {"nimi": "Irinotekaani (IV)", "annos": 160, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Fluorourasiili (IV)", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
+            {"nimi": "Kalsiumfolinaatti (IV)", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"} 
+        ], 
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
+    }, 
+    "Eribuliini": { 
+        "sykli": "21 vuorokautta", 
+        "kontrollit": "PVK, Neutr.", 
+        "lääkkeet": [ 
+            {"nimi": "Eribuliini (IV)", "annos": 1.23, "yksikkö": "mg/m2", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Deksametasoni 4mg, Ondansetroni 8mg." 
+    } 
+}
