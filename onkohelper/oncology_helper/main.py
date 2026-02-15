@@ -1,7 +1,7 @@
 import sys
 import os
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 # Add parent directory to path if running directly to allow absolute imports
 # This must be done BEFORE importing from the package
@@ -27,7 +27,10 @@ class MainApp(tk.Tk):
         self.geometry("1050x900")
         
         # Load Data
-        Tietokanta.lataa()
+        try:
+            Tietokanta.lataa()
+        except Exception:
+            messagebox.showerror("Virhe", "Tietokannan lataus epäonnistui.")
         
         # Container
         c = ttk.Frame(self)

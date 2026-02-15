@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+onkohelper/oncology_helper/med_data.json

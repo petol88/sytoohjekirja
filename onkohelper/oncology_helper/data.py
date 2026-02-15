@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from typing import Dict, List, Optional, Any
 
 # TNM Data for staging
@@ -77,8 +78,8 @@ def luo_esimerkkidata() -> None:
     try:
         with open("med_data.json", "w", encoding="utf-8") as f:
             json.dump(esimerkkidata, f, indent=4)
-    except Exception as e:
-        print(f"Varoitus: Ei voitu luoda esimerkkidataa: {e}")
+    except Exception:
+        logging.warning("Ei voitu luoda esimerkkidataa", exc_info=True)
 
 class Tietokanta:
     """Handles loading and accessing protocol data."""
@@ -112,6 +113,7 @@ class Tietokanta:
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 cls.data = json.load(f)
-        except Exception as e:
-            print(f"Virhe ladattaessa tietokantaa ({filepath}): {e}")
+        except Exception:
+            logging.exception("Virhe ladattaessa tietokantaa")
             cls.data = {}
+            raise

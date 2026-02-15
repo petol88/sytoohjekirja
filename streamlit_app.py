@@ -23,8 +23,8 @@ def load_data():
 
 try:
     load_data()
-except Exception as e:
-    st.error(f"Virhe ladattaessa tietokantaa: {e}")
+except Exception:
+    st.error("Virhe ladattaessa tietokantaa. Ota yhteys ylläpitoon.")
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
