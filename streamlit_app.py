@@ -13,8 +13,8 @@ package_dir = os.path.join(current_dir, 'onkohelper')
 if package_dir not in sys.path:
     sys.path.append(package_dir)
 
-from oncology_helper.data import Tietokanta
-from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit
+from oncology_helper.data import Tietokanta, TNM_DATA
+from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 # Load Data
 @st.cache_resource
@@ -29,7 +29,7 @@ except Exception as e:
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
 # Sidebar for navigation
-view = st.sidebar.radio("Valitse näkymä", ["Laskuri", "Tietoa"])
+view = st.sidebar.radio("Valitse näkymä", ["Laskuri", "Levinneisyys", "Tietoa"])
 
 if view == "Laskuri":
     st.header("Sytostaattilaskuri")
@@ -192,6 +192,86 @@ if view == "Laskuri":
             report_text = "\n".join(report_lines)
             st.text_area("Kopioitava teksti", report_text, height=300)
 
+
+elif view == "Levinneisyys":
+    st.header("Levinneisyys & Luokitus")
+
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        st.subheader("Määritys")
+
+        tauti = st.selectbox("Syöpätyyppi", list(TNM_DATA.keys()))
+        d = TNM_DATA[tauti]
+
+        hoitolinja = st.selectbox("Hoitolinja", ["-", "Neoadjuvantti", "Adjuvantti"])
+
+        # Breast Cancer Specifics
+        er_status = "Positiivinen"
+        her2_status = "Negatiivinen"
+        ki67_status = "Matala (<20%)"
+
+        if tauti == "Rintasyöpä":
+            st.markdown("---")
+            st.markdown("**Biologiset tekijät**")
+            er_status = st.selectbox("ER Status", ["Positiivinen", "Negatiivinen"])
+            her2_status = st.selectbox("HER2 Status", ["Positiivinen", "Negatiivinen"])
+            ki67_status = st.selectbox("Ki-67", ["Matala (<20%)", "Korkea (>=20%)"])
+            st.markdown("---")
+
+        st.markdown("**Levinneisyys**")
+        v1 = st.selectbox(f"{d['L1_Label']}", [""] + d['L1'])
+        v2 = st.selectbox(f"{d['L2_Label']}", [""] + d['L2'])
+        v3 = st.selectbox(f"{d['L3_Label']}", [""] + d['L3'])
+
+    with col2:
+        st.subheader("Tulos")
+
+        res_text = f"Diagnoosi: {tauti}\n"
+
+        # Parse codes
+        c1 = v1.split(":")[0] if v1 else "?"
+        c2 = v2.split(":")[0] if v2 else "?"
+        c3 = v3.split(":")[0] if v3 else "?"
+
+        if d['Type'] == "AnnArbor":
+            stage_base = c1
+            symptoms = c2 if c2 in ["A", "B"] else ""
+            modifiers = c3 if c3 not in ["-", "?"] else ""
+
+            full_stage = f"{stage_base}{symptoms}"
+            if modifiers: full_stage += f" {modifiers}"
+
+            res_text += f"Ann Arbor levinneisyys: {full_stage}\n"
+            res_text += "-"*40 + "\n"
+            if v1: res_text += f"• Levinneisyys: {v1}\n"
+            if v2: res_text += f"• Oireet: {v2}\n"
+            if v3 and c3 != "-": res_text += f"• Lisämääre: {v3}\n"
+
+        else:
+            # TNM Logic
+            res_text += f"Levinneisyys (cTNM): {c1}{c2}{c3}"
+
+            if tauti == "Rintasyöpä" and "?" not in (c1, c2, c3):
+                try:
+                    st_val = laske_stage_rintasyopa(c1, c2, c3)
+                    res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+
+                    plan = maarita_hoitosuunnitelma_rintasyopa(
+                        st_val, c1, c2, c3,
+                        er_status, her2_status, ki67_status,
+                        hoitolinja if hoitolinja != "-" else None
+                    )
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
+
+            res_text += "\n" + "-"*40 + "\n"
+            if v1: res_text += f"• {d['L1_Label']}: {v1}\n"
+            if v2: res_text += f"• {d['L2_Label']}: {v2}\n"
+            if v3: res_text += f"• {d['L3_Label']}: {v3}\n"
+
+        st.text_area("Lausunto", res_text, height=400)
 
 elif view == "Tietoa":
     st.info("Tämä on Streamlit-versio Onkologian Työpöytä -sovelluksesta.")
