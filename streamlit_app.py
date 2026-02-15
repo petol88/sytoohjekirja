@@ -20,9 +20,11 @@ from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, 
 @st.cache_resource
 def load_data():
     Tietokanta.lataa()
+    return Tietokanta.data
 
 try:
-    load_data()
+    # Always update Tietokanta.data with cached/loaded data
+    Tietokanta.data = load_data()
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
 
