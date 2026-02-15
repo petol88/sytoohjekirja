@@ -131,7 +131,7 @@ if view == "Laskuri":
                     try:
                         strength = float(vahvuus_str.split()[0])
                         fin = pyorista_tabletit(mg, strength)
-                    except:
+                    except (ValueError, IndexError, ZeroDivisionError):
                         pass
 
                 # Use a session state key that includes the calculated value to force update if calculation changes
@@ -180,7 +180,7 @@ if view == "Laskuri":
                         strength = float(ts.split()[0])
                         count = fin_val / strength
                         report_lines.append(f"    -> {count:.1f} kpl ({ts})")
-                    except:
+                    except (ValueError, IndexError, ZeroDivisionError):
                         pass
 
                 if med.get('päivät'):
