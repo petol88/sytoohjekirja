@@ -75,6 +75,15 @@
             {"nimi": "Bendamustiini (IV)", "annos": 90, "yksikkö": "mg/m2", "päivät": "D1, D2"} 
         ], 
         "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
+       },  
+            "Abraxane-Karboplatiini (7vrk)": { 
+        "sykli": "7 vuorokautta", 
+        "kontrollit": "PVK, Krea, Alat.", 
+        "lääkkeet": [ 
+            {"nimi": "Abraxane (IV)", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Karboplatiini (IV)", "annos": 1.5, "yksikkö": "AUC", "päivät": "D1"} 
+        ], 
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
     }, 
     "R-GemOx (14 vrk)": { 
         "sykli": "14 vuorokautta", 
