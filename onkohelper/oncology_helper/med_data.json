@@ -83,7 +83,7 @@
             {"nimi": "Abraxane (IV)", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1"}, 
             {"nimi": "Karboplatiini (IV)", "annos": 1.5, "yksikkö": "AUC", "päivät": "D1"} 
         ], 
-        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
+        "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO." 
     }, 
     "R-GemOx (14 vrk)": { 
         "sykli": "14 vuorokautta", 
