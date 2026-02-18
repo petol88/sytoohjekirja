@@ -254,5 +254,14 @@
             {"nimi": "Eribuliini (IV)", "annos": 1.23, "yksikkö": "mg/m2", "päivät": "D1"} 
         ], 
         "esilääkitys": "Deksametasoni 4mg, Ondansetroni 8mg." 
-    } 
+    },
+    "Gemsitabiini-Abraxane (21vrk)": {
+        "sykli": "21 vuorokautta",
+        "kontrollit": "PVK, Krea, Alat.",
+        "lääkkeet": [
+            {"nimi": "Abraxane (IV)", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1,D8,D15"},
+            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1, D8, D15"}
+        ],
+        "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO."
+    }
 }
