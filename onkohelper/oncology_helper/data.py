@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, List, Optional, Any
+from typing import Dict, Any
 
 # TNM Data for staging
 TNM_DATA: Dict[str, Dict[str, Any]] = {
