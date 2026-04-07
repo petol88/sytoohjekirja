@@ -1,5 +1,5 @@
 import unittest
-from oncology_helper.logic import laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, suosittele_hoito_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+from oncology_helper.logic import laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 class TestLogic(unittest.TestCase):
     
@@ -51,19 +51,6 @@ class TestLogic(unittest.TestCase):
         self.assertEqual(laske_stage_rintasyopa("T1c", "N1mi", "M0"), "Stage IB")
         # Unknown
         self.assertEqual(laske_stage_rintasyopa("Tx", "N0", "M0"), "Ei määritettävissä")
-
-    def test_suosittele_hoito_rintasyopa(self):
-        # Palliatiivinen
-        self.assertIn("Palliatiivinen", suosittele_hoito_rintasyopa("Stage IV", "T1", "N0", "M1"))
-        
-        # Neoadjuvantti (Stage III or large)
-        self.assertIn("neoadjuvantti", suosittele_hoito_rintasyopa("Stage IIIA", "T3", "N1", "M0").lower())
-        self.assertIn("neoadjuvantti", suosittele_hoito_rintasyopa("Stage IIB", "T3", "N0", "M0").lower())
-        self.assertIn("neoadjuvantti", suosittele_hoito_rintasyopa("Stage IIIA", "T1", "N2", "M0").lower())
-        
-        # Adjuvantti (Early)
-        self.assertIn("adjuvantti", suosittele_hoito_rintasyopa("Stage I", "T1", "N0", "M0").lower())
-        self.assertIn("adjuvantti", suosittele_hoito_rintasyopa("Stage IIA", "T2", "N0", "M0").lower())
 
     def test_maarita_hoitosuunnitelma_rintasyopa(self):
         # TNBC Neoadjuvant (auto)

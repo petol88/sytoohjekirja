@@ -126,36 +126,6 @@ def laske_stage_rintasyopa(t: str, n: str, m: str) -> str:
     
     return "Ei määritettävissä"
 
-def suosittele_hoito_rintasyopa(stage: str, t: str, n: str, m: str) -> str:
-    """
-    Returns a treatment recommendation (Adjuvant/Neoadjuvant) based on Breast Cancer stage.
-    
-    Args:
-        stage: The calculated stage string (e.g., "Stage IIA").
-        t: T-stage.
-        n: N-stage.
-        m: M-stage.
-        
-    Returns:
-        str: Recommendation text.
-    """
-    if "Stage IV" in stage or "M1" in m:
-        return "Palliatiivinen hoito (levinnyt tauti)."
-        
-    # Neoadjuvant logic: Locally advanced (Stage III) or large tumor (T3/T4) or extensive nodes (N2/N3)
-    # Also considers Stage IIB (T3N0) as potential neoadjuvant candidate.
-    is_locally_advanced = False
-    
-    if "Stage III" in stage: is_locally_advanced = True
-    if "T3" in t or "T4" in t: is_locally_advanced = True
-    if "N2" in n or "N3" in n: is_locally_advanced = True
-    
-    if is_locally_advanced:
-        return "Suositellaan neoadjuvanttihoitoa (levinneisyys tai kookas kasvain)."
-        
-    # Early stage
-    return "Suositellaan ensisijaisesti leikkausta ja adjuvanttihoitoa."
-
 def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str, 
                                          er: str, her2: str, ki67: str, 
                                          valittu_hoitolinja: Optional[str] = None) -> str:
