@@ -1,8 +1,23 @@
 import unittest
-from oncology_helper.logic import laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, suosittele_hoito_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, suosittele_hoito_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 class TestLogic(unittest.TestCase):
     
+    def test_safe_float(self):
+        # Basic numbers
+        self.assertEqual(safe_float(10), 10.0)
+        self.assertEqual(safe_float(10.5), 10.5)
+        # Strings with dot
+        self.assertEqual(safe_float("10.5"), 10.5)
+        # Strings with comma
+        self.assertEqual(safe_float("10,5"), 10.5)
+        # Strings with whitespace
+        self.assertEqual(safe_float("  10.5  "), 10.5)
+        # Invalid strings
+        self.assertEqual(safe_float("abc"), 0.0)
+        # None or other types
+        self.assertEqual(safe_float(None), 0.0)
+
     def test_laske_bsa(self):
         # Normal case: 180cm, 80kg -> sqrt(14400/3600) = sqrt(4) = 2.0
         self.assertAlmostEqual(laske_bsa(180, 80), 2.0)
