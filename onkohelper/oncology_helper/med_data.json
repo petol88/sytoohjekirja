@@ -263,5 +263,18 @@
             {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1, D8, D15"}
         ],
         "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO."
+    },
+    "Alektinibi": {
+        "sykli": "Jatkuva hoito",
+        "kontrollit": "Maksa-arvot (ALAT, ASAT, Bilirubiini) 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein; Krea ja PVK samalla aikataululla.",
+        "lääkkeet": [
+            {
+                "nimi": "Alektinibi (PO)",
+                "annos": 600,
+                "yksikkö": "mg (4 x 150 mg kapselia)",
+                "päivät": "Kahdesti päivässä",
+                "reseptiohje": "Otettava ruuan kanssa."
+            }
+        ]
     }
 }
