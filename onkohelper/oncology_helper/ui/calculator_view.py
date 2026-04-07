@@ -8,6 +8,7 @@ class LaskuriView(ttk.Frame):
         super().__init__(parent)
         self.controller = controller
         self.rows = []
+        self._skip_update = False
         
         # Header
         h = ttk.Frame(self)
@@ -164,40 +165,46 @@ class LaskuriView(ttk.Frame):
         gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), self.v_sex.get())
         self.l_gfr.config(text=f"GFR: {gfr:.0f}")
         
-        for r in self.rows:
-            a = safe_float(r['va'].get())
-            u = r['vu'].get()
+        self._skip_update = True
+        try:
+            for r in self.rows:
+                a = safe_float(r['va'].get())
+                u = r['vu'].get()
+
+                if u == "mg/m2":
+                    mg = a * bsa
+                elif u == "mg/kg":
+                    mg = a * w
+                elif u == "AUC":
+                    # Calvert formula: Dose = AUC * (GFR + 25)
+                    # GFR cap is often 125 ml/min
+                    mg = a * (min(gfr, 125) + 25)
+                else:
+                    mg = a
+
+                r['lr'].config(text=f"{mg:.0f}")
+                fin = int(round(mg))
+
+                ts = r['vt'].get()
+                if ts and ts != "None":
+                    try:
+                        # Extract strength from string like "40 mg"
+                        strength = float(ts.split()[0])
+                        fin = pyorista_tabletit(mg, strength)
+                    except:
+                        pass
+
+                # This triggers the trace, so paivita_raportti is called automatically
+                r['v_fin'].set(str(fin))
+        finally:
+            self._skip_update = False
             
-            if u == "mg/m2":
-                mg = a * bsa
-            elif u == "mg/kg":
-                mg = a * w
-            elif u == "AUC":
-                # Calvert formula: Dose = AUC * (GFR + 25)
-                # GFR cap is often 125 ml/min
-                mg = a * (min(gfr, 125) + 25)
-            else:
-                mg = a
-            
-            r['lr'].config(text=f"{mg:.0f}")
-            fin = int(round(mg))
-            
-            ts = r['vt'].get()
-            if ts and ts != "None":
-                try: 
-                    # Extract strength from string like "40 mg"
-                    strength = float(ts.split()[0])
-                    fin = pyorista_tabletit(mg, strength)
-                except: 
-                    pass
-            
-            # This triggers the trace, so paivita_raportti is called automatically
-            r['v_fin'].set(str(fin))
-            
-        # Ensure report is updated at least once (redundant if trace works, but safe)
+        # Explicit update after the loop
         self.paivita_raportti()
 
     def paivita_raportti(self):
+        if self._skip_update:
+            return
         sel = self.c_prot.get()
         out = [f"PROTOKOLLA: {sel}"]
         
