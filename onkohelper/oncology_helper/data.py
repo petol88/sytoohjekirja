@@ -106,7 +106,7 @@ class Tietokanta:
                     # For simplicity, we'll just check if CWD/med_data.json exists after call.
                     if os.path.exists("med_data.json") and filepath != "med_data.json":
                         os.rename("med_data.json", filepath)
-                except:
+                except Exception:
                     pass
         
         try:

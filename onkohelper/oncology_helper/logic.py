@@ -15,7 +15,7 @@ def safe_float(v: Union[str, float, int]) -> float:
         if isinstance(v, (float, int)):
             return float(v)
         return float(v.replace(",", ".").strip())
-    except: 
+    except (ValueError, AttributeError, TypeError):
         return 0.0
 
 def laske_bsa(height_cm: float, weight_kg: float) -> float:

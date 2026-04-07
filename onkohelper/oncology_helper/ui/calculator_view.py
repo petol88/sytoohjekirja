@@ -188,7 +188,7 @@ class LaskuriView(ttk.Frame):
                     # Extract strength from string like "40 mg"
                     strength = float(ts.split()[0])
                     fin = pyorista_tabletit(mg, strength)
-                except: 
+                except (ValueError, IndexError):
                     pass
             
             # This triggers the trace, so paivita_raportti is called automatically
@@ -221,7 +221,7 @@ class LaskuriView(ttk.Frame):
                 try: 
                     strength = float(ts.split()[0])
                     out.append(f"    -> {fin/strength:.1f} kpl ({ts})")
-                except: 
+                except (ValueError, IndexError, ZeroDivisionError):
                     pass
             
             if r['d'].get('päivät'): 
