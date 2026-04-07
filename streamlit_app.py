@@ -17,7 +17,7 @@ from oncology_helper.data import Tietokanta, TNM_DATA
 from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 # Load Data
-@st.cache_resource
+@st.cache_data
 def load_data():
     Tietokanta.lataa()
     return Tietokanta.data
