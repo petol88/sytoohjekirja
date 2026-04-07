@@ -266,7 +266,7 @@
     },
     "Alektinibi": {
         "sykli": "Jatkuva hoito",
-        "kontrollit": "Maksa-arvot (ALAT, ASAT, Bilirubiini) 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein; Krea ja PVK samalla aikataululla.",
+        "kontrollit": "ALAT, ASAT, Bilirubiini, Krea ja PVK 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein",
         "lääkkeet": [
             {
                 "nimi": "Alektinibi (PO)",
