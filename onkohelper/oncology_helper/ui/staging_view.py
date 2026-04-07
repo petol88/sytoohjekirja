@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from oncology_helper.data import TNM_DATA
-from oncology_helper.logic import laske_stage_rintasyopa, suosittele_hoito_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+from oncology_helper.logic import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 class LevinneisyysView(ttk.Frame):
     def __init__(self, parent, controller):
