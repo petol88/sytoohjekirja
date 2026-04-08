@@ -74,6 +74,9 @@ if view == "Laskuri":
 
             laske_tulokset = []
 
+            # Pre-calculate GFR-related constant for AUC to avoid recalculation in loop
+            auc_multiplier = None
+
             # Header
             cols = st.columns([3, 2, 2, 2, 2, 2])
             cols[0].markdown("**Lääke**")
@@ -121,7 +124,9 @@ if view == "Laskuri":
                 elif yksikkö == "AUC":
                      # Calvert formula: Dose = AUC * (GFR + 25)
                      # GFR cap is often 125 ml/min
-                    mg = annos * (min(gfr, 125) + 25)
+                    if auc_multiplier is None:
+                        auc_multiplier = (min(gfr, 125) + 25)
+                    mg = annos * auc_multiplier
                 else: # mg
                     mg = annos
 
@@ -129,10 +134,11 @@ if view == "Laskuri":
 
                 # Final Amount (Määräys)
                 fin = int(round(mg))
+                strength_mg = None
                 if vahvuus_str and vahvuus_str != "None":
                     try:
-                        strength = float(vahvuus_str.split()[0])
-                        fin = pyorista_tabletit(mg, strength)
+                        strength_mg = float(vahvuus_str.split()[0])
+                        fin = pyorista_tabletit(mg, strength_mg)
                     except (ValueError, IndexError, ZeroDivisionError):
                         pass
 
@@ -156,6 +162,7 @@ if view == "Laskuri":
                     "annos": annos,
                     "yksikkö": yksikkö,
                     "vahvuus": vahvuus_str,
+                    "strength_mg": strength_mg,
                     "tulos_mg": mg,
                     "maarays": maarays
                 })
@@ -177,12 +184,12 @@ if view == "Laskuri":
                 report_lines.append(f"• {med['nimi']}: {fin_val} mg")
 
                 ts = item['vahvuus']
-                if ts and ts != "None" and fin_val > 0:
+                strength_mg = item.get('strength_mg')
+                if ts and ts != "None" and fin_val > 0 and strength_mg:
                     try:
-                        strength = float(ts.split()[0])
-                        count = fin_val / strength
+                        count = fin_val / strength_mg
                         report_lines.append(f"    -> {count:.1f} kpl ({ts})")
-                    except (ValueError, IndexError, ZeroDivisionError):
+                    except ZeroDivisionError:
                         pass
 
                 if med.get('päivät'):
