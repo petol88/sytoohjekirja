@@ -276,5 +276,31 @@
                 "reseptiohje": "Otettava ruuan kanssa."
             }
         ]
+    },
+    "Abemasiklibi": {
+        "sykli": "Jatkuva hoito",
+        "kontrollit": "PVK+T, ALAT, AFOS, BIL, KREA 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen kuukausittain seuraavat 2 kuukautta",
+        "lääkkeet": [
+            {
+                "nimi": "Abemasiklibi (PO)",
+                "annos": 150,
+                "yksikkö": "mg",
+                "päivät": "Kahdesti päivässä",
+                "reseptiohje": "Yhdistelmähoitona endokriinisen hoidon kanssa."
+            }
+        ]
+    },
+    "Ribosiklibi": {
+        "sykli": "28 vrk (21 vrk lääkettä, 7 vrk tauko)",
+        "kontrollit": "PVK+T, ALAT, AFOS, BIL 2 viikon välein ensimmäiset 2 sykliä, sen jälkeen joka 4. syklin alussa. EKG (QTc-aika) ennen aloitusta, 2 viikon kohdalla (sykli 1) ja ennen toisen syklin alkua.",
+        "lääkkeet": [
+            {
+                "nimi": "Ribosiklibi (PO)",
+                "annos": 600,
+                "yksikkö": "mg (2 x 200 mg tablettia)",
+                "päivät": "Kerran päivässä",
+                "reseptiohje": "Otettava samaan aikaan joka päivä."
+            }
+        ]
     }
 }
