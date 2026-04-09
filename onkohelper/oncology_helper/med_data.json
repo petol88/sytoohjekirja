@@ -302,5 +302,24 @@
                 "reseptiohje": "Otettava samaan aikaan joka päivä."
             }
         ]
+    },
+    "Abirateroni": {
+        "sykli": "Jatkuva hoito",
+        "kontrollit": "ALAT, AFOS, K 2 viikon välein ensimmäiset 3 kuukautta, sen jälkeen 3 kuukauden välein",
+        "lääkkeet": [
+            {
+                "nimi": "Abirateroni (PO)",
+                "annos": 1000,
+                "yksikkö": "mg",
+                "päivät": "Kerran päivässä"
+            },
+            {
+                "nimi": "Prednisoloni (PO)",
+                "annos": 10,
+                "yksikkö": "mg",
+                "päivät": "Kerran päivässä",
+                "reseptiohje": "Otettava aamulla."
+            }
+        ]
     }
 }
