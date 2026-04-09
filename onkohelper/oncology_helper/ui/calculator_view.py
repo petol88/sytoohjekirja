@@ -167,6 +167,7 @@ class LaskuriView(ttk.Frame):
         
         self._skip_update = True
         try:
+            auc_multiplier = None
             for r in self.rows:
                 a = safe_float(r['va'].get())
                 u = r['vu'].get()
@@ -178,7 +179,9 @@ class LaskuriView(ttk.Frame):
                 elif u == "AUC":
                     # Calvert formula: Dose = AUC * (GFR + 25)
                     # GFR cap is often 125 ml/min
-                    mg = a * (min(gfr, 125) + 25)
+                    if auc_multiplier is None:
+                        auc_multiplier = (min(gfr, 125) + 25)
+                    mg = a * auc_multiplier
                 else:
                     mg = a
 

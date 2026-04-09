@@ -22,6 +22,8 @@ def load_data():
     Tietokanta.lataa()
     return Tietokanta.data
 
+YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
+
 try:
     # Always update Tietokanta.data with cached/loaded data
     Tietokanta.data = load_data()
@@ -100,11 +102,12 @@ if view == "Laskuri":
 
                 # Unit (Yksikkö)
                 yksikkö_val = med.get('yksikkö', 'mg/m2')
-                yksikkö_opts = ["mg/m2", "mg/kg", "AUC", "mg"]
-                if yksikkö_val not in yksikkö_opts:
-                    yksikkö_opts.append(yksikkö_val)
+                if yksikkö_val in YKSIKKO_OPTS_BASE:
+                    yksikkö_opts = YKSIKKO_OPTS_BASE
+                else:
+                    yksikkö_opts = YKSIKKO_OPTS_BASE + (yksikkö_val,)
                 # Ensure default is in options
-                idx = yksikkö_opts.index(yksikkö_val) if yksikkö_val in yksikkö_opts else 0
+                idx = yksikkö_opts.index(yksikkö_val)
                 yksikkö = c[2].selectbox(f"Yks {i}", yksikkö_opts, index=idx, label_visibility="collapsed", key=f"{valittu_protokolla}_yks_{i}")
 
                 # Strength (Vahvuus / Tablettikoot)
