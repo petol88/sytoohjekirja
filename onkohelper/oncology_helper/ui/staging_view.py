@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from oncology_helper.data import TNM_DATA
-from oncology_helper.logic import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+from oncology_helper.logic import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa, ReseptoriTila, Ki67Tila, Hoitolinja
 
 class LevinneisyysView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -35,7 +35,7 @@ class LevinneisyysView(ttk.Frame):
         ttk.Label(sf, text="Hoitolinja:", font=("Arial", 11, "bold")).pack(side=tk.LEFT, padx=(20, 0))
         self.v_hoito = tk.StringVar()
         self.cb_hoito = ttk.Combobox(sf, textvariable=self.v_hoito, 
-                                     values=["-", "Neoadjuvantti", "Adjuvantti"], 
+                                     values=[e.value for e in Hoitolinja], 
                                      state="readonly", width=20)
         self.cb_hoito.pack(side=tk.LEFT, padx=10)
         self.cb_hoito.current(0)
@@ -47,20 +47,20 @@ class LevinneisyysView(ttk.Frame):
 
         rf = self.f_rinta
         ttk.Label(rf, text="ER Status:").grid(row=0, column=0, padx=5, sticky="e")
-        self.v_er = tk.StringVar(value="Positiivinen")
-        self.cb_er = ttk.Combobox(rf, textvariable=self.v_er, values=["Positiivinen", "Negatiivinen"], state="readonly", width=15)
+        self.v_er = tk.StringVar(value=ReseptoriTila.POSITIIVINEN.value)
+        self.cb_er = ttk.Combobox(rf, textvariable=self.v_er, values=[e.value for e in ReseptoriTila], state="readonly", width=15)
         self.cb_er.grid(row=0, column=1, padx=5, sticky="w")
         self.cb_er.bind("<<ComboboxSelected>>", self.calc_res)
 
         ttk.Label(rf, text="HER2 Status:").grid(row=1, column=0, padx=5, sticky="e")
-        self.v_her2 = tk.StringVar(value="Negatiivinen")
-        self.cb_her2 = ttk.Combobox(rf, textvariable=self.v_her2, values=["Positiivinen", "Negatiivinen"], state="readonly", width=15)
+        self.v_her2 = tk.StringVar(value=ReseptoriTila.NEGATIIVINEN.value)
+        self.cb_her2 = ttk.Combobox(rf, textvariable=self.v_her2, values=[e.value for e in ReseptoriTila], state="readonly", width=15)
         self.cb_her2.grid(row=1, column=1, padx=5, sticky="w")
         self.cb_her2.bind("<<ComboboxSelected>>", self.calc_res)
         
         ttk.Label(rf, text="Ki-67:").grid(row=2, column=0, padx=5, sticky="e")
-        self.v_ki67 = tk.StringVar(value="Matala (<20%)")
-        self.cb_ki67 = ttk.Combobox(rf, textvariable=self.v_ki67, values=["Matala (<20%)", "Korkea (>=20%)"], state="readonly", width=15)
+        self.v_ki67 = tk.StringVar(value=Ki67Tila.MATALA.value)
+        self.cb_ki67 = ttk.Combobox(rf, textvariable=self.v_ki67, values=[e.value for e in Ki67Tila], state="readonly", width=15)
         self.cb_ki67.grid(row=2, column=1, padx=5, sticky="w")
         self.cb_ki67.bind("<<ComboboxSelected>>", self.calc_res)
 
@@ -152,9 +152,11 @@ class LevinneisyysView(ttk.Frame):
                 
                 # Full treatment plan
                 plan = maarita_hoitosuunnitelma_rintasyopa(
-                    st, c1, c2, c3, 
-                    self.v_er.get(), self.v_her2.get(), self.v_ki67.get(),
-                    self.v_hoito.get()
+                    st, c1, c2, c3,
+                    ReseptoriTila(self.v_er.get()),
+                    ReseptoriTila(self.v_her2.get()),
+                    Ki67Tila(self.v_ki67.get()),
+                    Hoitolinja(self.v_hoito.get())
                 )
                 res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
                 

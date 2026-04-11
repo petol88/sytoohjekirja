@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
-from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit
+from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli
 
 class LaskuriView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -162,7 +162,7 @@ class LaskuriView(ttk.Frame):
         bsa = laske_bsa(p, w)
         self.l_bsa.config(text=f"BSA: {bsa:.2f}")
         
-        gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), self.v_sex.get())
+        gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), Sukupuoli(self.v_sex.get()))
         self.l_gfr.config(text=f"GFR: {gfr:.0f}")
         
         self._skip_update = True
@@ -184,6 +184,11 @@ class LaskuriView(ttk.Frame):
                     mg = a * auc_multiplier
                 else:
                     mg = a
+                    
+                # Tarkistetaan mahdollinen maksimiannos (esim. Vinkristiini max 2.0 mg)
+                max_mg = r['d'].get('max_mg')
+                if max_mg is not None and mg > max_mg:
+                    mg = max_mg
 
                 r['lr'].config(text=f"{mg:.0f}")
                 fin = int(round(mg))

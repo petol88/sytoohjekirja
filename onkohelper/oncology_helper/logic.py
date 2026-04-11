@@ -1,5 +1,23 @@
 import math
 from typing import Union, List, Optional
+from enum import Enum
+
+class Sukupuoli(Enum):
+    MIES = "Mies"
+    NAINEN = "Nainen"
+
+class ReseptoriTila(Enum):
+    POSITIIVINEN = "Positiivinen"
+    NEGATIIVINEN = "Negatiivinen"
+
+class Ki67Tila(Enum):
+    MATALA = "Matala (<20%)"
+    KORKEA = "Korkea (>=20%)"
+
+class Hoitolinja(Enum):
+    EI_VALITTU = "-"
+    NEOADJUVANTTI = "Neoadjuvantti"
+    ADJUVANTTI = "Adjuvantti"
 
 def safe_float(v: Union[str, float, int]) -> float:
     """
@@ -33,7 +51,7 @@ def laske_bsa(height_cm: float, weight_kg: float) -> float:
         return 0.0
     return math.sqrt((height_cm * weight_kg) / 3600)
 
-def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: str) -> float:
+def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: Sukupuoli) -> float:
     """
     Calculates Glomerular Filtration Rate (GFR) using the Cockcroft-Gault formula.
     
@@ -41,7 +59,7 @@ def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: 
         age: Age in years.
         weight_kg: Weight in kilograms.
         creatinine: Serum creatinine in micromol/L.
-        sex: 'Mies' or 'Nainen'.
+        sex: Sukupuoli Enum.
         
     Returns:
         float: GFR in mL/min. Returns 0 if creatinine is invalid.
@@ -57,7 +75,7 @@ def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: 
     
     gfr = ((140 - age) * weight_kg) / (0.814 * creatinine)
     
-    if sex == "Nainen": 
+    if sex == Sukupuoli.NAINEN: 
         gfr *= 0.85
         
     return gfr
@@ -145,8 +163,8 @@ def laske_stage_rintasyopa(t: str, n: str, m: str) -> str:
     return "Ei määritettävissä"
 
 def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str, 
-                                         er: str, her2: str, ki67: str, 
-                                         valittu_hoitolinja: Optional[str] = None) -> str:
+                                         er: ReseptoriTila, her2: ReseptoriTila, ki67: Ki67Tila, 
+                                         valittu_hoitolinja: Optional[Hoitolinja] = None) -> str:
     """
     Determines the comprehensive treatment plan for Breast Cancer.
     
@@ -168,12 +186,12 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
 
     # 1. Determine Subtype
     subtype = ""
-    if her2 == "Positiivinen":
+    if her2 == ReseptoriTila.POSITIIVINEN:
         subtype = "HER2-positiivinen"
-        if er == "Positiivinen": subtype += " (Luminal B -like)"
+        if er == ReseptoriTila.POSITIIVINEN: subtype += " (Luminal B -like)"
         else: subtype += " (Non-Luminal)"
-    elif er == "Positiivinen":
-        if "Korkea" in ki67: subtype = "Luminal B -like (HER2-)"
+    elif er == ReseptoriTila.POSITIIVINEN:
+        if ki67 == Ki67Tila.KORKEA: subtype = "Luminal B -like (HER2-)"
         else: subtype = "Luminal A -like"
     else: # ER- HER2-
         subtype = "Kolmoisnegatiivinen (TNBC)"
@@ -193,8 +211,8 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
     
     # Determine Actual Setting based on user selection
     setting = optimal_setting
-    if valittu_hoitolinja and valittu_hoitolinja in ["Neoadjuvantti", "Adjuvantti"]:
-        setting = valittu_hoitolinja
+    if valittu_hoitolinja and valittu_hoitolinja in [Hoitolinja.NEOADJUVANTTI, Hoitolinja.ADJUVANTTI]:
+        setting = valittu_hoitolinja.value
 
     res += f"Hoitolinja: {setting}"
     if setting != optimal_setting:
@@ -213,7 +231,7 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
             
         res += f"• Solunsalpaaja: {chemo}\n"
         res += f"• Täsmähoito: {anti_her2}\n"
-        if er == "Positiivinen":
+        if er == ReseptoriTila.POSITIIVINEN:
             res += "• Hormonihoito: Tamoksifeeni tai aromataasinestäjä (solunsalpaajahoidon jälkeen)\n"
             
     elif subtype == "Kolmoisnegatiivinen (TNBC)":
