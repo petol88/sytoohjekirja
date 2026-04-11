@@ -288,7 +288,8 @@
                 "päivät": "Kahdesti päivässä",
                 "reseptiohje": "Yhdistelmähoitona endokriinisen hoidon kanssa."
             }
-        ]
+        ],
+        "esilääkitys": "Tarvittaessa loperamidi."
     },
     "Ribosiklibi": {
         "sykli": "28 vrk (21 vrk lääkettä, 7 vrk tauko)",
