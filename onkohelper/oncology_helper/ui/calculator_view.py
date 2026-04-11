@@ -95,13 +95,29 @@ class LaskuriView(ttk.Frame):
         self.l_gfr = ttk.Label(f1, text="GFR: -", font=("Arial", 9, "bold"))
         self.l_gfr.grid(row=2, column=4, padx=15)
         
-        ttk.Label(p, text="Protokolla:").grid(row=1, column=0, sticky="w", pady=(10,2))
-        self.c_prot = ttk.Combobox(p, values=list(Tietokanta.data.keys()), state="readonly")
-        self.c_prot.grid(row=2, column=0, sticky="ew", padx=5)
+        f_prot = ttk.Frame(p)
+        f_prot.grid(row=1, column=0, sticky="ew", pady=(10, 2), padx=5)
+        
+        ttk.Label(f_prot, text="Protokolla:").grid(row=0, column=0, sticky="w")
+        self.c_prot = ttk.Combobox(f_prot, values=list(Tietokanta.data.keys()), state="readonly", width=40)
+        self.c_prot.grid(row=1, column=0, sticky="w", padx=(0, 20))
         self.c_prot.bind("<<ComboboxSelected>>", self.update_meds)
         
+        ttk.Label(f_prot, text="Rajaa syöpätyypillä:").grid(row=0, column=1, sticky="w")
+        
+        syopatyypit = set()
+        for d in Tietokanta.data.values():
+            for st in d.get("syöpätyypit", []):
+                syopatyypit.add(st)
+        type_values = ["Kaikki"] + sorted(list(syopatyypit))
+        
+        self.c_type = ttk.Combobox(f_prot, values=type_values, state="readonly", width=25)
+        self.c_type.grid(row=1, column=1, sticky="w")
+        self.c_type.set("Kaikki")
+        self.c_type.bind("<<ComboboxSelected>>", self.filter_protocols)
+        
         f2 = ttk.Frame(p)
-        f2.grid(row=3, column=0, sticky="ew", pady=10)
+        f2.grid(row=2, column=0, sticky="ew", pady=10)
         
         self.e_labs = ttk.Entry(f2, width=50)
         self.e_labs.grid(row=1, column=1, padx=5)
@@ -109,7 +125,19 @@ class LaskuriView(ttk.Frame):
         ttk.Button(f2, text="LASKE", command=self.laske).grid(row=0, column=2, rowspan=2, padx=10)
         
         self.f_meds = ttk.LabelFrame(p, text="Lääkkeet", padding=5)
-        self.f_meds.grid(row=4, column=0, sticky="nsew", pady=5)
+        self.f_meds.grid(row=3, column=0, sticky="nsew", pady=5)
+
+    def filter_protocols(self, event=None):
+        selected_type = self.c_type.get()
+        if selected_type == "Kaikki" or not selected_type:
+            filtered = list(Tietokanta.data.keys())
+        else:
+            filtered = [k for k, v in Tietokanta.data.items() if selected_type in v.get("syöpätyypit", [])]
+        
+        self.c_prot['values'] = filtered
+        if self.c_prot.get() not in filtered:
+            self.c_prot.set('')
+            self.update_meds()
 
     def update_meds(self, e=None):
         for w in self.f_meds.winfo_children(): w.destroy()
@@ -266,6 +294,8 @@ class LaskuriView(ttk.Frame):
             e.delete(0, tk.END)
             e.config(foreground="black")
         self.v_sex.set("Mies")
+        self.c_type.set("Kaikki")
+        self.filter_protocols()
         self.c_prot.set("")
         self.l_bsa.config(text="BSA: -")
         self.l_gfr.config(text="GFR: -")

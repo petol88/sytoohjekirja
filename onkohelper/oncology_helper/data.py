@@ -63,6 +63,7 @@ def luo_esimerkkidata() -> None:
     esimerkkidata = {
         "R-CHOP (NHL)": {
             "sykli": "21 vrk",
+            "syöpätyypit": ["Lymfooma"],
             "kontrollit": "PVK, Krea, Alat, Afos, EKG, (Pre-phase tarvittaessa)",
             "esilääkitys": "Kortisoni iv/po, Antihistamiini, Parasetamoli. G-CSF tuki tarvittaessa.",
             "lääkkeet": [

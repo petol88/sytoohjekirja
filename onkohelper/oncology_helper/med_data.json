@@ -1,6 +1,7 @@
 { 
     "Osimertinibi (Tagrisso)": { 
         "sykli": "Jatkuva hoito", 
+        "syöpätyypit": ["Keuhkosyöpä"],
         "kontrollit": "Rutlab + EKG (QTc). 1kk kohdalla ja sitten 3kk välein", 
         "lääkkeet": [ 
             { 
@@ -17,6 +18,7 @@
     }, 
     "Kapesitabiini (Xeloda)": { 
         "sykli": "21 vrk (14 vrk lääkettä, 7 vrk tauko)", 
+        "syöpätyypit": ["Rintasyöpä", "Suolistosyöpä"],
         "kontrollit": "PVK + Neutr, Krea, ALAT.", 
         "lääkkeet": [ 
             { 
@@ -33,6 +35,7 @@
     }, 
     "R-CHOP (21 vrk)": { 
         "sykli": "21 vrk", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Neutr, Krea, Alat, Afos.", 
         "lääkkeet": [ 
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -53,6 +56,7 @@
     }, 
     "R-CHOEP (21 vrk)": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Neutr, Krea, Alat.", 
         "lääkkeet": [ 
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -73,6 +77,7 @@
     }, 
     "R-Bendamustiini (28 vrk)": { 
         "sykli": "28 vuorokautta", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -82,6 +87,7 @@
        },  
     "Abraxane-Karboplatiini (7vrk)": { 
         "sykli": "7 vuorokautta", 
+        "syöpätyypit": ["Keuhkosyöpä", "Rintasyöpä"],
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
             {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -91,6 +97,7 @@
     }, 
     "R-GemOx (14 vrk)": { 
         "sykli": "14 vuorokautta", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -101,6 +108,7 @@
     }, 
     "GDP (Gemsitabiini-Sisplatiini)": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Krea, Mg, K, Na.", 
         "lääkkeet": [ 
             {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -111,6 +119,7 @@
     }, 
     "Pembrolitsumabi-Paklitakseli-Karboplatiini": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Keuhkosyöpä"],
         "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
         "lääkkeet": [ 
             {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
@@ -121,6 +130,7 @@
     }, 
     "Pembrolitsumabi-Karboplatiini-Pemetreksedi": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Keuhkosyöpä"],
         "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
         "lääkkeet": [ 
             {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
@@ -131,6 +141,7 @@
     }, 
     "Irinotekaani-Fluorourasiili-Kalsiumfolinaatti-Panitumumabi": { 
         "sykli": "14 vuorokautta", 
+        "syöpätyypit": ["Suolistosyöpä"],
         "kontrollit": "Rutlab, mg.", 
         "lääkkeet": [ 
             {"nimi": "Irinotekaani", "reitti": "IV", "annos": 160, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -142,6 +153,7 @@
     }, 
     "Syklofosfamidi-Epirubisiini (EC75)": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Rintasyöpä"],
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
             {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 600, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -151,6 +163,7 @@
     }, 
     "mFOLFIRINOX / FOLFOXIRI": { 
         "sykli": "14 vuorokautta", 
+        "syöpätyypit": ["Suolistosyöpä", "Haimasyöpä"],
         "kontrollit": "PVK, Krea, Alat, Afos.", 
         "lääkkeet": [ 
             {"nimi": "Irinotekaani", "reitti": "IV", "annos": 150, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -162,6 +175,7 @@
     }, 
     "ABVD": { 
         "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)", 
+        "syöpätyypit": ["Lymfooma"],
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
             {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 25, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -173,6 +187,7 @@
     }, 
     "Trastutsumabi-derukstekaani (Enhertu)": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Rintasyöpä"],
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
             {"nimi": "Trastutsumabi-derukstekaani", "reitti": "IV", "annos": 5.4, "yksikkö": "mg/kg", "päivät": [1]} 
@@ -181,6 +196,7 @@
     }, 
     "Abraxane (nab-Paklitakseli)": { 
         "sykli": "Viikoittainen", 
+        "syöpätyypit": ["Rintasyöpä", "Haimasyöpä"],
         "kontrollit": "PVK, Neutr.", 
         "lääkkeet": [ 
             {"nimi": "Nab-paklitakseli", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]} 
@@ -189,6 +205,7 @@
     }, 
     "Dosetakseli": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Rintasyöpä", "Eturauhassyöpä"],
         "kontrollit": "PVK + Neutr.", 
         "lääkkeet": [ 
             {"nimi": "Dosetakseli", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]} 
@@ -197,6 +214,7 @@
     }, 
     "Doksorubisiini (Monoterapia)": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Rintasyöpä", "Sarkooma"],
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
             {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 70, "yksikkö": "mg/m2", "päivät": [1]} 
@@ -205,6 +223,7 @@
     }, 
     "BEP": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Kivesyöpä"],
         "kontrollit": "Rutlab.", 
         "lääkkeet": [ 
             {"nimi": "Etoposidi", "reitti": "IV", "annos": 120, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
@@ -215,6 +234,7 @@
     }, 
     "FLOT (Modifioitu)": { 
         "sykli": "14 vuorokautta", 
+        "syöpätyypit": ["Mahasyöpä"],
         "kontrollit": "PVK + Neutr, Krea, Alat, Afos.", 
         "lääkkeet": [ 
             {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 85, "yksikkö": "mg/m2", "päivät": [1]}, 
@@ -226,6 +246,7 @@
     }, 
     "KARE": { 
         "sykli": "28 vuorokautta", 
+        "syöpätyypit": ["Keuhkosyöpä"],
         "kontrollit": "PVK, Krea (GFR).", 
         "lääkkeet": [ 
             {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}, 
@@ -243,6 +264,7 @@
     }, 
     "Bevasitsumabi + FOLFIRI": { 
         "sykli": "14 vuorokautta", 
+        "syöpätyypit": ["Suolistosyöpä"],
         "kontrollit": "PVK, Krea, U-Prot.", 
         "lääkkeet": [ 
             {"nimi": "Bevasitsumabi", "reitti": "IV", "annos": 5, "yksikkö": "mg/kg", "päivät": [1]}, 
@@ -254,6 +276,7 @@
     }, 
     "Eribuliini": { 
         "sykli": "21 vuorokautta", 
+        "syöpätyypit": ["Rintasyöpä"],
         "kontrollit": "PVK, Neutr.", 
         "lääkkeet": [ 
             {"nimi": "Eribuliini", "reitti": "IV", "annos": 1.23, "yksikkö": "mg/m2", "päivät": [1]} 
@@ -262,6 +285,7 @@
     },
     "Gemsitabiini-Abraxane (21vrk)": {
         "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Haimasyöpä"],
         "kontrollit": "PVK, Krea, Alat.",
         "lääkkeet": [
             {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1, 8, 15]},
@@ -271,6 +295,7 @@
     },
     "Alektinibi": {
         "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Keuhkosyöpä"],
         "kontrollit": "ALAT, ASAT, Bilirubiini, Krea ja PVK 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein",
         "lääkkeet": [
             {
@@ -285,6 +310,7 @@
     },
     "Abemasiklibi": {
         "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Rintasyöpä"],
         "kontrollit": "PVK+T, ALAT, AFOS, BIL, KREA 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen kuukausittain seuraavat 2 kuukautta",
         "lääkkeet": [
             {
@@ -300,6 +326,7 @@
     },
     "Ribosiklibi": {
         "sykli": "28 vrk (21 vrk lääkettä, 7 vrk tauko)",
+        "syöpätyypit": ["Rintasyöpä"],
         "kontrollit": "PVK+T, ALAT, AFOS, BIL 2 viikon välein ensimmäiset 2 sykliä, sen jälkeen joka 4. syklin alussa. EKG (QTc-aika) ennen aloitusta, 2 viikon kohdalla (sykli 1) ja ennen toisen syklin alkua.",
         "lääkkeet": [
             {
@@ -314,6 +341,7 @@
     },
     "Abirateroni": {
         "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Eturauhassyöpä"],
         "kontrollit": "ALAT, AFOS, K 2 viikon välein ensimmäiset 3 kuukautta, sen jälkeen 3 kuukauden välein",
         "lääkkeet": [
             {
