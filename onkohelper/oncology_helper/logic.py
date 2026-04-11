@@ -32,8 +32,8 @@ def safe_float(v: Union[str, float, int]) -> float:
     try: 
         if isinstance(v, (float, int)):
             return float(v)
-        return float(v.replace(",", ".").strip())
-    except: 
+        return float(str(v).replace(",", ".").strip())
+    except (ValueError, TypeError, AttributeError): 
         return 0.0
 
 def laske_bsa(height_cm: float, weight_kg: float) -> float:
@@ -112,6 +112,31 @@ def pyorista_tabletit(mg: float, strength: float) -> int:
     if strength <= 0: 
         return int(mg)
     return int(round(mg / strength) * strength)
+
+def laske_yksiloity_annos(perusannos: float, yksikko: str, bsa: float, paino: float, gfr: float) -> float:
+    """
+    Calculates the patient-specific dose based on the given medical unit.
+    
+    Args:
+        perusannos: The base dose from the protocol (e.g., 75 for Docetaxel).
+        yksikko: The unit string ('mg/m2', 'mg/kg', 'AUC', 'mg').
+        bsa: Patient's Body Surface Area.
+        paino: Patient's weight in kg.
+        gfr: Patient's Glomerular Filtration Rate.
+        
+    Returns:
+        float: The calculated personalized dose in mg.
+    """
+    if yksikko == "mg/m2":
+        return perusannos * bsa
+    elif yksikko == "mg/kg":
+        return perusannos * paino
+    elif yksikko == "AUC":
+        capped_gfr = min(gfr, 125.0)
+        return laske_calvert(perusannos, capped_gfr)
+    
+    # Fixed dose (e.g., 'mg' or 'mg (kiinteä)')
+    return perusannos
 
 def laske_stage_rintasyopa(t: str, n: str, m: str) -> str:
     """

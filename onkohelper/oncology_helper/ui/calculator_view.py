@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
-from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli
+from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos
 
 class LaskuriView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -116,6 +116,13 @@ class LaskuriView(ttk.Frame):
         self.c_type.set("Kaikki")
         self.c_type.bind("<<ComboboxSelected>>", self.filter_protocols)
         
+        ttk.Label(f_prot, text="Annoksen suhteutus:").grid(row=0, column=2, sticky="w", padx=10)
+        self.v_suhde = tk.StringVar(value="100 %")
+        self.c_suhde = ttk.Combobox(f_prot, textvariable=self.v_suhde, 
+                                    values=["100 %", "80 %", "75 %", "50 %", "25 %"], 
+                                    state="readonly", width=15)
+        self.c_suhde.grid(row=1, column=2, sticky="w", padx=10)
+
         f2 = ttk.Frame(p)
         f2.grid(row=2, column=0, sticky="ew", pady=10)
         
@@ -193,26 +200,21 @@ class LaskuriView(ttk.Frame):
         gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), Sukupuoli(self.v_sex.get()))
         self.l_gfr.config(text=f"GFR: {gfr:.0f}")
         
+        suhde_str = self.v_suhde.get().replace("%", "").strip()
+        try:
+            suhde = float(suhde_str) / 100.0
+        except ValueError:
+            suhde = 1.0
+
         self._skip_update = True
         try:
-            auc_multiplier = None
             for r in self.rows:
                 a = safe_float(r['va'].get())
                 u = r['vu'].get()
 
-                if u == "mg/m2":
-                    mg = a * bsa
-                elif u == "mg/kg":
-                    mg = a * w
-                elif u == "AUC":
-                    # Calvert formula: Dose = AUC * (GFR + 25)
-                    # GFR cap is often 125 ml/min
-                    if auc_multiplier is None:
-                        auc_multiplier = (min(gfr, 125) + 25)
-                    mg = a * auc_multiplier
-                else:
-                    mg = a
-                    
+                mg = laske_yksiloity_annos(a, u, bsa, w, gfr)
+                mg = mg * suhde
+                
                 # Tarkistetaan mahdollinen maksimiannos (esim. Vinkristiini max 2.0 mg)
                 max_mg = r['d'].get('max_mg')
                 if max_mg is not None and mg > max_mg:
@@ -248,6 +250,9 @@ class LaskuriView(ttk.Frame):
             d = Tietokanta.data[sel]
             if "sykli" in d:
                 out.append(f"Sykli: {d['sykli']}")
+                
+        if self.v_suhde.get() != "100 %":
+            out.append(f"Annoksen suhteutus: {self.v_suhde.get()}")
         
         out.append(f"Labrat: {self.e_labs.get()}")
         out.append("-" * 40)
@@ -296,6 +301,7 @@ class LaskuriView(ttk.Frame):
         self.v_sex.set("Mies")
         self.c_type.set("Kaikki")
         self.filter_protocols()
+        self.v_suhde.set("100 %")
         self.c_prot.set("")
         self.l_bsa.config(text="BSA: -")
         self.l_gfr.config(text="GFR: -")

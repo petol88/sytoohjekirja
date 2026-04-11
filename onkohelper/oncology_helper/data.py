@@ -55,6 +55,37 @@ TNM_DATA: Dict[str, Dict[str, Any]] = {
         "L1": ["T1a: ≤1cm", "T1b: >1-2cm", "T1c: >2-3cm", "T2a: >3-4cm", "T2b: >4-5cm", "T3: >5-7cm", "T4: >7cm tai invaasio"],
         "L2": ["N0: Ei levinneisyyttä", "N1: Hilaariset/Peribronk.", "N2: Mediastinaaliset (sama puoli)", "N3: Vastakkainen puoli/Soliskupat"],
         "L3": ["M0: Ei etäpesäkkeitä", "M1a: Pleura/Perikardium", "M1b: Yksi etäpesäke", "M1c: Useita etäpesäkkeitä"]
+    },
+    "Suolistosyöpä": {
+        "Type": "TNM",
+        "L1_Label": "T (Kasvain)", "L2_Label": "N (Imusolmukkeet)", "L3_Label": "M (Etäpesäkkeet)",
+        "L1": ["Tis: In situ", "T1: Submukoosa", "T2: Muscularis propria", "T3: Subseroosa / perikolinen rasva", "T4a: Viseraalinen peritoneum", "T4b: Invaasio muihin elimiin"],
+        "L2": ["N0: Ei imusolmukkeita", "N1a: 1 alueellinen", "N1b: 2-3 alueellista", "N1c: Kasvainkertymiä (tumor deposits)", "N2a: 4-6 alueellista", "N2b: ≥7 alueellista"],
+        "L3": ["M0: Ei etäpesäkkeitä", "M1a: Yksi elin (esim. maksa)", "M1b: Useita elimiä", "M1c: Vatsakalvon levinneisyys (peritoneaalinen)"]
+    },
+    "Melanooma": {
+        "Type": "TNM",
+        "L1_Label": "T (Breslow & Ulseraatio)", "L2_Label": "N (Imusolmukkeet)", "L3_Label": "M (Etäpesäkkeet)",
+        "L1": [
+            "Tis: Melanoma in situ", 
+            "T1a: <0.8 mm ilman ulseraatiota", "T1b: <0.8 mm ulseraatiolla TAI 0.8-1.0 mm (± ulseraatio)", 
+            "T2a: >1.0-2.0 mm ilman ulseraatiota", "T2b: >1.0-2.0 mm ulseraatiolla", 
+            "T3a: >2.0-4.0 mm ilman ulseraatiota", "T3b: >2.0-4.0 mm ulseraatiolla", 
+            "T4a: >4.0 mm ilman ulseraatiota", "T4b: >4.0 mm ulseraatiolla"
+        ],
+        "L2": [
+            "N0: Ei imusolmukkeita", 
+            "N1a: 1 mikroskooppinen", "N1b: 1 makroskooppinen", "N1c: In-transit/satelliitti ilman solmukkeita", 
+            "N2a: 2-3 mikroskooppista", "N2b: 2-3 makroskooppista", "N2c: 1 solmuke + in-transit/satelliitti", 
+            "N3a: ≥4 mikroskooppista", "N3b: ≥4 makroskooppista", "N3c: ≥2 solmuketta + in-transit/satelliitti"
+        ],
+        "L3": [
+            "M0: Ei etäpesäkkeitä", 
+            "M1a: Iho, pehmytkudos, ei-alueellinen imusolmuke", 
+            "M1b: Keuhko", 
+            "M1c: Muu sisäelin (ei KES)", 
+            "M1d: Keskushermosto (KES)"
+        ]
     }
 }
 
