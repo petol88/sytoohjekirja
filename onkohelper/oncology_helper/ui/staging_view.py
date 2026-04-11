@@ -1,7 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from oncology_helper.data import TNM_DATA
-from oncology_helper.logic import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa, ReseptoriTila, Ki67Tila, Hoitolinja
+from oncology_helper.logic import (laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa, ReseptoriTila, Ki67Tila, Hoitolinja,
+                                   laske_stage_suolistosyopa, maarita_hoitosuunnitelma_suolistosyopa,
+                                   laske_stage_melanooma, maarita_hoitosuunnitelma_melanooma,
+                                   laske_stage_keuhkosyopa, maarita_hoitosuunnitelma_keuhkosyopa,
+                                   IsupLuokka, PsaTaso, laske_riskiryhma_eturauhassyopa, maarita_hoitosuunnitelma_eturauhassyopa)
 
 class LevinneisyysView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -64,6 +68,21 @@ class LevinneisyysView(ttk.Frame):
         self.cb_ki67.grid(row=2, column=1, padx=5, sticky="w")
         self.cb_ki67.bind("<<ComboboxSelected>>", self.calc_res)
 
+        # Eturauhassyöpä spesifit valinnat
+        self.f_eturauhanen = ttk.LabelFrame(c, text="Eturauhassyövän lisätekijät (EAU-riskiluokitus)", padding=10)
+        
+        ttk.Label(self.f_eturauhanen, text="ISUP-luokka:").grid(row=0, column=0, padx=5, sticky="e")
+        self.v_isup = tk.StringVar(value=IsupLuokka.ISUP_1.value)
+        self.cb_isup = ttk.Combobox(self.f_eturauhanen, textvariable=self.v_isup, values=[e.value for e in IsupLuokka], state="readonly", width=25)
+        self.cb_isup.grid(row=0, column=1, padx=5, sticky="w")
+        self.cb_isup.bind("<<ComboboxSelected>>", self.calc_res)
+
+        ttk.Label(self.f_eturauhanen, text="PSA-taso:").grid(row=1, column=0, padx=5, sticky="e")
+        self.v_psa = tk.StringVar(value=PsaTaso.ALLE_10.value)
+        self.cb_psa = ttk.Combobox(self.f_eturauhanen, textvariable=self.v_psa, values=[e.value for e in PsaTaso], state="readonly", width=25)
+        self.cb_psa.grid(row=1, column=1, padx=5, sticky="w")
+        self.cb_psa.bind("<<ComboboxSelected>>", self.calc_res)
+
         # Grid (Dynamic labels)
         gf = ttk.Frame(c)
         gf.pack(anchor="w", pady=10, fill=tk.X)
@@ -95,9 +114,14 @@ class LevinneisyysView(ttk.Frame):
         
         # Toggle Breast Cancer specific frame
         if t == "Rintasyöpä":
+            self.f_eturauhanen.pack_forget()
             self.f_rinta.pack(after=self.cb_hoito.master, fill=tk.X, pady=10)
+        elif t == "Eturauhassyöpä":
+            self.f_rinta.pack_forget()
+            self.f_eturauhanen.pack(after=self.cb_hoito.master, fill=tk.X, pady=10)
         else:
             self.f_rinta.pack_forget()
+            self.f_eturauhanen.pack_forget()
 
         # Päivitä labelit ja listat
         self.labels[0].config(text=f"{d['L1_Label']}:")
@@ -158,6 +182,42 @@ class LevinneisyysView(ttk.Frame):
                     Ki67Tila(self.v_ki67.get()),
                     Hoitolinja(self.v_hoito.get())
                 )
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Suolistosyöpä" and "?" not in (c1, c2, c3):
+                st = laske_stage_suolistosyopa(c1, c2, c3)
+                res += f"\nAnatominen levinneisyysryhmä: {st}"
+                
+                # Suolistosyövän hoitosuunnitelma
+                plan = maarita_hoitosuunnitelma_suolistosyopa(st, c1, c2, c3)
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Melanooma" and "?" not in (c1, c2, c3):
+                st = laske_stage_melanooma(c1, c2, c3)
+                res += f"\nAnatominen levinneisyysryhmä: {st}"
+                
+                # Melanooman hoitosuunnitelma
+                plan = maarita_hoitosuunnitelma_melanooma(st, c1, c2, c3)
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Keuhkosyöpä (NSCLC)" and "?" not in (c1, c2, c3):
+                st = laske_stage_keuhkosyopa(c1, c2, c3)
+                res += f"\nAnatominen levinneisyysryhmä: {st}"
+                
+                # Keuhkosyövän hoitosuunnitelma
+                plan = maarita_hoitosuunnitelma_keuhkosyopa(st, c1, c2, c3)
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Eturauhassyöpä" and "?" not in (c1, c2, c3):
+                riski = laske_riskiryhma_eturauhassyopa(
+                    c1, c2, c3,
+                    IsupLuokka(self.v_isup.get()),
+                    PsaTaso(self.v_psa.get())
+                )
+                res += f"\nRiskiluokitus / Levinneisyys: {riski}"
+                
+                # Eturauhassyövän hoitosuunnitelma
+                plan = maarita_hoitosuunnitelma_eturauhassyopa(riski, c1, c2, c3)
                 res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
                 
             res += "\n" + "-"*40 + "\n"
