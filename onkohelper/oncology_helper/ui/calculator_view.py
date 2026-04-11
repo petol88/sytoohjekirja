@@ -9,6 +9,8 @@ class LaskuriView(ttk.Frame):
         self.controller = controller
         self.rows = []
         self._skip_update = False
+        self.current_bsa = 0.0
+        self.current_gfr = 0.0
         
         # Header
         h = ttk.Frame(self)
@@ -95,6 +97,10 @@ class LaskuriView(ttk.Frame):
         self.l_gfr = ttk.Label(f1, text="GFR: -", font=("Arial", 9, "bold"))
         self.l_gfr.grid(row=2, column=4, padx=15)
         
+        self.v_cap_bsa = tk.BooleanVar(value=False)
+        cb_cap = ttk.Checkbutton(f1, text="Max 2.2 m²", variable=self.v_cap_bsa, command=self.laske)
+        cb_cap.grid(row=0, column=5, padx=5)
+
         f_prot = ttk.Frame(p)
         f_prot.grid(row=1, column=0, sticky="ew", pady=(10, 2), padx=5)
         
@@ -194,10 +200,23 @@ class LaskuriView(ttk.Frame):
         p = safe_float(self.e_len.get())
         w = safe_float(self.e_wei.get())
         
-        bsa = laske_bsa(p, w)
+        if p > 220.0:
+            p = 220.0
+            self.e_len.delete(0, tk.END)
+            self.e_len.insert(0, "220")
+            
+        if w > 150.0:
+            w = 150.0
+            self.e_wei.delete(0, tk.END)
+            self.e_wei.insert(0, "150")
+
+        cap = 2.2 if self.v_cap_bsa.get() else None
+        bsa = laske_bsa(p, w, cap)
+        self.current_bsa = bsa
         self.l_bsa.config(text=f"BSA: {bsa:.2f}")
         
         gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), Sukupuoli(self.v_sex.get()))
+        self.current_gfr = gfr
         self.l_gfr.config(text=f"GFR: {gfr:.0f}")
         
         suhde_str = self.v_suhde.get().replace("%", "").strip()
@@ -257,6 +276,13 @@ class LaskuriView(ttk.Frame):
         out.append(f"Labrat: {self.e_labs.get()}")
         out.append("-" * 40)
         
+        if self.current_gfr > 0 and self.current_gfr < 60:
+            out.append(f"⚠️ HUOMIO: GFR on alentunut ({self.current_gfr:.0f} ml/min).")
+            out.append(f"  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
+            
+        if self.v_cap_bsa.get() and self.current_bsa == 2.2:
+            out.append(f"HUOM: BSA on rajoitettu maksimiarvoon 2.2 m².\n")
+        
         for r in self.rows:
             # Read from StringVar to capture manual edits
             fin_str = r['v_fin'].get()
@@ -301,6 +327,7 @@ class LaskuriView(ttk.Frame):
         self.v_sex.set("Mies")
         self.c_type.set("Kaikki")
         self.filter_protocols()
+        self.v_cap_bsa.set(False)
         self.v_suhde.set("100 %")
         self.c_prot.set("")
         self.l_bsa.config(text="BSA: -")

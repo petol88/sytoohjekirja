@@ -147,3 +147,18 @@ class Tietokanta:
         except Exception as e:
             print(f"Virhe ladattaessa tietokantaa ({filepath}): {e}")
             cls.data = {}
+            
+    @classmethod
+    def tallenna(cls) -> None:
+        """Saves the current state of cls.data back to med_data.json."""
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(base_dir, "med_data.json")
+        
+        if not os.path.exists(filepath) and os.path.exists("med_data.json"):
+            filepath = "med_data.json"
+            
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(cls.data, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"Virhe tallennettaessa tietokantaa ({filepath}): {e}")

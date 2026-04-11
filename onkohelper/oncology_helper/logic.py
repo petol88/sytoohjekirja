@@ -48,20 +48,24 @@ def safe_float(v: Union[str, float, int]) -> float:
     except (ValueError, TypeError, AttributeError): 
         return 0.0
 
-def laske_bsa(height_cm: float, weight_kg: float) -> float:
+def laske_bsa(height_cm: float, weight_kg: float, max_bsa: Optional[float] = None) -> float:
     """
     Calculates Body Surface Area (BSA) using the Mosteller formula.
     
     Args:
         height_cm: Height in centimeters.
         weight_kg: Weight in kilograms.
+        max_bsa: Optional cap for the BSA value.
         
     Returns:
         float: BSA in m2. Returns 0 if inputs are invalid.
     """
     if height_cm <= 0 or weight_kg <= 0: 
         return 0.0
-    return math.sqrt((height_cm * weight_kg) / 3600)
+    bsa = math.sqrt((height_cm * weight_kg) / 3600)
+    if max_bsa is not None and bsa > max_bsa:
+        return max_bsa
+    return bsa
 
 def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: Sukupuoli) -> float:
     """
