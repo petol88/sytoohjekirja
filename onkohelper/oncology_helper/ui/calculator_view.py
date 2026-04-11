@@ -224,7 +224,16 @@ class LaskuriView(ttk.Frame):
             fin_str = r['v_fin'].get()
             fin = safe_float(fin_str)
             
-            out.append(f"• {r['n']}: {fin_str} mg")
+            paivat = r['d'].get('päivät')
+            paivat_str = ""
+            if paivat:
+                formatted_paivat = ", ".join(map(str, paivat))
+                if isinstance(paivat[0], int) or str(paivat[0]).isdigit():
+                    paivat_str = f" [pv {formatted_paivat}]"
+                else:
+                    paivat_str = f" [{formatted_paivat}]"
+                    
+            out.append(f"• {r['n']} {fin_str} mg{paivat_str}")
             
             ts = r['vt'].get()
             if ts and ts != "None" and fin > 0:
@@ -233,9 +242,6 @@ class LaskuriView(ttk.Frame):
                     out.append(f"    -> {fin/strength:.1f} kpl ({ts})")
                 except: 
                     pass
-            
-            if r['d'].get('päivät'): 
-                out.append(f"   Ajoitus: {r['d']['päivät']}")
 
         if sel:
             d = Tietokanta.data[sel]

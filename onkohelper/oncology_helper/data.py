@@ -66,11 +66,11 @@ def luo_esimerkkidata() -> None:
             "kontrollit": "PVK, Krea, Alat, Afos, EKG, (Pre-phase tarvittaessa)",
             "esilääkitys": "Kortisoni iv/po, Antihistamiini, Parasetamoli. G-CSF tuki tarvittaessa.",
             "lääkkeet": [
-                {"nimi": "Rituksimabi", "annos": 375, "yksikkö": "mg/m2", "reseptiohje": "iv (hidas tiputus)", "max_mg": None, "päivät": "d1"},
-                {"nimi": "Syklofosfamidi", "annos": 750, "yksikkö": "mg/m2", "reseptiohje": "iv", "max_mg": None, "päivät": "d1"},
-                {"nimi": "Doksorubisiini", "annos": 50, "yksikkö": "mg/m2", "reseptiohje": "iv", "max_mg": None, "päivät": "d1"},
-                {"nimi": "Vinkristiini", "annos": 1.4, "yksikkö": "mg/m2", "reseptiohje": "iv (Max 2mg)", "max_mg": 2.0, "päivät": "d1"},
-                {"nimi": "Prednisolon", "annos": 40, "yksikkö": "mg/m2", "tablettikoot": ["40 mg", "20 mg"], "reseptiohje": "po aamuisin", "max_mg": None, "päivät": "d1-5"}
+                {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "reseptiohje": "hidas tiputus", "max_mg": None, "päivät": [1]},
+                {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "max_mg": None, "päivät": [1]},
+                {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "max_mg": None, "päivät": [1]},
+                {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "reseptiohje": "Max 2mg", "max_mg": 2.0, "päivät": [1]},
+                {"nimi": "Prednisolon", "reitti": "PO", "annos": 40, "yksikkö": "mg/m2", "tablettikoot": ["40 mg", "20 mg"], "reseptiohje": "aamuisin", "max_mg": None, "päivät": [1, 2, 3, 4, 5]}
             ]
         }
     }

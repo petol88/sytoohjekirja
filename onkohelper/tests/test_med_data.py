@@ -22,18 +22,20 @@ def test_abraxane_karboplatiini_protocol_exists():
     assert len(drugs) == 2
 
     # Check first drug: Abraxane
-    abraxane = next((d for d in drugs if d["nimi"] == "Abraxane (IV)"), None)
+    abraxane = next((d for d in drugs if d["nimi"] == "Abraxane"), None)
     assert abraxane is not None
+    assert abraxane["reitti"] == "IV"
     assert abraxane["annos"] == 125
     assert abraxane["yksikkö"] == "mg/m2"
-    assert abraxane["päivät"] == "D1"
+    assert abraxane["päivät"] == [1]
 
     # Check second drug: Karboplatiini
-    karboplatiini = next((d for d in drugs if d["nimi"] == "Karboplatiini (IV)"), None)
+    karboplatiini = next((d for d in drugs if d["nimi"] == "Karboplatiini"), None)
     assert karboplatiini is not None
+    assert karboplatiini["reitti"] == "IV"
     assert karboplatiini["annos"] == 1.5
     assert karboplatiini["yksikkö"] == "AUC"
-    assert karboplatiini["päivät"] == "D1"
+    assert karboplatiini["päivät"] == [1]
 
 def test_gemsitabiini_abraxane_protocol_exists():
     """
@@ -56,15 +58,17 @@ def test_gemsitabiini_abraxane_protocol_exists():
     assert len(drugs) == 2
 
     # Check first drug: Abraxane
-    abraxane = next((d for d in drugs if d["nimi"] == "Abraxane (IV)"), None)
+    abraxane = next((d for d in drugs if d["nimi"] == "Abraxane"), None)
     assert abraxane is not None
+    assert abraxane["reitti"] == "IV"
     assert abraxane["annos"] == 125
     assert abraxane["yksikkö"] == "mg/m2"
-    assert abraxane["päivät"] == "D1,D8,D15"
+    assert abraxane["päivät"] == [1, 8, 15]
 
     # Check second drug: Gemsitabiini
-    gemsitabiini = next((d for d in drugs if d["nimi"] == "Gemsitabiini (IV)"), None)
+    gemsitabiini = next((d for d in drugs if d["nimi"] == "Gemsitabiini"), None)
     assert gemsitabiini is not None
+    assert gemsitabiini["reitti"] == "IV"
     assert gemsitabiini["annos"] == 1000
     assert gemsitabiini["yksikkö"] == "mg/m2"
-    assert gemsitabiini["päivät"] == "D1, D8, D15"
+    assert gemsitabiini["päivät"] == [1, 8, 15]

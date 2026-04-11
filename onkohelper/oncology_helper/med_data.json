@@ -4,10 +4,11 @@
         "kontrollit": "Rutlab + EKG (QTc). 1kk kohdalla ja sitten 3kk välein", 
         "lääkkeet": [ 
             { 
-                "nimi": "Osimertinibi (PO)",  
+                "nimi": "Osimertinibi",  
+                "reitti": "PO",
                 "annos": 80,  
                 "yksikkö": "mg (kiinteä)",  
-                "päivät": "Jatkuva", 
+                "päivät": ["Jatkuva"], 
                 "tablettikoot": ["80 mg", "40 mg"],  
                 "reseptiohje": "Kerran päivässä samaan aikaan." 
             } 
@@ -19,10 +20,11 @@
         "kontrollit": "PVK + Neutr, Krea, ALAT.", 
         "lääkkeet": [ 
             { 
-                "nimi": "Kapesitabiini (PO)",  
+                "nimi": "Kapesitabiini",  
+                "reitti": "PO",
                 "annos": 1250,  
                 "yksikkö": "mg/m2",  
-                "päivät": "D1-14", 
+                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 
                 "tablettikoot": ["500 mg"],  
                 "reseptiohje": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
             } 
@@ -33,15 +35,16 @@
         "sykli": "21 vrk", 
         "kontrollit": "PVK, Neutr, Krea, Alat, Afos.", 
         "lääkkeet": [ 
-            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Syklofosfamidi (IV)", "annos": 750, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Doksorubisiini (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Vinkristiini (IV)", "annos": 1.4, "yksikkö": "mg/m2", "päivät": "D1", "max_mg": 2.0}, 
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0}, 
             { 
-                "nimi": "Prednisoloni (PO)",  
+                "nimi": "Prednisoloni",  
+                "reitti": "PO",
                 "annos": 100,  
                 "yksikkö": "mg (kiinteä)",  
-                "päivät": "D1-5", 
+                "päivät": [1, 2, 3, 4, 5], 
                 "tablettikoot": ["40 mg", "20 mg", "5 mg"], 
                 "reseptiohje": "Aamuisin." 
             } 
@@ -52,16 +55,17 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Neutr, Krea, Alat.", 
         "lääkkeet": [ 
-            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Syklofosfamidi (IV)", "annos": 750, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Doksorubisiini (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Vinkristiini (IV)", "annos": 1.4, "yksikkö": "mg/m2", "päivät": "D1", "max_mg": 2.0}, 
-            {"nimi": "Etoposidi (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1-3"}, 
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0}, 
+            {"nimi": "Etoposidi", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
             { 
-                "nimi": "Prednisoloni (PO)",  
+                "nimi": "Prednisoloni",  
+                "reitti": "PO",
                 "annos": 100,  
                 "yksikkö": "mg (kiinteä)",  
-                "päivät": "D1-5", 
+                "päivät": [1, 2, 3, 4, 5], 
                 "tablettikoot": ["40 mg", "20 mg", "5 mg"] 
             } 
         ], 
@@ -71,8 +75,8 @@
         "sykli": "28 vuorokautta", 
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
-            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Bendamustiini (IV)", "annos": 90, "yksikkö": "mg/m2", "päivät": "D1, D2"} 
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Bendamustiini", "reitti": "IV", "annos": 90, "yksikkö": "mg/m2", "päivät": [1, 2]} 
         ], 
         "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
        },  
@@ -80,8 +84,8 @@
         "sykli": "7 vuorokautta", 
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
-            {"nimi": "Abraxane (IV)", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Karboplatiini (IV)", "annos": 1.5, "yksikkö": "AUC", "päivät": "D1"} 
+            {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 1.5, "yksikkö": "AUC", "päivät": [1]} 
         ], 
         "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO." 
     }, 
@@ -89,9 +93,9 @@
         "sykli": "14 vuorokautta", 
         "kontrollit": "PVK, Krea, Alat.", 
         "lääkkeet": [ 
-            {"nimi": "Rituksimabi (IV)", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Oksaliplatiini (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 4 mg, Ondansetroni 8mg, Parasetamoli 1 g, Setiritsiini 10 mg." 
     }, 
@@ -99,9 +103,9 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea, Mg, K, Na.", 
         "lääkkeet": [ 
-            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Sisplatiini (IV)", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D8"} 
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [8]} 
         ], 
         "esilääkitys": "D1: Deksametasoni 4 mg, Filgrastiimi, Furosemidi.\nD8: Ondansetroni 8mg." 
     }, 
@@ -109,9 +113,9 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
         "lääkkeet": [ 
-            {"nimi": "Pembrolitsumabi", "annos": 2, "yksikkö": "mg/kg", "päivät": "D1", "max_mg": 200}, 
-            {"nimi": "Paklitakseli", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Karboplatiini", "annos": 5, "yksikkö": "AUC", "päivät": "D1"} 
+            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
+            {"nimi": "Paklitakseli", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 20mg, Akynzeo 1tbl, Pantopratsoli 1tbl, Setiritsiini 1tbl." 
     }, 
@@ -119,9 +123,9 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
         "lääkkeet": [ 
-            {"nimi": "Pembrolitsumabi", "annos": 2, "yksikkö": "mg/kg", "päivät": "D1", "max_mg": 200}, 
-            {"nimi": "Karboplatiini", "annos": 5, "yksikkö": "AUC", "päivät": "D1"}, 
-            {"nimi": "Pemetreksedi", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
+            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}, 
+            {"nimi": "Pemetreksedi", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 4mg+4mg+4mg, Ondansetroni 8mg. (Muista foolihapon aloitus 1vk ennen ja B12-vitamiini-injektio joka kolmas infuusio)." 
     }, 
@@ -129,10 +133,10 @@
         "sykli": "14 vuorokautta", 
         "kontrollit": "Rutlab, mg.", 
         "lääkkeet": [ 
-            {"nimi": "Irinotekaani", "annos": 160, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Fluorourasiili", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
-            {"nimi": "Kalsiumfolinaatti", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
-            {"nimi": "Panitumumabi", "annos": 6, "yksikkö": "mg/kg", "päivät": "D1"} 
+            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 160, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
+            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
+            {"nimi": "Panitumumabi", "reitti": "IV", "annos": 6, "yksikkö": "mg/kg", "päivät": [1]} 
         ], 
         "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
     }, 
@@ -140,8 +144,8 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
-            {"nimi": "Syklofosfamidi", "annos": 600, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Epirubisiini", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 600, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Epirubisiini", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 4mg, Akynzeo 1 tbl." 
     }, 
@@ -149,10 +153,10 @@
         "sykli": "14 vuorokautta", 
         "kontrollit": "PVK, Krea, Alat, Afos.", 
         "lääkkeet": [ 
-            {"nimi": "Irinotekaani", "annos": 150, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Kalsiumfolinaatti", "annos": 400, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Oksaliplatiini", "annos": 85, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Fluorourasiili", "annos": 2400, "yksikkö": "mg/m2", "päivät": "D1 (46h infuusio)"} 
+            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 150, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 400, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 85, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 2400, "yksikkö": "mg/m2", "päivät": [1], "lisätieto": "46h infuusio"} 
         ], 
         "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Akynzeo 1 tbl, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
     }, 
@@ -160,10 +164,10 @@
         "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)", 
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
-            {"nimi": "Doksorubisiini", "annos": 25, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Bleomysiini", "annos": 10, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Vinblastiini", "annos": 6, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Dakarbatsiini", "annos": 375, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 25, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Bleomysiini", "reitti": "IV", "annos": 10, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Vinblastiini", "reitti": "IV", "annos": 6, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Dakarbatsiini", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 8mg, Netupitantti." 
     }, 
@@ -171,7 +175,7 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
-            {"nimi": "Trastutsumabi-derukstekaani", "annos": 5.4, "yksikkö": "mg/kg", "päivät": "D1"} 
+            {"nimi": "Trastutsumabi-derukstekaani", "reitti": "IV", "annos": 5.4, "yksikkö": "mg/kg", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
     }, 
@@ -179,7 +183,7 @@
         "sykli": "Viikoittainen", 
         "kontrollit": "PVK, Neutr.", 
         "lääkkeet": [ 
-            {"nimi": "Nab-paklitakseli", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Nab-paklitakseli", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Ondansetroni 8 mg." 
     }, 
@@ -187,7 +191,7 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK + Neutr.", 
         "lääkkeet": [ 
-            {"nimi": "Dosetakseli", "annos": 75, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Dosetakseli", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 8mg+8mg+8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
     }, 
@@ -195,7 +199,7 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Krea.", 
         "lääkkeet": [ 
-            {"nimi": "Doksorubisiini (IV)", "annos": 70, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 70, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
     }, 
@@ -203,9 +207,9 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "Rutlab.", 
         "lääkkeet": [ 
-            {"nimi": "Etoposidi (IV)", "annos": 120, "yksikkö": "mg/m2", "päivät": "D1-3"}, 
-            {"nimi": "Bleomysiinisulfaatti (IV)", "annos": 30, "yksikkö": "mg (kiinteä)", "päivät": "D1+D5+D15"},  
-            {"nimi": "Sisplatiini (IV)", "annos": 20, "yksikkö": "mg/m2", "päivät": "D1-5"} 
+            {"nimi": "Etoposidi", "reitti": "IV", "annos": 120, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
+            {"nimi": "Bleomysiinisulfaatti", "reitti": "IV", "annos": 30, "yksikkö": "mg (kiinteä)", "päivät": [1, 5, 15]},  
+            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 20, "yksikkö": "mg/m2", "päivät": [1, 2, 3, 4, 5]} 
         ], 
         "esilääkitys": "Deksametasoni 10mg+8mg+8mg+8mg+8mg, Akynzeo pv1, parasetamoli 1g pv 1 ja pv 5." 
     }, 
@@ -213,10 +217,10 @@
         "sykli": "14 vuorokautta", 
         "kontrollit": "PVK + Neutr, Krea, Alat, Afos.", 
         "lääkkeet": [ 
-            {"nimi": "Oksaliplatiini (IV)", "annos": 85, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Fluorourasiili (IV)", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
-            {"nimi": "Kalsiumfolinaatti (IV)", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
-            {"nimi": "Dosetakseli (IV)", "annos": 50, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 85, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
+            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
+            {"nimi": "Dosetakseli", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
     }, 
@@ -224,13 +228,14 @@
         "sykli": "28 vuorokautta", 
         "kontrollit": "PVK, Krea (GFR).", 
         "lääkkeet": [ 
-            {"nimi": "Karboplatiini (IV)", "annos": 5, "yksikkö": "AUC", "päivät": "D1"}, 
-            {"nimi": "Etoposidi (IV)", "annos": 100, "yksikkö": "mg/m2", "päivät": "D1"}, 
+            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}, 
+            {"nimi": "Etoposidi", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1]}, 
             { 
-                "nimi": "Etoposidi (PO Kapseli)",  
+                "nimi": "Etoposidi",  
+                "reitti": "PO Kapseli",
                 "annos": 200,  
                 "yksikkö": "mg/m2",  
-                "päivät": "D2, D3", 
+                "päivät": [2, 3], 
                 "tablettikoot": ["50 mg"] 
             } 
         ], 
@@ -240,10 +245,10 @@
         "sykli": "14 vuorokautta", 
         "kontrollit": "PVK, Krea, U-Prot.", 
         "lääkkeet": [ 
-            {"nimi": "Bevasitsumabi (IV)", "annos": 5, "yksikkö": "mg/kg", "päivät": "D1"}, 
-            {"nimi": "Irinotekaani (IV)", "annos": 160, "yksikkö": "mg/m2", "päivät": "D1"}, 
-            {"nimi": "Fluorourasiili (IV)", "annos": 500, "yksikkö": "mg/m2", "päivät": "D1, D2"}, 
-            {"nimi": "Kalsiumfolinaatti (IV)", "annos": 200, "yksikkö": "mg/m2", "päivät": "D1, D2"} 
+            {"nimi": "Bevasitsumabi", "reitti": "IV", "annos": 5, "yksikkö": "mg/kg", "päivät": [1]}, 
+            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 160, "yksikkö": "mg/m2", "päivät": [1]}, 
+            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
+            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]} 
         ], 
         "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
     }, 
@@ -251,7 +256,7 @@
         "sykli": "21 vuorokautta", 
         "kontrollit": "PVK, Neutr.", 
         "lääkkeet": [ 
-            {"nimi": "Eribuliini (IV)", "annos": 1.23, "yksikkö": "mg/m2", "päivät": "D1"} 
+            {"nimi": "Eribuliini", "reitti": "IV", "annos": 1.23, "yksikkö": "mg/m2", "päivät": [1]} 
         ], 
         "esilääkitys": "Deksametasoni 4mg, Ondansetroni 8mg." 
     },
@@ -259,8 +264,8 @@
         "sykli": "21 vuorokautta",
         "kontrollit": "PVK, Krea, Alat.",
         "lääkkeet": [
-            {"nimi": "Abraxane (IV)", "annos": 125, "yksikkö": "mg/m2", "päivät": "D1,D8,D15"},
-            {"nimi": "Gemsitabiini (IV)", "annos": 1000, "yksikkö": "mg/m2", "päivät": "D1, D8, D15"}
+            {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1, 8, 15]},
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8, 15]}
         ],
         "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO."
     },
@@ -269,10 +274,11 @@
         "kontrollit": "ALAT, ASAT, Bilirubiini, Krea ja PVK 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein",
         "lääkkeet": [
             {
-                "nimi": "Alektinibi (PO)",
+                "nimi": "Alektinibi",
+                "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg (4 x 150 mg kapselia)",
-                "päivät": "Kahdesti päivässä",
+                "päivät": ["Kahdesti päivässä"],
                 "reseptiohje": "Otettava ruuan kanssa."
             }
         ]
@@ -282,10 +288,11 @@
         "kontrollit": "PVK+T, ALAT, AFOS, BIL, KREA 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen kuukausittain seuraavat 2 kuukautta",
         "lääkkeet": [
             {
-                "nimi": "Abemasiklibi (PO)",
+                "nimi": "Abemasiklibi",
+                "reitti": "PO",
                 "annos": 150,
                 "yksikkö": "mg",
-                "päivät": "Kahdesti päivässä",
+                "päivät": ["Kahdesti päivässä"],
                 "reseptiohje": "Yhdistelmähoitona endokriinisen hoidon kanssa."
             }
         ],
@@ -296,10 +303,11 @@
         "kontrollit": "PVK+T, ALAT, AFOS, BIL 2 viikon välein ensimmäiset 2 sykliä, sen jälkeen joka 4. syklin alussa. EKG (QTc-aika) ennen aloitusta, 2 viikon kohdalla (sykli 1) ja ennen toisen syklin alkua.",
         "lääkkeet": [
             {
-                "nimi": "Ribosiklibi (PO)",
+                "nimi": "Ribosiklibi",
+                "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg (2 x 200 mg tablettia)",
-                "päivät": "Kerran päivässä",
+                "päivät": ["Kerran päivässä"],
                 "reseptiohje": "Otettava samaan aikaan joka päivä."
             }
         ]
@@ -309,16 +317,18 @@
         "kontrollit": "ALAT, AFOS, K 2 viikon välein ensimmäiset 3 kuukautta, sen jälkeen 3 kuukauden välein",
         "lääkkeet": [
             {
-                "nimi": "Abirateroni (PO)",
+                "nimi": "Abirateroni",
+                "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg",
-                "päivät": "Kerran päivässä"
+                "päivät": ["Kerran päivässä"]
             },
             {
-                "nimi": "Prednisoloni (PO)",
+                "nimi": "Prednisoloni",
+                "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
-                "päivät": "Kerran päivässä",
+                "päivät": ["Kerran päivässä"],
                 "reseptiohje": "Otettava aamulla."
             }
         ]
