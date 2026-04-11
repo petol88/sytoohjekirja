@@ -360,5 +360,29 @@
                 "reseptiohje": "Otettava aamulla."
             }
         ]
+    },
+    "Doce x6 + Nubeqa": {
+        "sykli": "21 vuorokautta (Dosetakseli), Nubeqa jatkuva",
+        "syöpätyypit": ["Eturauhassyöpä"],
+        "kontrollit": "PVK + Neutr, Krea, ALAT, AFOS, PSA.",
+        "lääkkeet": [
+            {
+                "nimi": "Dosetakseli",
+                "reitti": "IV",
+                "annos": 75,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Darolutamidi (Nubeqa)",
+                "reitti": "PO",
+                "annos": 600,
+                "yksikkö": "mg",
+                "päivät": ["Kahdesti päivässä"],
+                "tablettikoot": ["300 mg"],
+                "reseptiohje": "Otetaan ruokailun yhteydessä."
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg PO päivää ennen, hoitopäivänä ja hoitoa seuraavana päivänä. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."
     }
 }
