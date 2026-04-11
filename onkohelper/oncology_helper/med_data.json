@@ -384,5 +384,44 @@
             }
         ],
         "esilääkitys": "Deksametasoni 8mg PO päivää ennen, hoitopäivänä ja hoitoa seuraavana päivänä. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."
+    },
+    "Kabatsitakseli + Prednison": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Eturauhassyöpä"],
+        "kontrollit": "PVK + Neutr, Krea, ALAT, PSA.",
+        "lääkkeet": [
+            {
+                "nimi": "Kabatsitakseli",
+                "reitti": "IV",
+                "annos": 25,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Prednison",
+                "reitti": "PO",
+                "annos": 10,
+                "yksikkö": "mg",
+                "päivät": ["Kerran päivässä"],
+                "tablettikoot": ["5 mg", "10 mg"]
+            }
+        ],
+        "esilääkitys": "Antihistamiini IV, Deksametasoni 8mg IV, H2-salpaaja IV, Ondansetroni 8mg. G-CSF tuki tarvittaessa."
+    },
+    "Entsalutamidi (Xtandi)": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Eturauhassyöpä"],
+        "kontrollit": "PVK, Krea, ALAT, PSA, verenpaine 4 viikon välein ensimmäiset 3 kk, sitten harvemmin.",
+        "lääkkeet": [
+            {
+                "nimi": "Entsalutamidi",
+                "reitti": "PO",
+                "annos": 160,
+                "yksikkö": "mg",
+                "päivät": ["Kerran päivässä"],
+                "tablettikoot": ["40 mg"]
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
     }
 }
