@@ -1,6 +1,6 @@
 import unittest
-from oncology_helper.logic.calculators import laske_bsa, laske_cockcroft_gault, pyorista_tabletit
-from oncology_helper.logic.staging import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+from oncology_helper.calculators import laske_bsa, laske_cockcroft_gault, pyorista_tabletit
+from oncology_helper.staging import laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
 
 class TestLogic(unittest.TestCase):
     

@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from oncology_helper.data import TNM_DATA
-from oncology_helper.logic.staging import (laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa, ReseptoriTila, Ki67Tila, Hoitolinja,
-                                           laske_stage_suolistosyopa, maarita_hoitosuunnitelma_suolistosyopa,
-                                           laske_stage_melanooma, maarita_hoitosuunnitelma_melanooma,
-                                           laske_stage_keuhkosyopa, maarita_hoitosuunnitelma_keuhkosyopa,
-                                           IsupLuokka, PsaTaso, laske_riskiryhma_eturauhassyopa, maarita_hoitosuunnitelma_eturauhassyopa)
+from oncology_helper.staging import (laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa, ReseptoriTila, Ki67Tila, Hoitolinja,
+                                     laske_stage_suolistosyopa, maarita_hoitosuunnitelma_suolistosyopa,
+                                     laske_stage_melanooma, maarita_hoitosuunnitelma_melanooma,
+                                     laske_stage_keuhkosyopa, maarita_hoitosuunnitelma_keuhkosyopa,
+                                     IsupLuokka, PsaTaso, laske_riskiryhma_eturauhassyopa, maarita_hoitosuunnitelma_eturauhassyopa)
 
 class LevinneisyysView(ttk.Frame):
     def __init__(self, parent, controller):

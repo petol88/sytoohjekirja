@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
-from oncology_helper.logic.calculators import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos
+from oncology_helper.calculators import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos
 
 class LaskuriView(ttk.Frame):
     def __init__(self, parent, controller):
