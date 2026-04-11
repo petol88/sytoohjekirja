@@ -62,6 +62,24 @@ def laske_cockcroft_gault(age: float, weight_kg: float, creatinine: float, sex: 
         
     return gfr
 
+def laske_calvert(auc: float, gfr: float, max_gfr: float = 125.0) -> float:
+    """
+    Calculates Carboplatin dose using the Calvert formula.
+    
+    Args:
+        auc: Target AUC.
+        gfr: Glomerular Filtration Rate (mL/min).
+        max_gfr: Maximum allowed GFR to prevent overdosing (default 125.0).
+        
+    Returns:
+        float: Total Carboplatin dose in milligrams (mg).
+    """
+    if auc <= 0 or gfr <= 0:
+        return 0.0
+    
+    capped_gfr = min(gfr, max_gfr)
+    return auc * (capped_gfr + 25.0)
+
 def pyorista_tabletit(mg: float, strength: float) -> int:
     """
     Rounds the dosage to the nearest full tablet strength.
