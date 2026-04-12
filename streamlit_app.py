@@ -99,12 +99,14 @@ if view == "Laskuri":
     with col2:
         st.subheader("Hoito")
         
-        # 1. Kerätään kaikki uniikit syöpätyypit (indikaatiot) tietokannasta TURVALLISESTI
+        # 1. Kerätään kaikki uniikit syöpätyypit tietokannasta TURVALLISESTI
         indikaatiot = set()
         for prot_data in Tietokanta.data.values():
-            indikaatio = prot_data.get('indikaatio')
-            if indikaatio:
-                indikaatiot.add(indikaatio)
+            # Haetaan lista syöpätyypeistä, oletuksena tyhjä lista jos ei löydy
+            tyypit = prot_data.get('syöpätyypit', [])
+            if tyypit:
+                for t in tyypit:
+                    indikaatiot.add(t)
             else:
                 indikaatiot.add("Ei määritelty")
         
@@ -117,12 +119,13 @@ if view == "Laskuri":
         elif valittu_syopatyyppi == "Ei määritelty":
             protokollat = [
                 nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('indikaatio')
+                if not data.get('syöpätyypit')
             ]
         else:
             protokollat = [
                 nimi for nimi, data in Tietokanta.data.items() 
-                if data.get('indikaatio') == valittu_syopatyyppi
+                # Tarkistetaan löytyykö valittu syöpätyyppi protokollan listasta
+                if valittu_syopatyyppi in data.get('syöpätyypit', [])
             ]
             
         # 4. Protokollan valikko suodatetulla listalla
