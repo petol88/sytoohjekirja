@@ -16,7 +16,48 @@ if package_dir not in sys.path:
     sys.path.append(package_dir)
 
 from oncology_helper.data import Tietokanta, TNM_DATA
-from oncology_helper.logic import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, laske_stage_rintasyopa, maarita_hoitosuunnitelma_rintasyopa
+import math
+
+def safe_float(arvo, oletus=0.0):
+    try:
+        return float(arvo)
+    except (ValueError, TypeError):
+        return oletus
+
+def laske_bsa(pituus_cm, paino_kg):
+    # Lasketaan kehon pinta-ala Mostellerin kaavalla
+    if pituus_cm <= 0 or paino_kg <= 0:
+        return 0.0
+    return math.sqrt((pituus_cm * paino_kg) / 3600.0)
+
+def laske_cockcroft_gault(ika, paino_kg, krea_umol, sukupuoli):
+    # Lasketaan kreatiniinipuhdistuma (Cockcroft-Gault)
+    if ika <= 0 or paino_kg <= 0 or krea_umol <= 0:
+        return 0.0
+    # Peruskaava miehille (krea yksikössä umol/l)
+    gfr = ((140 - ika) * paino_kg) / (0.814 * krea_umol)
+    # Naisilla tulos kerrotaan kertoimella 0.85
+    if sukupuoli.lower() == "nainen":
+        gfr *= 0.85
+    return gfr
+
+def pyorista_tabletit(mg_maara, tabletin_vahvuus_mg):
+    # Pyöristetään lääkeannos lähimpään tablettikokoon
+    if tabletin_vahvuus_mg <= 0:
+        return mg_maara
+    kpl = round(mg_maara / tabletin_vahvuus_mg)
+    return kpl * tabletin_vahvuus_mg
+
+def laske_stage_rintasyopa(t, n, m):
+    # Koska tarkka staging-logiikka poistettiin logic.py:n mukana, 
+    # tässä on yksinkertaistettu varavaihtoehto, jotta sovellus ei kaadu.
+    if "M1" in str(m): return "IV"
+    return "Tuntematon (vaatii erillisen logiikan)"
+
+def maarita_hoitosuunnitelma_rintasyopa(*args, **kwargs):
+    # Placeholder poistetulle hoitosuunnitelman logiikalle
+    return "Hoitosuunnitelmaa ei voida automaattisesti määrittää (logiikka poistettu)."
+
 
 # Load Data
 @st.cache_data
