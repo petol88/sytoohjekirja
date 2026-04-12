@@ -166,18 +166,18 @@ def maarita_hoitosuunnitelma_suolistosyopa(stage: str, t: str, n: str, m: str) -
         )
     
     res = "Lääkehoitosuositus (Adjuvantti):\n"
-    if "Stage I" in stage or "Stage 0" in stage:
-        res += "• Ei adjuvanttisolunsalpaajahoidon indikaatiota. Pelkkä kirurginen poisto ja seuranta.\n"
-    elif "Stage II" in stage:
-        res += "• Matalan riskin tauti (T3N0M0, ei riskitekijöitä): Usein pelkkä seuranta.\n"
-        res += "• Korkean riskin tauti (esim. T4, perforaatio, ileus, <12 tutkittua imusolmuketta): Harkitaan adjuvanttihoitoa (Kapesitabiini 6 kk tai CAPOX 3-6 kk / FOLFOX 6 kk).\n"
-    elif "Stage III" in stage:
+    if "Stage III" in stage:
         res += "• Adjuvanttisolunsalpaajahoito on indisoitu.\n"
         if "T4" in t or "N2" in n:
             res += "• Korkean riskin Stage III: CAPOX 3-6 kk tai FOLFOX 6 kk ensisijaisena.\n"
         else:
             res += "• Matalan riskin Stage III (T1-3 N1): CAPOX 3 kk (tai FOLFOX 3-6 kk).\n"
         res += "• Yli 70-vuotiailla tai haurailla potilailla voidaan harkita solunsalpaajamonoterapiaa (Kapesitabiini 6 kk).\n"
+    elif "Stage II" in stage:
+        res += "• Matalan riskin tauti (T3N0M0, ei riskitekijöitä): Usein pelkkä seuranta.\n"
+        res += "• Korkean riskin tauti (esim. T4, perforaatio, ileus, <12 tutkittua imusolmuketta): Harkitaan adjuvanttihoitoa (Kapesitabiini 6 kk tai CAPOX 3-6 kk / FOLFOX 6 kk).\n"
+    elif "Stage I" in stage or "Stage 0" in stage:
+        res += "• Ei adjuvanttisolunsalpaajahoidon indikaatiota. Pelkkä kirurginen poisto ja seuranta.\n"
     else:
         res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
         
@@ -245,15 +245,15 @@ def maarita_hoitosuunnitelma_melanooma(stage: str, t: str, n: str, m: str) -> st
             "• BRAF-positiivisilla potilailla kohdennettu hoito (esim. Dabrafenibi + Trametinibi) on vaihtoehto."
         )
     res = "Lääkehoitosuositus (Adjuvantti):\n"
-    if "Stage 0" in stage or "Stage I" in stage or "Stage IIA" in stage:
-        res += "• Ei adjuvanttilääkehoidon indikaatiota. Radikaali kirurginen poisto ja seuranta.\n"
-    elif "Stage IIB" in stage or "Stage IIC" in stage:
-        res += "• Korkean riskin paikallinen tauti (syvä invaasio / ulseraatio).\n"
-        res += "• Harkittavissa adjuvantti-immunoterapia (esim. Pembrolitsumabi 1 vuoden ajan).\n"
-    elif "Stage III" in stage:
+    if "Stage III" in stage:
         res += "• Adjuvanttilääkehoito on vahvasti indisoitu imusolmukepositiivisessa taudissa.\n"
         res += "• Immunoterapia: Pembrolitsumabi tai Nivolumab 1 vuoden ajan.\n"
         res += "• BRAF-mutaatiopositiivisilla vaihtoehtona kohdennettu hoito (esim. Dabrafenibi + Trametinibi 1 v).\n"
+    elif "Stage IIB" in stage or "Stage IIC" in stage:
+        res += "• Korkean riskin paikallinen tauti (syvä invaasio / ulseraatio).\n"
+        res += "• Harkittavissa adjuvantti-immunoterapia (esim. Pembrolitsumabi 1 vuoden ajan).\n"
+    elif "Stage 0" in stage or "Stage I" in stage or "Stage IIA" in stage:
+        res += "• Ei adjuvanttilääkehoidon indikaatiota. Radikaali kirurginen poisto ja seuranta.\n"
     else:
         res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
     return res
@@ -290,16 +290,16 @@ def maarita_hoitosuunnitelma_keuhkosyopa(stage: str, t: str, n: str, m: str) -> 
             "• Muuten immunoterapia (esim. Pembrolitsumabi) joko yksin (jos PD-L1 korkea) tai yhdistettynä solunsalpaajahoitoon."
         )
     res = "Lääkehoitosuositus (Paikallinen tai paikallisesti levinnyt tauti):\n"
-    if "Stage IA" in stage or "Stage IB" in stage:
-        res += "• Radikaali kirurginen poisto (lobektomia).\n"
-        res += "• Adjuvanttihoitoa harkitaan varoen riskitekijöiden (esim. tuumorin koko >4cm tai huono erilaistumisaste) perusteella.\n"
+    if "Stage III" in stage:
+        res += "• Stage IIIA (operabeli): Neoadjuvantti immunokemoterapia -> leikkaus (-> adjuvanttihoito harkinnan mukaan).\n"
+        res += "• Stage IIIB-IIIC (inoperabeli): Radikaali kemosädehoito, jonka jälkeen ylläpito-immunoterapia (Durvalumabi 1 vuoden ajan).\n"
     elif "Stage II" in stage:
         res += "• Radikaali kirurginen poisto.\n"
         res += "• Adjuvanttisolunsalpaajahoito on indisoitu (esim. Sisplatiini-Vinorelbiini 4 sykliä).\n"
         res += "• PD-L1 / EGFR -status määrittää mahdollisen adjuvantti-immunoterapian (esim. Atezolitsumabi) tai täsmähoidon (esim. Osimertinibi) tarpeen solunsalpaajan jälkeen.\n"
-    elif "Stage III" in stage:
-        res += "• Stage IIIA (operabeli): Neoadjuvantti immunokemoterapia -> leikkaus (-> adjuvanttihoito harkinnan mukaan).\n"
-        res += "• Stage IIIB-IIIC (inoperabeli): Radikaali kemosädehoito, jonka jälkeen ylläpito-immunoterapia (Durvalumabi 1 vuoden ajan).\n"
+    elif "Stage IA" in stage or "Stage IB" in stage:
+        res += "• Radikaali kirurginen poisto (lobektomia).\n"
+        res += "• Adjuvanttihoitoa harkitaan varoen riskitekijöiden (esim. tuumorin koko >4cm tai huono erilaistumisaste) perusteella.\n"
     else:
         res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
     return res
