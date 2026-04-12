@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 from typing import Dict, Any
 
 # TNM Data for staging
@@ -119,31 +120,21 @@ class Tietokanta:
     @classmethod
     def lataa(cls) -> None:
         """Loads data from med_data.json, creating it if necessary."""
-        # Determines path relative to this file
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        filepath = os.path.join(base_dir, "med_data.json")
+        base_dir = Path(__file__).parent.resolve()
+        filepath = base_dir / "med_data.json"
 
-        if not os.path.exists(filepath):
-            # Fallback to current working directory if not found in package dir (e.g. dev environment)
-            if os.path.exists("med_data.json"):
-                filepath = "med_data.json"
+        if not filepath.exists():
+            cwd_filepath = Path("med_data.json")
+            if cwd_filepath.exists():
+                filepath = cwd_filepath
             else:
-                # Create in package dir
-                filepath = os.path.join(base_dir, "med_data.json")
-                try:
-                    luo_esimerkkidata()
-                    # luo_esimerkkidata writes to CWD by default, let's move it or rewrite it?
-                    # Actually luo_esimerkkidata writes to "med_data.json". 
-                    # Let's just fix luo_esimerkkidata to take a path or handle it here.
-                    # For simplicity, we'll just check if CWD/med_data.json exists after call.
-                    if os.path.exists("med_data.json") and filepath != "med_data.json":
-                        os.rename("med_data.json", filepath)
-                except:
-                    pass
+                # Jos tiedostoa ei ole missään, yritetään luoda esimerkkidata
+                luo_esimerkkidata()
+                if cwd_filepath.exists() and filepath != cwd_filepath:
+                    cwd_filepath.rename(filepath)
         
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                cls.data = json.load(f)
+            cls.data = json.loads(filepath.read_text(encoding="utf-8"))
         except Exception as e:
             print(f"Virhe ladattaessa tietokantaa ({filepath}): {e}")
             cls.data = {}
@@ -151,14 +142,13 @@ class Tietokanta:
     @classmethod
     def tallenna(cls) -> None:
         """Saves the current state of cls.data back to med_data.json."""
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        filepath = os.path.join(base_dir, "med_data.json")
+        base_dir = Path(__file__).parent.resolve()
+        filepath = base_dir / "med_data.json"
         
-        if not os.path.exists(filepath) and os.path.exists("med_data.json"):
-            filepath = "med_data.json"
+        if not filepath.exists() and Path("med_data.json").exists():
+            filepath = Path("med_data.json")
             
         try:
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(cls.data, f, indent=4, ensure_ascii=False)
+            filepath.write_text(json.dumps(cls.data, indent=4, ensure_ascii=False), encoding="utf-8")
         except Exception as e:
             print(f"Virhe tallennettaessa tietokantaa ({filepath}): {e}")

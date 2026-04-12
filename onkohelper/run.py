@@ -9,6 +9,7 @@ from oncology_helper.main import MainApp
 def main():
     try:
         app = MainApp()
+                
         app.mainloop()
     except KeyboardInterrupt:
         print("\nSovellus suljettiin käyttäjän toimesta.")
