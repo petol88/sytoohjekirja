@@ -297,7 +297,15 @@ class LaskuriView(ttk.Frame):
                 else:
                     paivat_str = f" [{formatted_paivat}]"
                     
-            out.append(f"• {r['n']} {fin_str} mg{paivat_str}")
+            yksikko_raw = r['vu'].get()
+            lisamaare = ""
+            if " " in yksikko_raw:
+                lisamaare = " " + yksikko_raw.split(" ", 1)[1]
+                
+            reitti = r['d'].get('reitti', '')
+            reitti_str = f" {reitti}" if reitti else ""
+            
+            out.append(f"• {r['n']}{reitti_str} {fin_str} mg{lisamaare}{paivat_str}")
             
             ts = r['vt'].get()
             if ts and ts != "None" and fin > 0:

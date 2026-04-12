@@ -65,11 +65,11 @@ def laske_yksiloity_annos(perusannos: float, yksikko: str, bsa: float, paino: fl
     Returns:
         float: The calculated personalized dose in mg.
     """
-    if yksikko == "mg/m2":
+    if "mg/m2" in yksikko:
         return perusannos * bsa
-    elif yksikko == "mg/kg":
+    elif "mg/kg" in yksikko:
         return perusannos * paino
-    elif yksikko == "AUC":
+    elif "AUC" in yksikko:
         capped_gfr = min(gfr, 125.0)
         return laske_calvert(perusannos, capped_gfr)
     

@@ -25,7 +25,7 @@
                 "nimi": "Kapesitabiini",  
                 "reitti": "PO",
                 "annos": 1250,  
-                "yksikkö": "mg/m2",  
+                "yksikkö": "mg/m2 x2",  
                 "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 
                 "tablettikoot": ["500 mg"],  
                 "reseptiohje": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
@@ -33,6 +33,30 @@
         ], 
         "esilääkitys": "Tarvittaessa metoklopramidi." 
     }, 
+     "XELOX (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Suolistosyöpä"],
+        "kontrollit": "PVK, Krea, Alat, Afos. Huomioi kylmäherkkyys (oksaliplatiini).",
+        "lääkkeet": [
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 130,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Kapesitabiini",
+                "reitti": "PO",
+                "annos": 1000,
+                "yksikkö": "mg/m2 x2",
+                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                "tablettikoot": ["500 mg", "150 mg"],
+                "reseptiohje": "Aamuin illoin, ruoan jälkeen. Tauko päivinä 15-21."
+            }
+        ],
+        "esilääkitys": "Ennen oksaliplatiiniä: Ondansetroni 8mg, Deksametasoni 8mg."
+    },
     "R-CHOP (21 vrk)": { 
         "sykli": "21 vrk", 
         "syöpätyypit": ["Lymfooma"],
