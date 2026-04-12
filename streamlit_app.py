@@ -258,7 +258,17 @@ if view == "Laskuri":
                 med = item['med']
                 fin_val = item['maarays']
 
-                report_lines.append(f"• {med['nimi']}: {fin_val} mg")
+                # Muotoillaan lääkkeen päivät siistiksi merkkijonoksi
+                paivat = med.get('päivät')
+                paivat_str = ""
+                if paivat:
+                    if isinstance(paivat, list):
+                        paivat_str = f" pv {', '.join(str(p) for p in paivat)}"
+                    else:
+                        paivat_str = f" pv {paivat}"
+
+                # Lisätään kaikki samalle riville (esim. "• Dosetakseli: 126 mg pv 1")
+                report_lines.append(f"• {med['nimi']}: {fin_val} mg{paivat_str}")
 
                 ts = item['vahvuus']
                 strength_mg = item.get('strength_mg')
@@ -268,9 +278,6 @@ if view == "Laskuri":
                         report_lines.append(f"    -> {count:.1f} kpl ({ts})")
                     except ZeroDivisionError:
                         pass
-
-                if med.get('päivät'):
-                    report_lines.append(f"   Ajoitus: {med['päivät']}")
 
             report_lines.append("-" * 40)
             report_lines.append(f"TUKIHOIDOT:\n{protokolla_data.get('esilääkitys', '-')}")
