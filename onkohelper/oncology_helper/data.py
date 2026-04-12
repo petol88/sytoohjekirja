@@ -89,7 +89,7 @@ TNM_DATA: Dict[str, Dict[str, Any]] = {
     }
 }
 
-def luo_esimerkkidata() -> None:
+def luo_esimerkkidata(filepath: str = "med_data.json") -> None:
     """Creates med_data.json with example data if it is missing."""
     esimerkkidata = {
         "R-CHOP (NHL)": {
@@ -107,7 +107,7 @@ def luo_esimerkkidata() -> None:
         }
     }
     try:
-        with open("med_data.json", "w", encoding="utf-8") as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(esimerkkidata, f, indent=4)
     except Exception as e:
         print(f"Varoitus: Ei voitu luoda esimerkkidataa: {e}")
@@ -131,14 +131,8 @@ class Tietokanta:
                 # Create in package dir
                 filepath = os.path.join(base_dir, "med_data.json")
                 try:
-                    luo_esimerkkidata()
-                    # luo_esimerkkidata writes to CWD by default, let's move it or rewrite it?
-                    # Actually luo_esimerkkidata writes to "med_data.json". 
-                    # Let's just fix luo_esimerkkidata to take a path or handle it here.
-                    # For simplicity, we'll just check if CWD/med_data.json exists after call.
-                    if os.path.exists("med_data.json") and filepath != "med_data.json":
-                        os.rename("med_data.json", filepath)
-                except:
+                    luo_esimerkkidata(filepath)
+                except Exception:
                     pass
         
         try:
