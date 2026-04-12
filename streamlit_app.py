@@ -60,15 +60,32 @@ if view == "Laskuri":
 
     with col2:
         st.subheader("Hoito")
-        protokollat = list(Tietokanta.data.keys())
-        valittu_protokolla = st.selectbox("Protokolla", [""] + protokollat)
+        
+        # 1. Kerätään kaikki uniikit syöpätyypit (indikaatiot) tietokannasta
+        indikaatiot = set()
+        for prot_data in Tietokanta.data.values():
+            if 'indikaatio' in prot_data:
+                indikaatiot.add(prot_data['indikaatio'])
+        
+        # 2. Luodaan syöpätyypin valikko
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
+        
+        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella
+        if valittu_syopatyyppi == "Kaikki":
+            protokollat = list(Tietokanta.data.keys())
+        else:
+            protokollat = [
+                nimi for nimi, data in Tietokanta.data.items() 
+                if data.get('indikaatio') == valittu_syopatyyppi
+            ]
+            
+        # 4. Protokollan valikko suodatetulla listalla
+        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
 
         # Labs default value
         labrat_default = ""
         protokolla_data = None
-        if valittu_protokolla and valittu_protokolla in Tietokanta.data:
-            protokolla_data = Tietokanta.data[valittu_protokolla]
-            labrat_default = protokolla_data.get('kontrollit', '')
+
 
         # Use key to force update when protocol changes
         labrat = st.text_input("Labrat", value=labrat_default, key=f"labrat_{valittu_protokolla}")
