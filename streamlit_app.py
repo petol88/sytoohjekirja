@@ -2,9 +2,6 @@ import streamlit as st
 import sys
 import os
 
-# ⚡ Bolt: Removed unused pandas import to reduce load time and memory usage.
-# Impact: Eliminates ~0.6s of import overhead during cold starts.
-
 # 1. Move set_page_config to the top
 st.set_page_config(page_title="Onkologian Työpöytä", layout="wide")
 
@@ -127,6 +124,10 @@ if view == "Laskuri":
         labrat_default = ""
         protokolla_data = None
 
+        # HAETAAN VALITUN PROTOKOLLAN DATA TIETOKANNASTA
+        if valittu_protokolla and valittu_protokolla in Tietokanta.data:
+            protokolla_data = Tietokanta.data[valittu_protokolla]
+            labrat_default = protokolla_data.get('kontrollit', '')
 
         # Use key to force update when protocol changes
         labrat = st.text_input("Labrat", value=labrat_default, key=f"labrat_{valittu_protokolla}")
@@ -153,8 +154,6 @@ if view == "Laskuri":
 
                 # Name
                 c[0].write(med['nimi'])
-
-                # 2. Fix sticky widget state issue by adding valittu_protokolla to keys
 
                 # Dose (Annos)
                 annos_val = med['annos']
@@ -206,10 +205,6 @@ if view == "Laskuri":
                         pass
 
                 # Use a session state key that includes the calculated value to force update if calculation changes
-                # But to allow manual edit, we need to be careful.
-                # A common pattern is:
-                # If calculated value differs from stored calculated value, update 'maarays' state.
-
                 state_key = f"{valittu_protokolla}_maar_{i}"
                 calc_key = f"{valittu_protokolla}_calc_{i}"
 
