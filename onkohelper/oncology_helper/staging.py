@@ -113,6 +113,8 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
         else:
             res += "• Solunsalpaaja: Dosetakseli-Syklofosfamidi (D-C) x 6 tai EC -> Dosetakseli\n"
             
+        res += "• Huom: Harkitse geneettistä neuvontaa (BRCA) ja korkean riskin taudissa adjuvantti-Olaparibia (OlympiA).\n"
+            
     elif "Luminal A" in subtype:
         if "N0" in n:
             res += "• Ensisijaisesti hormonihoito (Tamoksifeeni tai AI).\n"
@@ -120,12 +122,16 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
         else:
             res += "• Hormonihoito (Tamoksifeeni tai AI).\n"
             res += "• Solunsalpaajahoito (esim. D-C x 6 tai EC-Doc) harkinnan mukaan (imusolmukepositiivinen).\n"
+            if "N2" in n or "N3" in n or ("N1" in n and ("T3" in t or "T4" in t)):
+                res += "• Harkitse abemasisiklibiä adjuvanttina hormonihoidon tukena (MonarchE -kriteerit).\n"
             
     elif "Luminal B" in subtype:
         res += "• Solunsalpaaja: Dosetakseli-Syklofosfamidi (D-C) x 6 tai EC -> Dosetakseli\n"
         res += "• Hormonihoito: Tamoksifeeni tai aromataasinestäjä.\n"
-        if "N2" in n or "N3" in n:
-            res += "• Harkitse abemasisiklibiä adjuvanttina (korkea uusiutumisriski).\n"
+        if "N0" in n or "N1" in n:
+            res += "• Solunsalpaajahoidon todellinen hyöty voidaan usein tarkentaa geeniprofiloinnilla (esim. Prosigna / Oncotype).\n"
+        if "N2" in n or "N3" in n or ("N1" in n and (ki67 == Ki67Tila.KORKEA or "T3" in t or "T4" in t)):
+            res += "• Harkitse abemasisiklibiä adjuvanttina hormonihoidon tukena (MonarchE -kriteerit).\n"
 
     return res
 
