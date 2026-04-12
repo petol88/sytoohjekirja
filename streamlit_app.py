@@ -83,11 +83,19 @@ if view == "Laskuri":
 
     with col1:
         with st.expander("Potilas", expanded=True):
-            pituus = st.number_input("Pituus (cm)", min_value=0.0, step=1.0, format="%.1f")
-            paino = st.number_input("Paino (kg)", min_value=0.0, step=0.1, format="%.1f")
-            ika = st.number_input("Ikä", min_value=0, step=1)
-            krea = st.number_input("Krea", min_value=0, step=1)
-            sukupuoli = st.selectbox("Sukupuoli", ["Mies", "Nainen"])
+            # 1. Alustetaan muuttujat session stateen, jos niitä ei vielä ole
+            if 'pituus' not in st.session_state: st.session_state['pituus'] = 0.0
+            if 'paino' not in st.session_state: st.session_state['paino'] = 0.0
+            if 'ika' not in st.session_state: st.session_state['ika'] = 0
+            if 'krea' not in st.session_state: st.session_state['krea'] = 0
+            if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
+
+            # 2. Käytetään "key"-parametria, jolloin Streamlit tallentaa arvot automaattisesti
+            pituus = st.number_input("Pituus (cm)", min_value=0.0, step=1.0, format="%.1f", key="pituus")
+            paino = st.number_input("Paino (kg)", min_value=0.0, step=0.1, format="%.1f", key="paino")
+            ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
+            krea = st.number_input("Krea", min_value=0, step=1, key="krea")
+            sukupuoli = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
 
             # Calculations
             bsa = laske_bsa(pituus, paino)
