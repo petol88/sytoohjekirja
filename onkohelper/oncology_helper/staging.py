@@ -193,11 +193,11 @@ def laske_riskiryhma_eturauhassyopa(t: str, n: str, m: str, isup: IsupLuokka, ps
     if "M1" in m: return "Metastasoitunut (Levinnyt)"
     if "N1" in n: return "Paikallisesti levinnyt (Imusolmukepositiivinen)"
     
-    t_high = any(x in t for x in ["T3", "T4"])
+    t_high = any(x in t for x in ["T2c", "T3", "T4"])
     isup_high = isup in [IsupLuokka.ISUP_4, IsupLuokka.ISUP_5]
     psa_high = psa == PsaTaso.YLI_20
     
-    t_int = any(x in t for x in ["T2b", "T2c"])
+    t_int = "T2b" in t
     isup_int = isup in [IsupLuokka.ISUP_2, IsupLuokka.ISUP_3]
     psa_int = psa == PsaTaso.VALILLA_10_20
     
@@ -257,7 +257,7 @@ def maarita_hoitosuunnitelma_melanooma(stage: str, t: str, n: str, m: str) -> st
         res += "• BRAF-mutaatiopositiivisilla vaihtoehtona kohdennettu hoito (esim. Dabrafenibi + Trametinibi 1 v).\n"
     elif "Stage IIB" in stage or "Stage IIC" in stage:
         res += "• Korkean riskin paikallinen tauti (syvä invaasio / ulseraatio).\n"
-        res += "• Harkittavissa adjuvantti-immunoterapia (esim. Pembrolitsumabi 1 vuoden ajan).\n"
+        res += "• Harkittavissa adjuvantti-immunoterapia (Nivolumab tai Pembrolitsumabi 1 vuoden ajan).\n"
     elif "Stage 0" in stage or "Stage I" in stage or "Stage IIA" in stage:
         res += "• Ei adjuvanttilääkehoidon indikaatiota. Radikaali kirurginen poisto ja seuranta.\n"
     else:
@@ -282,9 +282,11 @@ def laske_stage_keuhkosyopa(t: str, n: str, m: str) -> str:
         if "T3" in t: return "Stage IIB"
         if "T2b" in t: return "Stage IIA"
         if "T2a" in t: return "Stage IB"
+        if "T2" in t: return "Stage IB"
         if "T1c" in t: return "Stage IA3"
         if "T1b" in t: return "Stage IA2"
         if "T1a" in t: return "Stage IA1"
+        if "T1" in t: return "Stage IA"
     return "Ei määritettävissä"
 
 def maarita_hoitosuunnitelma_keuhkosyopa(stage: str, t: str, n: str, m: str) -> str:
@@ -300,9 +302,10 @@ def maarita_hoitosuunnitelma_keuhkosyopa(stage: str, t: str, n: str, m: str) -> 
         res += "• Stage IIIA (operabeli): Neoadjuvantti immunokemoterapia -> leikkaus (-> adjuvanttihoito harkinnan mukaan).\n"
         res += "• Stage IIIB-IIIC (inoperabeli): Radikaali kemosädehoito, jonka jälkeen ylläpito-immunoterapia (Durvalumabi 1 vuoden ajan).\n"
     elif "Stage II" in stage:
-        res += "• Radikaali kirurginen poisto.\n"
-        res += "• Adjuvanttisolunsalpaajahoito on indisoitu (esim. Sisplatiini-Vinorelbiini 4 sykliä).\n"
-        res += "• PD-L1 / EGFR -status määrittää mahdollisen adjuvantti-immunoterapian (esim. Atezolitsumabi) tai täsmähoidon (esim. Osimertinibi) tarpeen solunsalpaajan jälkeen.\n"
+        res += "• Operabelissa taudissa harkitaan vahvasti neoadjuvantti immunokemoterapiaa (esim. solunsalpaaja + Nivolumabi) tai perioperatiivista hoitoa ennen kirurgiaa.\n"
+        res += "• Radikaali kirurginen poisto (mikäli ei ensisijaisesti leikattu tai edennyt).\n"
+        res += "• Jos ensisijaisesti leikattu ilman esihoitoa, adjuvanttisolunsalpaajahoito on indisoitu.\n"
+        res += "• Solunsalpaajan jälkeen harkitaan adjuvantti-immunoterapiaa (Atezolitsumabi) tai täsmähoitoa (Osimertinibi) PD-L1/EGFR-statuksen mukaan.\n"
     elif "Stage IA" in stage or "Stage IB" in stage:
         res += "• Radikaali kirurginen poisto (lobektomia).\n"
         res += "• Adjuvanttihoitoa harkitaan varoen riskitekijöiden (esim. tuumorin koko >4cm tai huono erilaistumisaste) perusteella.\n"
