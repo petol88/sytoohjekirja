@@ -1,3 +1,3 @@
-## 2024-04-09 - [Streamlit Rerun Loop Allocations]
-**Learning:** Streamlit reruns the entire script on every user interaction. Defining static lists inside rendering loops causes redundant memory allocations and garbage collection overhead on every rerun. For small literal collections in `in` checks (e.g. `c2 in ["A", "B"]`), CPython optimizes them better if they are tuples, avoiding list creation overhead entirely.
-**Action:** Always hoist static arrays (like `YKSIKKO_OPTS_BASE`) outside of loops to reuse references, and prefer tuples over lists for static options or membership checks to minimize allocation overhead per rerun.
+## 2026-04-13 - [Optimize safe_float in calculating module]
+**Learning:** Avoid `isinstance` checks for primitive types like strings in tight loops if a simple `type(v) is str` can be used. Furthermore, relying on Python's built-in `float()` to implicitly strip whitespace is much faster than manually calling `.strip()`. Also, ensuring the commit directory is completely clean from test scripts and profile dumps is essential for a commit-ready branch.
+**Action:** Before optimizing a utility function, confirm it is heavily used enough to warrant micro-optimization. Avoid unnecessary garbage or leftover test scripts before committing.
