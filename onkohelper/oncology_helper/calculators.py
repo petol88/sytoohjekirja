@@ -8,11 +8,11 @@ class Sukupuoli(Enum):
 
 def safe_float(v: Union[str, float, int]) -> float:
     """Safely converts a value to float. Returns 0.0 if conversion fails."""
-    try: 
-        if isinstance(v, (float, int)):
-            return float(v)
-        return float(str(v).replace(",", ".").strip())
-    except (ValueError, TypeError, AttributeError): 
+    try:
+        if type(v) is str:
+            return float(v.replace(',', '.'))
+        return float(v)
+    except (ValueError, TypeError):
         return 0.0
 
 def laske_bsa(height_cm: float, weight_kg: float, max_bsa: Optional[float] = None) -> float:
