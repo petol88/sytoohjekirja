@@ -90,7 +90,7 @@ TNM_DATA: Dict[str, Dict[str, Any]] = {
     }
 }
 
-def luo_esimerkkidata() -> None:
+def luo_esimerkkidata(kohdepolku: Path) -> None:
     """Creates med_data.json with example data if it is missing."""
     esimerkkidata = {
         "R-CHOP (NHL)": {
@@ -108,8 +108,8 @@ def luo_esimerkkidata() -> None:
         }
     }
     try:
-        with open("med_data.json", "w", encoding="utf-8") as f:
-            json.dump(esimerkkidata, f, indent=4)
+        # Tallennetaan data nimenomaan annettuun polkuun
+        kohdepolku.write_text(json.dumps(esimerkkidata, indent=4, ensure_ascii=False), encoding="utf-8")
     except Exception as e:
         print(f"Varoitus: Ei voitu luoda esimerkkidataa: {e}")
 
@@ -124,15 +124,9 @@ class Tietokanta:
         filepath = base_dir / "med_data.json"
 
         if not filepath.exists():
-            cwd_filepath = Path("med_data.json")
-            if cwd_filepath.exists():
-                filepath = cwd_filepath
-            else:
-                # Jos tiedostoa ei ole missään, yritetään luoda esimerkkidata
-                luo_esimerkkidata()
-                if cwd_filepath.exists() and filepath != cwd_filepath:
-                    cwd_filepath.rename(filepath)
-        
+            # Jos tiedostoa ei ole missään, yritetään luoda esimerkkidata suoraan oikeaan kansioon
+            luo_esimerkkidata(filepath)
+
         try:
             cls.data = json.loads(filepath.read_text(encoding="utf-8"))
         except Exception as e:
@@ -145,9 +139,6 @@ class Tietokanta:
         base_dir = Path(__file__).parent.resolve()
         filepath = base_dir / "med_data.json"
         
-        if not filepath.exists() and Path("med_data.json").exists():
-            filepath = Path("med_data.json")
-            
         try:
             filepath.write_text(json.dumps(cls.data, indent=4, ensure_ascii=False), encoding="utf-8")
         except Exception as e:

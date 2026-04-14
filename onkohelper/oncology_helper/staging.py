@@ -26,32 +26,42 @@ class PsaTaso(Enum):
     VALILLA_10_20 = "PSA 10-20"
     YLI_20 = "PSA > 20"
 
+def pura_luokka(arvo: str) -> str:
+    """
+    Erottaa pelkän T/N/M-luokan käyttöliittymän selitetekstistä.
+    Esimerkiksi 'T4a: Rintakehän seinämä' -> 'T4a'
+    """
+    return arvo.split(":")[0].strip() if ":" in arvo else arvo.strip()
+
 def laske_stage_rintasyopa(t: str, n: str, m: str) -> str:
-    if "M1" in m: return "Stage IV"
+    t_puhdas = pura_luokka(t)
+    n_puhdas = pura_luokka(n)
+    m_puhdas = pura_luokka(m)
+
+    if m_puhdas == "M1": return "Stage IV"
     
-    if "N3" in n: return "Stage IIIC"
-    if "T4" in t: return "Stage IIIB"
+    if n_puhdas.startswith("N3"): return "Stage IIIC"
+    if t_puhdas.startswith("T4"): return "Stage IIIB"
     
     t_n = 0
-    if "T1" in t or "T0" in t: t_n = 1
-    elif "T2" in t: t_n = 2
-    elif "T3" in t: t_n = 3
+    if t_puhdas in ["T0", "T1", "T1mi", "T1a", "T1b", "T1c"]: t_n = 1
+    elif t_puhdas == "T2": t_n = 2
+    elif t_puhdas == "T3": t_n = 3
     
-    if "N2" in n:
-        if t_n <= 3: return "Stage IIIA"
+    if n_puhdas.startswith("N2") and t_n <= 3: return "Stage IIIA"
         
-    if "T3" in t:
-        if "N1" in n or "N2" in n: return "Stage IIIA"
-        if "N0" in n: return "Stage IIB"
+    if t_puhdas == "T3" and n_puhdas in ["N1", "N1mi", "N2a", "N2b"]: return "Stage IIIA"
+    if t_puhdas == "T3" and n_puhdas == "N0": return "Stage IIB"
         
-    if "T2" in t and "N1" in n: return "Stage IIB"
-    if "T3" in t and "N0" in n: return "Stage IIB"
+    if t_puhdas == "T2" and n_puhdas.startswith("N1"): return "Stage IIB"
     
-    if ("T0" in t or "T1" in t) and "N1mi" in n: return "Stage IB"
-    if ("T0" in t or "T1" in t) and "N1" in n: return "Stage IIA"
-    if "T2" in t and "N0" in n: return "Stage IIA"
-    if "T1" in t and "N0" in n: return "Stage IA"
-    if "Tis" in t and "N0" in n: return "Stage 0"
+    if t_puhdas in ["T0", "T1", "T1mi", "T1a", "T1b", "T1c"]:
+        if n_puhdas == "N1mi": return "Stage IB"
+        if n_puhdas.startswith("N1"): return "Stage IIA"
+    
+    if t_puhdas == "T2" and n_puhdas == "N0": return "Stage IIA"
+    if t_puhdas.startswith("T1") and n_puhdas == "N0": return "Stage IA"
+    if t_puhdas == "Tis" and n_puhdas == "N0": return "Stage 0"
     
     return "Ei määritettävissä"
 

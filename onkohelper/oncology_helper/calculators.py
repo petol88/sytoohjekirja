@@ -1,6 +1,7 @@
 import math
 from typing import Union, Optional
 from enum import Enum
+from dataclasses import dataclass
 
 class Sukupuoli(Enum):
     MIES = "Mies"
@@ -14,6 +15,20 @@ def safe_float(v: Union[str, float, int]) -> float:
         return float(str(v).replace(",", ".").strip())
     except (ValueError, TypeError, AttributeError): 
         return 0.0
+
+@dataclass
+class Potilas:
+    pituus_cm: float
+    paino_kg: float
+    ika: float
+    krea: float
+    sukupuoli: Sukupuoli
+    
+    def bsa(self, max_bsa: Optional[float] = None) -> float:
+        return laske_bsa(self.pituus_cm, self.paino_kg, max_bsa)
+        
+    def gfr(self) -> float:
+        return laske_cockcroft_gault(self.ika, self.paino_kg, self.krea, self.sukupuoli)
 
 def laske_bsa(height_cm: float, weight_kg: float, max_bsa: Optional[float] = None) -> float:
     """Calculates Body Surface Area (BSA) using the Mosteller formula."""
