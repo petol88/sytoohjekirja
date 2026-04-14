@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
-from oncology_helper.calculators import safe_float, laske_bsa, laske_cockcroft_gault, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos
+from oncology_helper.calculators import safe_float, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos, Potilas
 
 class LaskuriView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -210,12 +210,20 @@ class LaskuriView(ttk.Frame):
             self.e_wei.delete(0, tk.END)
             self.e_wei.insert(0, "150")
 
+        potilas = Potilas(
+            pituus_cm=p,
+            paino_kg=w,
+            ika=safe_float(self.e_age.get()),
+            krea=safe_float(self.e_krea.get()),
+            sukupuoli=Sukupuoli(self.v_sex.get())
+        )
+
         cap = 2.2 if self.v_cap_bsa.get() else None
-        bsa = laske_bsa(p, w, cap)
+        bsa = potilas.bsa(cap)
         self.current_bsa = bsa
         self.l_bsa.config(text=f"BSA: {bsa:.2f}")
         
-        gfr = laske_cockcroft_gault(safe_float(self.e_age.get()), w, safe_float(self.e_krea.get()), Sukupuoli(self.v_sex.get()))
+        gfr = potilas.gfr()
         self.current_gfr = gfr
         self.l_gfr.config(text=f"GFR: {gfr:.0f}")
         
@@ -277,7 +285,7 @@ class LaskuriView(ttk.Frame):
         out.append("-" * 40)
         
         if self.current_gfr > 0 and self.current_gfr < 60:
-            out.append(f"⚠️ HUOMIO: GFR on alentunut ({self.current_gfr:.0f} ml/min).")
+            out.append(f"⚠️ YLEISVAROITUS: GFR on alentunut ({self.current_gfr:.0f} ml/min).")
             out.append(f"  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
             
         if self.v_cap_bsa.get() and self.current_bsa == 2.2:
@@ -314,6 +322,10 @@ class LaskuriView(ttk.Frame):
                     out.append(f"    -> {fin/strength:.1f} kpl ({ts})")
                 except: 
                     pass
+                    
+            min_gfr = r['d'].get('min_gfr')
+            if min_gfr and self.current_gfr > 0 and self.current_gfr < min_gfr:
+                out.append(f"    ⚠️ VAROITUS: Potilaan GFR ({self.current_gfr:.0f}) on lääkkeen ({r['n']}) suositusrajan ({min_gfr}) alapuolella!")
 
         if sel:
             d = Tietokanta.data[sel]

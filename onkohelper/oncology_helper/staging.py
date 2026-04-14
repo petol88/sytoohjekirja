@@ -146,29 +146,33 @@ def maarita_hoitosuunnitelma_rintasyopa(stage: str, t: str, n: str, m: str,
     return res
 
 def laske_stage_suolistosyopa(t: str, n: str, m: str) -> str:
-    if "M1" in m:
-        if "M1a" in m: return "Stage IVA"
-        if "M1b" in m: return "Stage IVB"
-        if "M1c" in m: return "Stage IVC"
+    t_puhdas = pura_luokka(t)
+    n_puhdas = pura_luokka(n)
+    m_puhdas = pura_luokka(m)
+
+    if m_puhdas.startswith("M1"):
+        if m_puhdas == "M1a": return "Stage IVA"
+        if m_puhdas == "M1b": return "Stage IVB"
+        if m_puhdas == "M1c": return "Stage IVC"
         return "Stage IV"
         
-    if "N1" in n or "N2" in n:
-        if "T4b" in t: return "Stage IIIC"
-        if "N2b" in n: return "Stage IIIC"
-        if "N2a" in n:
-            if "T4a" in t or "T3" in t: return "Stage IIIC" if "T4a" in t else "Stage IIIB"
+    if n_puhdas.startswith("N1") or n_puhdas.startswith("N2"):
+        if t_puhdas == "T4b": return "Stage IIIC"
+        if n_puhdas == "N2b": return "Stage IIIC"
+        if n_puhdas == "N2a":
+            if t_puhdas in ["T4a", "T3"]: return "Stage IIIC" if t_puhdas == "T4a" else "Stage IIIB"
             return "Stage IIIB"
-        if "N1" in n:
-            if "T1" in t or "T2" in t: return "Stage IIIA"
-            if "T3" in t or "T4a" in t: return "Stage IIIB"
+        if n_puhdas.startswith("N1"):
+            if t_puhdas in ["T1", "T2"]: return "Stage IIIA"
+            if t_puhdas in ["T3", "T4a"]: return "Stage IIIB"
         return "Stage III"
 
-    if "N0" in n:
-        if "Tis" in t: return "Stage 0"
-        if "T1" in t or "T2" in t: return "Stage I"
-        if "T3" in t: return "Stage IIA"
-        if "T4a" in t: return "Stage IIB"
-        if "T4b" in t: return "Stage IIC"
+    if n_puhdas == "N0":
+        if t_puhdas == "Tis": return "Stage 0"
+        if t_puhdas in ["T1", "T2"]: return "Stage I"
+        if t_puhdas == "T3": return "Stage IIA"
+        if t_puhdas == "T4a": return "Stage IIB"
+        if t_puhdas == "T4b": return "Stage IIC"
 
     return "Ei määritettävissä"
 
@@ -241,15 +245,19 @@ def maarita_hoitosuunnitelma_eturauhassyopa(riski: str, t: str, n: str, m: str) 
     return res
 
 def laske_stage_melanooma(t: str, n: str, m: str) -> str:
-    if "M1" in m: return "Stage IV"
-    if "N1" in n or "N2" in n or "N3" in n: return "Stage III"
-    if "N0" in n:
-        if "Tis" in t: return "Stage 0"
-        if "T1a" in t: return "Stage IA"
-        if "T1b" in t or "T2a" in t: return "Stage IB"
-        if "T2b" in t or "T3a" in t: return "Stage IIA"
-        if "T3b" in t or "T4a" in t: return "Stage IIB"
-        if "T4b" in t: return "Stage IIC"
+    t_puhdas = pura_luokka(t)
+    n_puhdas = pura_luokka(n)
+    m_puhdas = pura_luokka(m)
+
+    if m_puhdas.startswith("M1"): return "Stage IV"
+    if n_puhdas.startswith("N1") or n_puhdas.startswith("N2") or n_puhdas.startswith("N3"): return "Stage III"
+    if n_puhdas == "N0":
+        if t_puhdas == "Tis": return "Stage 0"
+        if t_puhdas == "T1a": return "Stage IA"
+        if t_puhdas in ["T1b", "T2a"]: return "Stage IB"
+        if t_puhdas in ["T2b", "T3a"]: return "Stage IIA"
+        if t_puhdas in ["T3b", "T4a"]: return "Stage IIB"
+        if t_puhdas == "T4b": return "Stage IIC"
     return "Ei määritettävissä"
 
 def maarita_hoitosuunnitelma_melanooma(stage: str, t: str, n: str, m: str) -> str:
