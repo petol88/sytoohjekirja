@@ -60,15 +60,43 @@ def maarita_hoitosuunnitelma_rintasyopa(*args, **kwargs):
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+
+    # ⚡ Bolt Optimization: Pre-calculate unique cancer types (indikaatiot) and
+    # protocol mappings once per app load rather than on every Streamlit rerun.
+    indikaatiot = set()
+    protokollat_by_syopatyyppi = {"Kaikki": list(Tietokanta.data.keys()), "Ei määritelty": []}
+
+    for nimi, prot_data in Tietokanta.data.items():
+        tyypit = prot_data.get('syöpätyypit', [])
+        if tyypit:
+            for t in tyypit:
+                indikaatiot.add(t)
+                if t not in protokollat_by_syopatyyppi:
+                    protokollat_by_syopatyyppi[t] = []
+                protokollat_by_syopatyyppi[t].append(nimi)
+        else:
+            indikaatiot.add("Ei määritelty")
+            protokollat_by_syopatyyppi["Ei määritelty"].append(nimi)
+
+    # Sort options for deterministic UI
+    sorted_indikaatiot = sorted(list(indikaatiot))
+    for key in protokollat_by_syopatyyppi:
+        protokollat_by_syopatyyppi[key].sort()
+
+    return Tietokanta.data, sorted_indikaatiot, protokollat_by_syopatyyppi
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
 try:
     # Always update Tietokanta.data with cached/loaded data
-    Tietokanta.data = load_data()
+    data_tuple = load_data()
+    Tietokanta.data = data_tuple[0]
+    cached_indikaatiot = data_tuple[1]
+    cached_protokollat_map = data_tuple[2]
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
+    cached_indikaatiot = []
+    cached_protokollat_map = {"Kaikki": []}
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
@@ -107,37 +135,15 @@ if view == "Laskuri":
     with col2:
         st.subheader("Hoito")
         
-        # 1. Kerätään kaikki uniikit syöpätyypit tietokannasta TURVALLISESTI
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            # Haetaan lista syöpätyypeistä, oletuksena tyhjä lista jos ei löydy
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
+        # 1. & 2. Luodaan syöpätyypin valikko käyttäen välimuistiin tallennettuja indikaatioita
+        # ⚡ Bolt Optimization: Uses cached metadata instead of O(N) iteration
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + cached_indikaatiot)
         
-        # 2. Luodaan syöpätyypin valikko
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
-        
-        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella
-        if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
-        else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                # Tarkistetaan löytyykö valittu syöpätyyppi protokollan listasta
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella (O(1) haku dictionarysta)
+        protokollat = cached_protokollat_map.get(valittu_syopatyyppi, [])
             
         # 4. Protokollan valikko suodatetulla listalla
-        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
+        valittu_protokolla = st.selectbox("Protokolla", [""] + protokollat)
 
         # Labs default value
         labrat_default = ""
