@@ -313,7 +313,15 @@ class LaskuriView(ttk.Frame):
             reitti = r['d'].get('reitti', '')
             reitti_str = f" {reitti}" if reitti else ""
             
-            out.append(f"• {r['n']}{reitti_str} {fin_str} mg{lisamaare}{paivat_str}")
+            # Kerätään mahdolliset lisätiedot ja kesto
+            kesto = r['d'].get('kesto', '')
+            lisatieto = r['d'].get('lisätieto', '')
+            extra_info = []
+            if kesto: extra_info.append(f"kesto: {kesto}")
+            if lisatieto: extra_info.append(lisatieto)
+            extra_str = f" ({', '.join(extra_info)})" if extra_info else ""
+            
+            out.append(f"• {r['n']}{reitti_str} {fin_str} mg{lisamaare}{paivat_str}{extra_str}")
             
             ts = r['vt'].get()
             if ts and ts != "None" and fin > 0:
