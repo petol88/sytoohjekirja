@@ -447,5 +447,135 @@
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "FOLFIRINOX": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": ["Suolistosyöpä", "Haimasyöpä"],
+        "kontrollit": "PVK, Krea, Alat.",
+        "lääkkeet": [
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 85,
+                "yksikkö": "mg/m2",
+                "päivät": [1],
+            },
+            {
+                "nimi": "Irinotekaani",
+                "reitti": "IV",
+                "annos": 150,
+                "yksikkö": "mg/m2",
+                "päivät": [1],
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 400,
+                "yksikkö": "mg/m2",
+                "päivät": [1, 2],
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [1, 2],
+            }
+        ],
+        "esilääkitys": "Atropiini 0.25 mg SC pv 1 ennen irinotekaania. Palonosetroni 250 mikrog IV pv 1. Deksametasoni 20 mg PO pv 1, 8 mg PO pv 2-4."
+    },
+    "Sasitutsumabigovitekaani": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Rintasyöpä"],
+        "lääkkeet": [
+            {
+                "nimi": "Sasitutsumabigovitekaani",
+                "reitti": "IV",
+                "annos": 10,
+                "yksikkö": "mg/kg",
+                "päivät": [1, 8]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8 mg PO pv 1. Akynzeo 300/0,5 mg 1x1 PO pv 1. Parasetamoli 1 g PO pv 1. Pegfilgrastiimi 6 mg SC pv 9."
+    },
+    "Setuksimabi-enkorafenibi pv 1/14": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": ["Suolistosyöpä"],
+        "lääkkeet": [
+            {
+                "nimi": "Setuksimabi",
+                "reitti": "IV",
+                "annos": 500,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Enkorafenibi",
+                "reitti": "PO",
+                "annos": 300,
+                "yksikkö": "mg",
+                "päivät": ["Kerran päivässä"],
+                "tablettikoot": ["75 mg", "50 mg"]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 4 mg PO 1h ennen infuusiota. Setiritsiini 10 mg PO 1h ennen infuusiota."
+    },
+    "Bevasitsumabi-XELOX": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Suolistosyöpä"],
+        "lääkkeet": [
+            {
+                "nimi": "Bevasitsumabi",
+                "reitti": "IV",
+                "annos": 7.5,
+                "yksikkö": "mg/kg",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 130,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Kapesitabiini",
+                "reitti": "PO",
+                "annos": 1000,
+                "yksikkö": "mg/m2 x 2",
+                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                "tablettikoot": ["500 mg", "150 mg"]
+            }
+        ],
+        "esilääkitys": "Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1."
+    },
+    "XELOX-trastutsumabi": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Mahasyöpä","Ruokatorvisyöpä"],
+        "lääkkeet": [
+            {
+                "nimi": "Trastutsumabi",
+                "reitti": "IV",
+                "annos": 6,
+                "yksikkö": "mg/kg",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 130,
+                "yksikkö": "mg/m2",
+                "päivät": [1]
+            },
+            {
+                "nimi": "Kapesitabiini",
+                "reitti": "PO",
+                "annos": 1000,
+                "yksikkö": "mg/m2 x 2",
+                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                "tablettikoot": ["500 mg"]
+            }
+        ],
+        "esilääkitys": "Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1."
     }
 }
