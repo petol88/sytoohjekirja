@@ -448,7 +448,7 @@
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
     },
-    "FOLFIRINOX": {
+    "FOLFIRINOX pv1-2": {
         "sykli": "14 vuorokautta",
         "syöpätyypit": ["Suolistosyöpä", "Haimasyöpä"],
         "kontrollit": "PVK, Krea, Alat.",
@@ -458,28 +458,28 @@
                 "reitti": "IV",
                 "annos": 85,
                 "yksikkö": "mg/m2",
-                "päivät": [1],
+                "päivät": [1]
             },
             {
                 "nimi": "Irinotekaani",
                 "reitti": "IV",
                 "annos": 150,
                 "yksikkö": "mg/m2",
-                "päivät": [1],
+                "päivät": [1]
             },
             {
                 "nimi": "Fluorourasiili",
                 "reitti": "IV",
                 "annos": 400,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2],
+                "päivät": [1, 2]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 200,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2],
+                "päivät": [1, 2]
             }
         ],
         "esilääkitys": "Atropiini 0.25 mg SC pv 1 ennen irinotekaania. Palonosetroni 250 mikrog IV pv 1. Deksametasoni 20 mg PO pv 1, 8 mg PO pv 2-4."
