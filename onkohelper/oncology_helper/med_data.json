@@ -422,7 +422,7 @@
                 "päivät": [1]
             },
             {
-                "nimi": "Prednison",
+                "nimi": "Prednisolon",
                 "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
@@ -729,6 +729,7 @@
     "Dosetakseli-Phesgo(s.c)": {
         "sykli": "21 vuorokautta",
         "syöpätyypit": ["Rintasyöpä"],
+        "kontrollit": "PVK + Neutr, Krea, Alat.",
         "lääkkeet": [
             {
                 "nimi": "Phesgo (Pertutsumabi-trastutsumabi)",
@@ -749,7 +750,7 @@
     },
     "Abraxane(viikkoannos)-Phesgo": {
         "sykli": "Viikoittainen (Abraxane) / 21 vrk (Phesgo)",
-        "syöpätyypit": ["HER2-positiivinen rintasyöpä"],
+        "syöpätyypit": ["Rintasyöpä"],
         "lääkkeet": [
             {
                 "nimi": "Phesgo (Pertutsumabi-trastutsumabi)",
