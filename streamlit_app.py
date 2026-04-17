@@ -60,15 +60,49 @@ def maarita_hoitosuunnitelma_rintasyopa(*args, **kwargs):
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+    data = Tietokanta.data
+
+    # Pre-calculate derived static options to prevent O(N) operations on every UI rerun
+    indikaatiot = set()
+    for prot_data in data.values():
+        tyypit = prot_data.get('syöpätyypit', [])
+        if tyypit:
+            for t in tyypit:
+                indikaatiot.add(t)
+        else:
+            indikaatiot.add("Ei määritelty")
+
+    syopatyyppi_opts = tuple(["Kaikki"] + sorted(list(indikaatiot)))
+
+    # Pre-calculate protocol mappings per cancer type
+    protokollat_kartta = {
+        "Kaikki": tuple(sorted(list(data.keys()))),
+        "Ei määritelty": tuple(sorted([
+            nimi for nimi, d in data.items()
+            if not d.get('syöpätyypit')
+        ]))
+    }
+
+    for styyppi in indikaatiot:
+        if styyppi != "Ei määritelty":
+            protokollat_kartta[styyppi] = tuple(sorted([
+                nimi for nimi, d in data.items()
+                if styyppi in d.get('syöpätyypit', [])
+            ]))
+
+    return data, syopatyyppi_opts, protokollat_kartta
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
+TNM_OPTS = tuple(TNM_DATA.keys())
 
 try:
     # Always update Tietokanta.data with cached/loaded data
-    Tietokanta.data = load_data()
+    loaded_data, CACHED_SYOPATYYPPI_OPTS, CACHED_PROTOKOLLAT_KARTTA = load_data()
+    Tietokanta.data = loaded_data
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
+    CACHED_SYOPATYYPPI_OPTS = ("Kaikki",)
+    CACHED_PROTOKOLLAT_KARTTA = {"Kaikki": ()}
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
@@ -107,37 +141,15 @@ if view == "Laskuri":
     with col2:
         st.subheader("Hoito")
         
-        # 1. Kerätään kaikki uniikit syöpätyypit tietokannasta TURVALLISESTI
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            # Haetaan lista syöpätyypeistä, oletuksena tyhjä lista jos ei löydy
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
-        
         # 2. Luodaan syöpätyypin valikko
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", CACHED_SYOPATYYPPI_OPTS)
         
-        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella
-        if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
-        else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                # Tarkistetaan löytyykö valittu syöpätyyppi protokollan listasta
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella nopealla O(1) haulla
+        protokollat = CACHED_PROTOKOLLAT_KARTTA.get(valittu_syopatyyppi, ())
             
         # 4. Protokollan valikko suodatetulla listalla
-        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
+        # Luodaan uusi tuple tyhjällä valinnalla, jotta vältetään listan allokointi
+        valittu_protokolla = st.selectbox("Protokolla", ("",) + protokollat)
 
         # Labs default value
         labrat_default = ""
@@ -294,7 +306,7 @@ elif view == "Levinneisyys":
     with col1:
         st.subheader("Määritys")
 
-        tauti = st.selectbox("Syöpätyyppi", list(TNM_DATA.keys()))
+        tauti = st.selectbox("Syöpätyyppi", TNM_OPTS)
         d = TNM_DATA[tauti]
 
         hoitolinja = st.selectbox("Hoitolinja", ["-", "Neoadjuvantti", "Adjuvantti"])
