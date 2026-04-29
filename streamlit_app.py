@@ -60,15 +60,36 @@ def maarita_hoitosuunnitelma_rintasyopa(*args, **kwargs):
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+    data = Tietokanta.data
+
+    indikaatiot = set()
+    protokollat_map = {"Kaikki": list(data.keys()), "Ei määritelty": []}
+
+    for nimi, prot_data in data.items():
+        tyypit = prot_data.get('syöpätyypit', [])
+        if not tyypit:
+            indikaatiot.add("Ei määritelty")
+            protokollat_map["Ei määritelty"].append(nimi)
+        else:
+            for t in tyypit:
+                indikaatiot.add(t)
+                if t not in protokollat_map:
+                    protokollat_map[t] = []
+                protokollat_map[t].append(nimi)
+
+    indikaatiot_opts = ("Kaikki",) + tuple(sorted(list(indikaatiot)))
+    return data, indikaatiot_opts, protokollat_map
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
 try:
     # Always update Tietokanta.data with cached/loaded data
-    Tietokanta.data = load_data()
+    _data, indikaatiot_opts, protokollat_map = load_data()
+    Tietokanta.data = _data
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
+    indikaatiot_opts = ("Kaikki",)
+    protokollat_map = {"Kaikki": []}
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
@@ -107,36 +128,14 @@ if view == "Laskuri":
     with col2:
         st.subheader("Hoito")
         
-        # 1. Kerätään kaikki uniikit syöpätyypit tietokannasta TURVALLISESTI
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            # Haetaan lista syöpätyypeistä, oletuksena tyhjä lista jos ei löydy
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
+        # 1. Luodaan syöpätyypin valikko pre-computetuilla vaihtoehdoilla
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", indikaatiot_opts)
         
-        # 2. Luodaan syöpätyypin valikko
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
-        
-        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella
-        if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
-        else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                # Tarkistetaan löytyykö valittu syöpätyyppi protokollan listasta
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+        # 2. Suodatetaan protokollat valitun syöpätyypin perusteella pre-computetusta mapista
+        protokollat = protokollat_map.get(valittu_syopatyyppi, [])
             
-        # 4. Protokollan valikko suodatetulla listalla
+        # 3. Protokollan valikko suodatetulla listalla
+        # Odotetaan lista valmiiksi lajiteltuna tai lajitellaan tässä
         valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
 
         # Labs default value
