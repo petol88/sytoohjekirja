@@ -12,18 +12,19 @@ class TestLogic(unittest.TestCase):
         self.assertEqual(laske_bsa(180, 0), 0.0)
         
     def test_laske_cockcroft_gault(self):
+        from oncology_helper.calculators import Sukupuoli
         # Man: 50y, 80kg, 100 umol/L
         # Formula: (140-50)*80 / (0.814*100) = 7200 / 81.4 = 88.45...
-        gfr_man = laske_cockcroft_gault(50, 80, 100, "Mies")
+        gfr_man = laske_cockcroft_gault(50, 80, 100, Sukupuoli.MIES)
         self.assertAlmostEqual(gfr_man, 88.45, delta=0.1)
         
         # Woman: 50y, 80kg, 100 umol/L
         # Formula: 88.45... * 0.85 = 75.18...
-        gfr_woman = laske_cockcroft_gault(50, 80, 100, "Nainen")
+        gfr_woman = laske_cockcroft_gault(50, 80, 100, Sukupuoli.NAINEN)
         self.assertAlmostEqual(gfr_woman, 75.18, delta=0.1)
         
         # Invalid krea
-        self.assertEqual(laske_cockcroft_gault(50, 80, 0, "Mies"), 0.0)
+        self.assertEqual(laske_cockcroft_gault(50, 80, 0, Sukupuoli.MIES), 0.0)
 
     def test_pyorista_tabletit(self):
         # Exact
@@ -54,29 +55,31 @@ class TestLogic(unittest.TestCase):
         self.assertEqual(laske_stage_rintasyopa("Tx", "N0", "M0"), "Ei määritettävissä")
 
     def test_maarita_hoitosuunnitelma_rintasyopa(self):
+        from oncology_helper.staging import ReseptoriTila, Ki67Tila
         # TNBC Neoadjuvant (auto)
-        res = maarita_hoitosuunnitelma_rintasyopa("Stage IIB", "T2", "N1", "M0", "Negatiivinen", "Negatiivinen", "Korkea")
+        res = maarita_hoitosuunnitelma_rintasyopa("Stage IIB", "T2", "N1", "M0", ReseptoriTila.NEGATIIVINEN, ReseptoriTila.NEGATIIVINEN, Ki67Tila.KORKEA)
         self.assertIn("Kolmoisnegatiivinen", res)
         self.assertIn("Hoitolinja: Neoadjuvantti", res)
         self.assertIn("Paklitakseli", res)
         
         # HER2+ Adjuvant (auto, T1N0)
-        res = maarita_hoitosuunnitelma_rintasyopa("Stage I", "T1c", "N0", "M0", "Positiivinen", "Positiivinen", "Korkea")
+        res = maarita_hoitosuunnitelma_rintasyopa("Stage I", "T1c", "N0", "M0", ReseptoriTila.POSITIIVINEN, ReseptoriTila.POSITIIVINEN, Ki67Tila.KORKEA)
         self.assertIn("HER2-positiivinen", res)
         self.assertIn("Hoitolinja: Adjuvantti", res)
         self.assertIn("Trastutsumabi", res)
         
+        from oncology_helper.staging import Hoitolinja
         # Manual override: TNBC Stage II (Optimal: Neoadjuvant) -> Selected: Adjuvant
         res = maarita_hoitosuunnitelma_rintasyopa("Stage IIB", "T2", "N1", "M0", 
-                                                  "Negatiivinen", "Negatiivinen", "Korkea", 
-                                                  valittu_hoitolinja="Adjuvantti")
+                                                  ReseptoriTila.NEGATIIVINEN, ReseptoriTila.NEGATIIVINEN, Ki67Tila.KORKEA,
+                                                  valittu_hoitolinja=Hoitolinja.ADJUVANTTI)
         self.assertIn("Hoitolinja: Adjuvantti", res)
         self.assertIn("Huom: Optimaalinen suositus olisi Neoadjuvantti", res)
         # Should NOT suggest Pembrolizumab (neoadjuvant only usually) or Neoadjuvant regimen
         self.assertIn("Dosetakseli-Syklofosfamidi", res) 
         
         # Luminal A Adjuvant (T1N0)
-        res = maarita_hoitosuunnitelma_rintasyopa("Stage I", "T1b", "N0", "M0", "Positiivinen", "Negatiivinen", "Matala")
+        res = maarita_hoitosuunnitelma_rintasyopa("Stage I", "T1b", "N0", "M0", ReseptoriTila.POSITIIVINEN, ReseptoriTila.NEGATIIVINEN, Ki67Tila.MATALA)
         self.assertIn("Luminal A", res)
         self.assertIn("hormonihoito", res.lower())
 
