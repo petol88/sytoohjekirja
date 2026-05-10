@@ -1,3 +1,6 @@
 ## 2024-04-09 - [Streamlit Rerun Loop Allocations]
 **Learning:** Streamlit reruns the entire script on every user interaction. Defining static lists inside rendering loops causes redundant memory allocations and garbage collection overhead on every rerun. For small literal collections in `in` checks (e.g. `c2 in ["A", "B"]`), CPython optimizes them better if they are tuples, avoiding list creation overhead entirely.
 **Action:** Always hoist static arrays (like `YKSIKKO_OPTS_BASE`) outside of loops to reuse references, and prefer tuples over lists for static options or membership checks to minimize allocation overhead per rerun.
+## 2024-04-10 - [Streamlit Render Loop Memoization]
+**Learning:** In a Streamlit environment, data derivation logic placed inside the rendering flow runs synchronously on *every* single user interaction. In `streamlit_app.py`, building the dropdown options and filtering a large protocol dictionary natively caused O(N) overhead per widget change.
+**Action:** Always extract O(N) mapping operations (such as deriving UI dropdowns from a core dataset) into the cached initial data loading function (`@st.cache_data`). Return these pre-calculated mappings alongside the core data to ensure render loops only perform O(1) lookups (e.g., `dict.get()`), significantly reducing block times and maintaining a responsive UI.
