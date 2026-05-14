@@ -13,6 +13,8 @@ if package_dir not in sys.path:
     sys.path.append(package_dir)
 
 from oncology_helper.data import Tietokanta, TNM_DATA
+from oncology_helper.calculators import Sukupuoli
+from oncology_helper.staging import ReseptoriTila, Ki67Tila, Hoitolinja
 import math
 
 def safe_float(arvo, oletus=0.0):
@@ -60,15 +62,38 @@ def maarita_hoitosuunnitelma_rintasyopa(*args, **kwargs):
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+    data = Tietokanta.data
+
+    # Pre-calculate derived UI state
+    indikaatiot = set()
+    protokolla_map = {"Kaikki": list(data.keys()), "Ei määritelty": []}
+
+    for nimi, prot_data in data.items():
+        tyypit = prot_data.get('syöpätyypit', [])
+        if not tyypit:
+            indikaatiot.add("Ei määritelty")
+            protokolla_map["Ei määritelty"].append(nimi)
+        else:
+            for t in tyypit:
+                indikaatiot.add(t)
+                if t not in protokolla_map:
+                    protokolla_map[t] = []
+                protokolla_map[t].append(nimi)
+
+    syopatyyppi_opts = ["Kaikki"] + sorted(list(indikaatiot))
+
+    return data, tuple(syopatyyppi_opts), protokolla_map
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
 try:
     # Always update Tietokanta.data with cached/loaded data
-    Tietokanta.data = load_data()
+    _data, syopatyyppi_opts, protokolla_map = load_data()
+    Tietokanta.data = _data
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
+    syopatyyppi_opts = ("Kaikki",)
+    protokolla_map = {"Kaikki": []}
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
@@ -99,7 +124,7 @@ if view == "Laskuri":
 
             # Calculations
             bsa = laske_bsa(pituus, paino)
-            gfr = laske_cockcroft_gault(ika, paino, krea, sukupuoli)
+            gfr = laske_cockcroft_gault(ika, paino, krea, Sukupuoli(sukupuoli))
 
             st.metric("BSA", f"{bsa:.2f} m²")
             st.metric("GFR", f"{gfr:.0f} ml/min")
@@ -107,34 +132,11 @@ if view == "Laskuri":
     with col2:
         st.subheader("Hoito")
         
-        # 1. Kerätään kaikki uniikit syöpätyypit tietokannasta TURVALLISESTI
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            # Haetaan lista syöpätyypeistä, oletuksena tyhjä lista jos ei löydy
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
+        # 2. Luodaan syöpätyypin valikko käyttäen esilaskettuja vaihtoehtoja (O(1) haku kerta-allokaatiolla)
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", syopatyyppi_opts)
         
-        # 2. Luodaan syöpätyypin valikko
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
-        
-        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella
-        if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
-        else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                # Tarkistetaan löytyykö valittu syöpätyyppi protokollan listasta
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+        # 3. Suodatetaan protokollat valitun syöpätyypin perusteella (O(1) haku esilasketusta sanakirjasta)
+        protokollat = protokolla_map.get(valittu_syopatyyppi, [])
             
         # 4. Protokollan valikko suodatetulla listalla
         valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
@@ -350,10 +352,11 @@ elif view == "Levinneisyys":
                     st_val = laske_stage_rintasyopa(c1, c2, c3)
                     res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
 
+                    valittu_hoitolinja = Hoitolinja(hoitolinja) if hoitolinja != "-" else None
                     plan = maarita_hoitosuunnitelma_rintasyopa(
                         st_val, c1, c2, c3,
-                        er_status, her2_status, ki67_status,
-                        hoitolinja if hoitolinja != "-" else None
+                        ReseptoriTila(er_status), ReseptoriTila(her2_status), Ki67Tila(ki67_status),
+                        valittu_hoitolinja
                     )
                     res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
                 except Exception as e:
