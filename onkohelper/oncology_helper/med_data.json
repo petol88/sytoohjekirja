@@ -109,6 +109,25 @@
         ], 
         "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
        },  
+    "Rituksimabi-Bendamustiini-Akalabrutinibi (28 vrk)": {
+        "sykli": "28 vuorokautta",
+        "syöpätyypit": ["Lymfooma"],
+        "kontrollit": "TVK, Krea, Alat.",
+        "lääkkeet": [
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]},
+            {"nimi": "Bendamustiini", "reitti": "IV", "annos": 90, "yksikkö": "mg/m2", "päivät": [1, 2]},
+            {
+                "nimi": "Akalabrutinibi",
+                "reitti": "PO",
+                "annos": 100,
+                "yksikkö": "mg",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["100 mg"],
+                "reseptiohje": "1 tabletti 2 kertaa vuorokaudessa (aamuin illoin)."
+            }
+        ],
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO."
+    },
     "Abraxane-Karboplatiini (7vrk)": { 
         "sykli": "7 vuorokautta", 
         "syöpätyypit": ["Keuhkosyöpä", "Rintasyöpä"],
