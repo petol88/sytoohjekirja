@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -71,6 +71,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_flipi_view()
         elif valittu == "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)":
             self.build_gelf_view()
+        elif valittu == "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)":
+            self.build_cps_eg_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -317,3 +319,71 @@ class PisteytyksetView(ttk.Frame):
         
         self.gelf_result_label.config(text=f"Tulos: {pisteet} GELF-kriteeriä täyttyy.")
         self.gelf_risk_label.config(text=f"Suositus: {suositus}")
+
+    def build_cps_eg_view(self):
+        ttk.Label(self.content_frame, text="CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi rintasyövän ennustetta neoadjuvanttihoidon ja leikkauksen jälkeen.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        main_row = ttk.Frame(self.content_frame)
+        main_row.pack(anchor="w", fill="x")
+        
+        input_frame = ttk.Frame(main_row)
+        input_frame.pack(side="left", anchor="n", fill="y", expand=True)
+        
+        info_frame = ttk.Frame(main_row)
+        info_frame.pack(side="left", anchor="n", padx=(40, 0))
+        
+        self.cpseg_cstage_var = tk.IntVar(value=0)
+        self.cpseg_pstage_var = tk.IntVar(value=0)
+        self.cpseg_er_var = tk.BooleanVar(value=False)
+        self.cpseg_grade_var = tk.BooleanVar(value=False)
+        
+        ttk.Label(input_frame, text="Kliininen levinneisyys (cTNM) ennen hoitoa:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,2))
+        ttk.Radiobutton(input_frame, text="Stage I - IIA (0 p)", variable=self.cpseg_cstage_var, value=0, command=self.laske_cps_eg).pack(anchor="w")
+        ttk.Radiobutton(input_frame, text="Stage IIB - IIIA (1 p)", variable=self.cpseg_cstage_var, value=1, command=self.laske_cps_eg).pack(anchor="w")
+        ttk.Radiobutton(input_frame, text="Stage IIIB - IIIC (2 p)", variable=self.cpseg_cstage_var, value=2, command=self.laske_cps_eg).pack(anchor="w")
+        
+        ttk.Label(input_frame, text="Patologinen levinneisyys (ypTNM) leikkauksen jälkeen:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(input_frame, text="Stage 0 tai I (0 p)", variable=self.cpseg_pstage_var, value=0, command=self.laske_cps_eg).pack(anchor="w")
+        ttk.Radiobutton(input_frame, text="Stage IIA - IIB (1 p)", variable=self.cpseg_pstage_var, value=1, command=self.laske_cps_eg).pack(anchor="w")
+        ttk.Radiobutton(input_frame, text="Stage IIIA - IIIC (2 p)", variable=self.cpseg_pstage_var, value=2, command=self.laske_cps_eg).pack(anchor="w")
+        
+        ttk.Label(input_frame, text="Muut tekijät:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Checkbutton(input_frame, text="Estrogeenireseptori (ER) negatiivinen (1 p)", variable=self.cpseg_er_var, command=self.laske_cps_eg).pack(anchor="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Gradus 3 (1 p)", variable=self.cpseg_grade_var, command=self.laske_cps_eg).pack(anchor="w", pady=2)
+        
+        info_lf = ttk.LabelFrame(info_frame, text="Rintasyövän Stage-muistisääntö", padding=10)
+        info_lf.pack(anchor="n", fill="both")
+        stage_text = (
+            "Stage I: T1 N0\n"
+            "Stage IIA: T0-T1 N1 tai T2 N0\n"
+            "Stage IIB: T2 N1 tai T3 N0\n"
+            "Stage IIIA: T0-T2 N2 tai T3 N1-N2\n"
+            "Stage IIIB: T4, mikä tahansa N\n"
+            "Stage IIIC: Mikä tahansa T, N3\n\n"
+            "(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)"
+        )
+        ttk.Label(info_lf, text=stage_text, justify="left", font=("Segoe UI", 10)).pack()
+        
+        self.cpseg_result_frame = ttk.Frame(self.content_frame)
+        self.cpseg_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.cpseg_result_label = ttk.Label(self.cpseg_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.cpseg_result_label.pack(anchor="w")
+        self.cpseg_risk_label = ttk.Label(self.cpseg_result_frame, text="", font=("Segoe UI", 11))
+        self.cpseg_risk_label.pack(anchor="w", pady=(5, 0))
+        self.cpseg_warning_label = ttk.Label(self.cpseg_result_frame, text="", font=("Segoe UI", 11), foreground="red")
+        self.cpseg_warning_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_cps_eg()
+
+    def laske_cps_eg(self):
+        pisteet = laske_cps_eg_pisteet(self.cpseg_cstage_var.get(), self.cpseg_pstage_var.get(), self.cpseg_er_var.get(), self.cpseg_grade_var.get())
+        ennuste = hae_cps_eg_ennuste(pisteet)
+        
+        self.cpseg_result_label.config(text=f"Tulos: CPS+EG -pisteet: {pisteet} / 6")
+        self.cpseg_risk_label.config(text=f"Ennuste: {ennuste}")
+        
+        if pisteet >= 3:
+            self.cpseg_warning_label.config(text="Huom: Jos invasiivistä jäännöstautia, niin muista olaparibi-liitännäishoidon\nmahdollisuus ituradan BRCA-mutaation omaavilla vuoden ajaksi.")
+        else:
+            self.cpseg_warning_label.config(text="")

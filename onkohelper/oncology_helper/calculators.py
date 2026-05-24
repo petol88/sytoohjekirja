@@ -176,3 +176,21 @@ def hae_gelf_suositus(pisteet: int) -> str:
     if pisteet > 0:
         return "Aktiivihoidon indikaatio täyttyy (≥1 GELF-kriteeri)."
     return "Ei vahvaa aktiivihoidon indikaatiota (Watch & Wait -seuranta mahdollinen)."
+
+def laske_cps_eg_pisteet(c_stage_pisteet: int, p_stage_pisteet: int, er_negatiivinen: bool, grade_3: bool) -> int:
+    pisteet = c_stage_pisteet + p_stage_pisteet
+    if er_negatiivinen: pisteet += 1
+    if grade_3: pisteet += 1
+    return pisteet
+
+def hae_cps_eg_ennuste(pisteet: int) -> str:
+    ennusteet = {
+        0: "0 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 100 %",
+        1: "1 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 98 %",
+        2: "2 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 94 %",
+        3: "3 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 84 %",
+        4: "4 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 71 %",
+        5: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
+        6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %"
+    }
+    return ennusteet.get(pisteet, "Tuntematon ennuste")
