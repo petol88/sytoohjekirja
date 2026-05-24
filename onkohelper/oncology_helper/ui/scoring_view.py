@@ -106,3 +106,52 @@ class PisteytyksetView(ttk.Frame):
                 justify="left"
             )
             rb.pack(anchor="w", pady=5)
+
+    def build_ipi_view(self):
+        ttk.Label(self.content_frame, text="IPI (International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Ennustetekijä aggressiivisille non-Hodgkin-lymfoomille (esim. DLBCL).", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+
+        checkbox_frame = ttk.Frame(self.content_frame)
+        checkbox_frame.pack(anchor="w", fill="x")
+
+        self.ipi_ika_var = tk.BooleanVar()
+        self.ipi_stage_var = tk.BooleanVar()
+        self.ipi_extra_var = tk.BooleanVar()
+        self.ipi_ecog_var = tk.BooleanVar()
+        self.ipi_ldh_var = tk.BooleanVar()
+
+        def on_ipi_change():
+            pisteet = laske_ipi_pisteet(
+                self.ipi_ika_var.get(),
+                self.ipi_stage_var.get(),
+                self.ipi_extra_var.get(),
+                self.ipi_ecog_var.get(),
+                self.ipi_ldh_var.get()
+            )
+            riskiluokka = maarita_ipi_riskiluokka(pisteet)
+            self.ipi_result_label.config(text=f"Tulos: {pisteet} / 5 pistettä")
+            self.ipi_class_label.config(text=f"Riskiluokka: {riskiluokka.value}")
+
+        checkboxes = [
+            ("Ikä yli 60 vuotta", self.ipi_ika_var),
+            ("Levinneisyysaste III tai IV", self.ipi_stage_var),
+            ("Yli 1 ekstranodaalinen pesäke", self.ipi_extra_var),
+            ("ECOG-suorituskyky ≥ 2", self.ipi_ecog_var),
+            ("Seerumin LDH yli viitearvon", self.ipi_ldh_var)
+        ]
+
+        for teksti, var in checkboxes:
+            cb = ttk.Checkbutton(
+                checkbox_frame, 
+                text=teksti, 
+                variable=var, 
+                command=on_ipi_change
+            )
+            cb.pack(anchor="w", pady=5)
+
+        self.ipi_result_frame = ttk.Frame(self.content_frame)
+        self.ipi_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.ipi_result_label = ttk.Label(self.ipi_result_frame, text="Tulos: 0 / 5 pistettä", font=("Segoe UI", 12, "bold"))
+        self.ipi_result_label.pack(anchor="w")
+        self.ipi_class_label = ttk.Label(self.ipi_result_frame, text="Riskiluokka: Matala riski (0-1 pistettä)", font=("Segoe UI", 11, "bold"), foreground="green")
+        self.ipi_class_label.pack(anchor="w", pady=(5, 0))

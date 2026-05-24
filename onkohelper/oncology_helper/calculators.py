@@ -15,6 +15,35 @@ class EcogLuokka(Enum):
     ECOG_4 = 4
     ECOG_5 = 5
 
+class IpiRiskiluokka(Enum):
+    MATALA = "Matala riski (0-1 pistettä)"
+    MATALA_KOHTALAINEN = "Matala-kohtalainen riski (2 pistettä)"
+    KORKEA_KOHTALAINEN = "Korkea-kohtalainen riski (3 pistettä)"
+    KORKEA = "Korkea riski (4-5 pistettä)"
+
+def laske_ipi_pisteet(ika_yli_60: bool, levinneisyys_3_tai_4: bool, 
+                      ekstranodaalipesakkeet_yli_1: bool, ecog_yli_1: bool, 
+                      ldh_koholla: bool) -> int:
+    """Laskee IPI (International Prognostic Index) -pisteet (0-5)."""
+    pisteet = 0
+    if ika_yli_60: pisteet += 1
+    if levinneisyys_3_tai_4: pisteet += 1
+    if ekstranodaalipesakkeet_yli_1: pisteet += 1
+    if ecog_yli_1: pisteet += 1
+    if ldh_koholla: pisteet += 1
+    return pisteet
+
+def maarita_ipi_riskiluokka(pisteet: int) -> IpiRiskiluokka:
+    """Määrittää IPI-riskiluokan pisteiden perusteella."""
+    if pisteet <= 1:
+        return IpiRiskiluokka.MATALA
+    elif pisteet == 2:
+        return IpiRiskiluokka.MATALA_KOHTALAINEN
+    elif pisteet == 3:
+        return IpiRiskiluokka.KORKEA_KOHTALAINEN
+    else:
+        return IpiRiskiluokka.KORKEA
+
 def hae_ecog_kuvaus(luokka: EcogLuokka) -> str:
     """Palauttaa ECOG-suorituskykyluokan virallisen kuvauksen."""
     kuvaukset = {
