@@ -483,14 +483,16 @@ elif view == "Pisteytykset":
             cpseg_grade = st.checkbox("Gradus 3 (1 p)", key="cpseg_grade")
             
         with col2:
-            st.info("**Rintasyövän Stage-muistisääntö:**\n"
-                    "• **Stage I:** T1 N0\n"
-                    "• **Stage IIA:** T0-T1 N1 tai T2 N0\n"
-                    "• **Stage IIB:** T2 N1 tai T3 N0\n"
-                    "• **Stage IIIA:** T0-T2 N2 tai T3 N1-N2\n"
-                    "• **Stage IIIB:** T4, mikä tahansa N\n"
-                    "• **Stage IIIC:** Mikä tahansa T, N3\n\n"
-                    "*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*")
+            st.info("""**Rintasyövän Stage-muistisääntö:**
+
+* **Stage I:** T1 N0
+* **Stage IIA:** T0-T1 N1 tai T2 N0
+* **Stage IIB:** T2 N1 tai T3 N0
+* **Stage IIIA:** T0-T2 N2 tai T3 N1-N2
+* **Stage IIIB:** T4, mikä tahansa N
+* **Stage IIIC:** Mikä tahansa T, N3
+
+*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*""")
                     
         c_p = ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"].index(cpseg_cstage_str)
         p_p = ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"].index(cpseg_pstage_str)
