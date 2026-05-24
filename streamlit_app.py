@@ -44,9 +44,9 @@ except Exception as e:
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
-view = st.sidebar.radio("Valitse näkymä", ["Laskuri", "Levinneisyys", "Tietoa"])
+view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Tietoa"])
 
-if view == "Laskuri":
+if view == "Sytostaattilaskuri":
     st.header("Sytostaattilaskuri")
 
     col1, col2 = st.columns([1, 2])
@@ -315,6 +315,15 @@ elif view == "Levinneisyys":
             if v3: res_text += f"• {d['L3_Label']}: {v3}\n"
 
         st.text_area("Lausunto", res_text, height=400)
+
+elif view == "Pisteytykset":
+    st.header("Lääketieteelliset pisteytykset")
+    
+    # Placeholder for calculators dropdown/tabs
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse..."])
+    
+    if laskuri_valinta != "Valitse...":
+        st.write("Laskurin logiikka tulee tähän.")
 
 elif view == "Tietoa":
     st.info("Tämä on Streamlit-versio Onkologian Työpöytä -sovelluksesta, joka käyttää suoraan oncology_helper -kirjastoa.")
