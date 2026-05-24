@@ -353,10 +353,8 @@ elif view == "Pisteytykset":
         
         col1, col2 = st.columns(2)
         with col1:
-            ipi_ika = st.number_input("Ikä", min_value=0, max_value=120, value=65, step=1, key="ipi_ika")
-            ipi_ldh = st.checkbox("LDH koholla (> viitealueen yläraja)", key="ipi_ldh")
-            ipi_ecog = st.number_input("ECOG-suorituskyky", min_value=0, max_value=5, value=0, step=1, key="ipi_ecog")
-            
+            ipi_ika = st.checkbox("LDH koholla (> viitealueen yläraja)", key="ipi_ldh")
+            ipi_ecog = st.checkbox("ECOG-suorituskyky ≥ 2", key="ipi_ecog")
         with col2:
             ipi_stage = st.checkbox("Ann Arbor Stage III tai IV", key="ipi_stage")
             ipi_en = st.checkbox("Yli 1 ekstranodaalinen pesäke", key="ipi_en")
