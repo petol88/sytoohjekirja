@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -63,6 +63,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_ecog_view()
         elif valittu == "IPI (International Prognostic Index)":
             self.build_ipi_view()
+        elif valittu == "CNS-IPI (CNS International Prognostic Index)":
+            self.build_cns_ipi_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -143,3 +145,40 @@ class PisteytyksetView(ttk.Frame):
         
         self.ipi_result_label.config(text=f"Tulos: IPI-pisteet: {pisteet} / 5")
         self.ipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
+
+    def build_cns_ipi_view(self):
+        ttk.Label(self.content_frame, text="CNS-IPI (CNS International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi keskushermostorelapssin riskiä diffuusissa suurisoluisessa B-solulymfoomassa (DLBCL).", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.cns_ika_var = tk.BooleanVar(value=False)
+        self.cns_ldh_var = tk.BooleanVar(value=False)
+        self.cns_ecog_var = tk.BooleanVar(value=False)
+        self.cns_stage_var = tk.BooleanVar(value=False)
+        self.cns_en_var = tk.BooleanVar(value=False)
+        self.cns_kidney_var = tk.BooleanVar(value=False)
+        
+        ttk.Checkbutton(input_frame, text="Ikä > 60 vuotta", variable=self.cns_ika_var, command=self.laske_cns_ipi).grid(row=0, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="LDH koholla (> viitealueen yläraja)", variable=self.cns_ldh_var, command=self.laske_cns_ipi).grid(row=1, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="ECOG-suorituskyky ≥ 2", variable=self.cns_ecog_var, command=self.laske_cns_ipi).grid(row=2, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Ann Arbor Stage III tai IV", variable=self.cns_stage_var, command=self.laske_cns_ipi).grid(row=3, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Yli 1 ekstranodaalinen pesäke", variable=self.cns_en_var, command=self.laske_cns_ipi).grid(row=4, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Munuaisten ja/tai lisämunuaisten affisio", variable=self.cns_kidney_var, command=self.laske_cns_ipi).grid(row=5, column=0, columnspan=2, sticky="w", pady=5)
+        
+        self.cns_result_frame = ttk.Frame(self.content_frame)
+        self.cns_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.cns_result_label = ttk.Label(self.cns_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.cns_result_label.pack(anchor="w")
+        self.cns_risk_label = ttk.Label(self.cns_result_frame, text="", font=("Segoe UI", 11))
+        self.cns_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_cns_ipi()
+
+    def laske_cns_ipi(self):
+        pisteet = laske_cns_ipi_pisteet(self.cns_ika_var.get(), self.cns_ldh_var.get(), self.cns_ecog_var.get(), self.cns_stage_var.get(), self.cns_en_var.get(), self.cns_kidney_var.get())
+        riskiryhma = hae_cns_ipi_riskiryhma(pisteet)
+        
+        self.cns_result_label.config(text=f"Tulos: CNS-IPI-pisteet: {pisteet} / 6")
+        self.cns_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
