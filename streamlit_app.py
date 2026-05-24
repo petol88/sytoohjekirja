@@ -25,7 +25,11 @@ from oncology_helper.calculators import (
     laske_ipi_pisteet,
     hae_ipi_riskiryhma,
     laske_cns_ipi_pisteet,
-    hae_cns_ipi_riskiryhma
+    hae_cns_ipi_riskiryhma,
+    laske_mipi_pisteet,
+    hae_mipi_riskiryhma,
+    laske_flipi_pisteet,
+    hae_flipi_riskiryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -325,7 +329,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -369,6 +373,30 @@ elif view == "Pisteytykset":
         st.success(f"**Tulos:** IPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
         
+    elif laskuri_valinta == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
+        st.subheader("MIPI (Mantle Cell Lymphoma International Prognostic Index)")
+        st.write("Arvioi manttelisolulymfooman ennustetta (yksinkertaistettu sMIPI).")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            mipi_ika_str = st.radio("Ikä (vuotta)", ["< 50", "50 - 59", "60 - 69", "≥ 70"], key="mipi_ika")
+            mipi_ecog_str = st.radio("ECOG-suorituskyky", ["0 - 1", "≥ 2"], key="mipi_ecog")
+        with col2:
+            mipi_ldh_str = st.radio("LDH / viitealueen yläraja", ["< 0.67", "0.67 - 0.99", "1.00 - 1.49", "≥ 1.50"], key="mipi_ldh")
+            mipi_wbc_str = st.radio("Leukosyytit (WBC, E9/l)", ["< 6.7", "6.7 - 9.9", "10.0 - 14.9", "≥ 15.0"], key="mipi_wbc")
+            
+        ika_p = ["< 50", "50 - 59", "60 - 69", "≥ 70"].index(mipi_ika_str)
+        ecog_p = ["0 - 1", "≥ 2"].index(mipi_ecog_str)
+        ldh_p = ["< 0.67", "0.67 - 0.99", "1.00 - 1.49", "≥ 1.50"].index(mipi_ldh_str)
+        wbc_p = ["< 6.7", "6.7 - 9.9", "10.0 - 14.9", "≥ 15.0"].index(mipi_wbc_str)
+            
+        pisteet = laske_mipi_pisteet(ika_p, ecog_p, ldh_p, wbc_p)
+        riskiryhma = hae_mipi_riskiryhma(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** sMIPI-pisteet: {pisteet}")
+        st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
     elif laskuri_valinta == "CNS-IPI (CNS International Prognostic Index)":
         st.subheader("CNS-IPI (CNS International Prognostic Index)")
         st.write("Arvioi keskushermostorelapssin riskiä diffuusissa suurisoluisessa B-solulymfoomassa (DLBCL).")
@@ -388,4 +416,24 @@ elif view == "Pisteytykset":
         
         st.markdown("---")
         st.success(f"**Tulos:** CNS-IPI-pisteet: {pisteet} / 6")
+        st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
+    elif laskuri_valinta == "FLIPI (Follicular Lymphoma International Prognostic Index)":
+        st.subheader("FLIPI (Follicular Lymphoma International Prognostic Index)")
+        st.write("Arvioi follikulaarisen lymfooman ennustetta.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            flipi_ika = st.checkbox("Ikä > 60 vuotta", key="flipi_ika")
+            flipi_stage = st.checkbox("Ann Arbor Stage III tai IV", key="flipi_stage")
+            flipi_hb = st.checkbox("Hemoglobiini < 120 g/l", key="flipi_hb")
+        with col2:
+            flipi_nodaali = st.checkbox("Yli 4 nodaalista aluetta", key="flipi_nodaali")
+            flipi_ldh = st.checkbox("LDH koholla (> viitealueen yläraja)", key="flipi_ldh")
+            
+        pisteet = laske_flipi_pisteet(flipi_ika, flipi_stage, flipi_hb, flipi_nodaali, flipi_ldh)
+        riskiryhma = hae_flipi_riskiryhma(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** FLIPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
