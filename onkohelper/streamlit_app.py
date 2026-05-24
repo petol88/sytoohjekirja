@@ -7,8 +7,12 @@ st.set_page_config(page_title="Onkologian Työpöytä", layout="wide")
 
 # Add current directory to path so we can import oncology_helper
 current_dir = os.path.dirname(os.path.abspath(__file__))
+onkohelper_dir = os.path.join(current_dir, "onkohelper")
+
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
+if os.path.exists(onkohelper_dir) and onkohelper_dir not in sys.path:
+    sys.path.insert(0, onkohelper_dir)
 
 # 2. TUONNIT ONCOLOGY_HELPERISTÄ (Korvaa omat apufunktiot näillä)
 from oncology_helper.data import Tietokanta, TNM_DATA
