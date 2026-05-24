@@ -138,3 +138,26 @@ def hae_cns_ipi_riskiryhma(pisteet: int) -> str:
     if pisteet <= 1: return "Matala riski (2 vuoden CNS-relapsin todennäköisyys n. 0,6 %)"
     elif pisteet <= 3: return "Kohtalainen riski (2 vuoden CNS-relapsin todennäköisyys n. 3,4 %)"
     else: return "Korkea riski (2 vuoden CNS-relapsin todennäköisyys n. 10,2 %)"
+
+def laske_mipi_pisteet(ika: int, ecog: int, ldh_suhde: float, wbc: float) -> int:
+    pisteet = 0
+    # Ikä
+    if ika >= 70: pisteet += 3
+    elif ika >= 60: pisteet += 2
+    elif ika >= 50: pisteet += 1
+    # ECOG
+    if ecog >= 2: pisteet += 1
+    # LDH/viitealueen yläraja
+    if ldh_suhde >= 1.50: pisteet += 3
+    elif ldh_suhde >= 1.00: pisteet += 2
+    elif ldh_suhde >= 0.67: pisteet += 1
+    # Leukosyytit (WBC)
+    if wbc >= 15.0: pisteet += 3
+    elif wbc >= 10.0: pisteet += 2
+    elif wbc >= 6.7: pisteet += 1
+    return pisteet
+
+def hae_mipi_riskiryhma(pisteet: int) -> str:
+    if pisteet <= 3: return "Matala riski (0-3 p)"
+    elif pisteet <= 5: return "Kohtalainen riski (4-5 p)"
+    else: return "Korkea riski (≥6 p)"

@@ -25,7 +25,9 @@ from oncology_helper.calculators import (
     laske_ipi_pisteet,
     hae_ipi_riskiryhma,
     laske_cns_ipi_pisteet,
-    hae_cns_ipi_riskiryhma
+    hae_cns_ipi_riskiryhma,
+    laske_mipi_pisteet,
+    hae_mipi_riskiryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -325,7 +327,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -367,6 +369,25 @@ elif view == "Pisteytykset":
         
         st.markdown("---")
         st.success(f"**Tulos:** IPI-pisteet: {pisteet} / 5")
+        st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
+    elif laskuri_valinta == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
+        st.subheader("MIPI (Mantle Cell Lymphoma International Prognostic Index)")
+        st.write("Arvioi manttelisolulymfooman ennustetta (yksinkertaistettu sMIPI).")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            mipi_ika = st.number_input("Ikä (vuotta)", min_value=0, max_value=120, value=60, step=1, key="mipi_ika")
+            mipi_ecog = st.selectbox("ECOG-suorituskyky", [0, 1, 2, 3, 4], key="mipi_ecog")
+        with col2:
+            mipi_ldh = st.number_input("LDH / viitealueen yläraja (suhdeluku)", min_value=0.0, max_value=50.0, value=1.0, step=0.1, key="mipi_ldh")
+            mipi_wbc = st.number_input("Leukosyytit (WBC, E9/l)", min_value=0.0, max_value=500.0, value=5.0, step=0.1, key="mipi_wbc")
+            
+        pisteet = laske_mipi_pisteet(mipi_ika, mipi_ecog, mipi_ldh, mipi_wbc)
+        riskiryhma = hae_mipi_riskiryhma(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** sMIPI-pisteet: {pisteet}")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
         
     elif laskuri_valinta == "CNS-IPI (CNS International Prognostic Index)":

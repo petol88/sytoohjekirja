@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -65,6 +65,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_ipi_view()
         elif valittu == "CNS-IPI (CNS International Prognostic Index)":
             self.build_cns_ipi_view()
+        elif valittu == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
+            self.build_mipi_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -182,3 +184,58 @@ class PisteytyksetView(ttk.Frame):
         
         self.cns_result_label.config(text=f"Tulos: CNS-IPI-pisteet: {pisteet} / 6")
         self.cns_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
+
+    def build_mipi_view(self):
+        ttk.Label(self.content_frame, text="MIPI (Mantle Cell Lymphoma International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi manttelisolulymfooman ennustetta (yksinkertaistettu sMIPI).", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.mipi_ika_var = tk.StringVar(value="60")
+        self.mipi_ecog_var = tk.StringVar(value="0")
+        self.mipi_ldh_var = tk.StringVar(value="1.0")
+        self.mipi_wbc_var = tk.StringVar(value="5.0")
+        
+        # Päivitetään tulokset automaattisesti
+        self.mipi_ika_var.trace_add("write", lambda *args: self.laske_mipi())
+        self.mipi_ecog_var.trace_add("write", lambda *args: self.laske_mipi())
+        self.mipi_ldh_var.trace_add("write", lambda *args: self.laske_mipi())
+        self.mipi_wbc_var.trace_add("write", lambda *args: self.laske_mipi())
+        
+        ttk.Label(input_frame, text="Ikä (vuotta):").grid(row=0, column=0, sticky="w", pady=5)
+        ttk.Entry(input_frame, textvariable=self.mipi_ika_var, width=10).grid(row=0, column=1, sticky="w", pady=5, padx=5)
+        
+        ttk.Label(input_frame, text="ECOG-suorituskyky:").grid(row=1, column=0, sticky="w", pady=5)
+        ttk.Combobox(input_frame, textvariable=self.mipi_ecog_var, values=[str(i) for i in range(5)], width=8, state="readonly").grid(row=1, column=1, sticky="w", pady=5, padx=5)
+        
+        ttk.Label(input_frame, text="LDH / viitealueen yläraja (suhdeluku esim. 1.5):").grid(row=2, column=0, sticky="w", pady=5)
+        ttk.Entry(input_frame, textvariable=self.mipi_ldh_var, width=10).grid(row=2, column=1, sticky="w", pady=5, padx=5)
+        
+        ttk.Label(input_frame, text="Leukosyytit (WBC, E9/l):").grid(row=3, column=0, sticky="w", pady=5)
+        ttk.Entry(input_frame, textvariable=self.mipi_wbc_var, width=10).grid(row=3, column=1, sticky="w", pady=5, padx=5)
+        
+        self.mipi_result_frame = ttk.Frame(self.content_frame)
+        self.mipi_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.mipi_result_label = ttk.Label(self.mipi_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.mipi_result_label.pack(anchor="w")
+        self.mipi_risk_label = ttk.Label(self.mipi_result_frame, text="", font=("Segoe UI", 11))
+        self.mipi_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_mipi()
+
+    def laske_mipi(self):
+        try: ika = int(self.mipi_ika_var.get())
+        except ValueError: ika = 0
+            
+        try: ecog = int(self.mipi_ecog_var.get())
+        except ValueError: ecog = 0
+            
+        ldh = safe_float(self.mipi_ldh_var.get())
+        wbc = safe_float(self.mipi_wbc_var.get())
+            
+        pisteet = laske_mipi_pisteet(ika, ecog, ldh, wbc)
+        riskiryhma = hae_mipi_riskiryhma(pisteet)
+        
+        self.mipi_result_label.config(text=f"Tulos: sMIPI-pisteet: {pisteet}")
+        self.mipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
