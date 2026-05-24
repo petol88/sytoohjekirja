@@ -23,7 +23,9 @@ from oncology_helper.calculators import (
     EcogLuokka,
     hae_ecog_kuvaus,
     laske_ipi_pisteet,
-    hae_ipi_riskiryhma
+    hae_ipi_riskiryhma,
+    laske_cns_ipi_pisteet,
+    hae_cns_ipi_riskiryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -323,7 +325,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -365,4 +367,25 @@ elif view == "Pisteytykset":
         
         st.markdown("---")
         st.success(f"**Tulos:** IPI-pisteet: {pisteet} / 5")
+        st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
+    elif laskuri_valinta == "CNS-IPI (CNS International Prognostic Index)":
+        st.subheader("CNS-IPI (CNS International Prognostic Index)")
+        st.write("Arvioi keskushermostorelapssin riskiä diffuusissa suurisoluisessa B-solulymfoomassa (DLBCL).")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            cns_ika = st.checkbox("Ikä > 60 vuotta", key="cns_ika")
+            cns_ldh = st.checkbox("LDH koholla (> viitealueen yläraja)", key="cns_ldh")
+            cns_ecog = st.checkbox("ECOG-suorituskyky ≥ 2", key="cns_ecog")
+        with col2:
+            cns_stage = st.checkbox("Ann Arbor Stage III tai IV", key="cns_stage")
+            cns_en = st.checkbox("Yli 1 ekstranodaalinen pesäke", key="cns_en")
+            cns_kidney = st.checkbox("Munuaisten ja/tai lisämunuaisten affisio", key="cns_kidney")
+            
+        pisteet = laske_cns_ipi_pisteet(cns_ika, cns_ldh, cns_ecog, cns_stage, cns_en, cns_kidney)
+        riskiryhma = hae_cns_ipi_riskiryhma(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** CNS-IPI-pisteet: {pisteet} / 6")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
