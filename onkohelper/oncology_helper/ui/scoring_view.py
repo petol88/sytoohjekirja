@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -61,6 +61,8 @@ class PisteytyksetView(ttk.Frame):
         
         if valittu == "ECOG-suorituskyky":
             self.build_ecog_view()
+        elif valittu == "IPI (International Prognostic Index)":
+            self.build_ipi_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -109,49 +111,35 @@ class PisteytyksetView(ttk.Frame):
 
     def build_ipi_view(self):
         ttk.Label(self.content_frame, text="IPI (International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
-        ttk.Label(self.content_frame, text="Ennustetekijä aggressiivisille non-Hodgkin-lymfoomille (esim. DLBCL).", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
-
-        checkbox_frame = ttk.Frame(self.content_frame)
-        checkbox_frame.pack(anchor="w", fill="x")
-
-        self.ipi_ika_var = tk.BooleanVar()
-        self.ipi_stage_var = tk.BooleanVar()
-        self.ipi_extra_var = tk.BooleanVar()
-        self.ipi_ecog_var = tk.BooleanVar()
-        self.ipi_ldh_var = tk.BooleanVar()
-
-        def on_ipi_change():
-            pisteet = laske_ipi_pisteet(
-                self.ipi_ika_var.get(),
-                self.ipi_stage_var.get(),
-                self.ipi_extra_var.get(),
-                self.ipi_ecog_var.get(),
-                self.ipi_ldh_var.get()
-            )
-            riskiluokka = maarita_ipi_riskiluokka(pisteet)
-            self.ipi_result_label.config(text=f"Tulos: {pisteet} / 5 pistettä")
-            self.ipi_class_label.config(text=f"Riskiluokka: {riskiluokka.value}")
-
-        checkboxes = [
-            ("Ikä yli 60 vuotta", self.ipi_ika_var),
-            ("Levinneisyysaste III tai IV", self.ipi_stage_var),
-            ("Yli 1 ekstranodaalinen pesäke", self.ipi_extra_var),
-            ("ECOG-suorituskyky ≥ 2", self.ipi_ecog_var),
-            ("Seerumin LDH yli viitearvon", self.ipi_ldh_var)
-        ]
-
-        for teksti, var in checkboxes:
-            cb = ttk.Checkbutton(
-                checkbox_frame, 
-                text=teksti, 
-                variable=var, 
-                command=on_ipi_change
-            )
-            cb.pack(anchor="w", pady=5)
-
+        ttk.Label(self.content_frame, text="Arvioi diffuusin suurisoluisen B-solulymfooman (DLBCL) ennustetta.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.ipi_ika_var = tk.BooleanVar(value=False)
+        self.ipi_ldh_var = tk.BooleanVar(value=False)
+        self.ipi_ecog_var = tk.BooleanVar(value=False)
+        self.ipi_stage_var = tk.BooleanVar(value=False)
+        self.ipi_en_var = tk.BooleanVar(value=False)
+        
+        ttk.Checkbutton(input_frame, text="Ikä > 60 vuotta", variable=self.ipi_ika_var, command=self.laske_ipi).grid(row=0, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="LDH koholla (> viitealueen yläraja)", variable=self.ipi_ldh_var, command=self.laske_ipi).grid(row=1, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="ECOG-suorituskyky ≥ 2", variable=self.ipi_ecog_var, command=self.laske_ipi).grid(row=2, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Ann Arbor Stage III tai IV", variable=self.ipi_stage_var, command=self.laske_ipi).grid(row=3, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Yli 1 ekstranodaalinen pesäke", variable=self.ipi_en_var, command=self.laske_ipi).grid(row=4, column=0, columnspan=2, sticky="w", pady=5)
+        
         self.ipi_result_frame = ttk.Frame(self.content_frame)
         self.ipi_result_frame.pack(anchor="w", fill="x", pady=20)
-        self.ipi_result_label = ttk.Label(self.ipi_result_frame, text="Tulos: 0 / 5 pistettä", font=("Segoe UI", 12, "bold"))
+        self.ipi_result_label = ttk.Label(self.ipi_result_frame, text="", font=("Segoe UI", 12, "bold"))
         self.ipi_result_label.pack(anchor="w")
-        self.ipi_class_label = ttk.Label(self.ipi_result_frame, text="Riskiluokka: Matala riski (0-1 pistettä)", font=("Segoe UI", 11, "bold"), foreground="green")
-        self.ipi_class_label.pack(anchor="w", pady=(5, 0))
+        self.ipi_risk_label = ttk.Label(self.ipi_result_frame, text="", font=("Segoe UI", 11))
+        self.ipi_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_ipi()
+
+    def laske_ipi(self):
+        pisteet = laske_ipi_pisteet(self.ipi_ika_var.get(), self.ipi_ldh_var.get(), self.ipi_ecog_var.get(), self.ipi_stage_var.get(), self.ipi_en_var.get())
+        riskiryhma = hae_ipi_riskiryhma(pisteet)
+        
+        self.ipi_result_label.config(text=f"Tulos: IPI-pisteet: {pisteet} / 5")
+        self.ipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")

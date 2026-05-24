@@ -111,11 +111,11 @@ def laske_yksiloity_annos(perusannos: float, yksikko: str, bsa: float, paino: fl
     # Fixed dose (e.g., 'mg' or 'mg (kiinteä)')
     return perusannos
 
-def laske_ipi_pisteet(ika: int, ldh_koholla: bool, ecog: int, stage_3_4: bool, ekstranodaali_yli_1: bool) -> int:
+def laske_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: bool, stage_3_4: bool, ekstranodaali_yli_1: bool) -> int:
     pisteet = 0
-    if ika > 60: pisteet += 1
+    if ika_yli_60: pisteet += 1
     if ldh_koholla: pisteet += 1
-    if ecog >= 2: pisteet += 1
+    if ecog_vahintaan_2: pisteet += 1
     if stage_3_4: pisteet += 1
     if ekstranodaali_yli_1: pisteet += 1
     return pisteet
