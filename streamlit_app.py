@@ -19,7 +19,9 @@ from oncology_helper.calculators import (
     laske_calvert,
     Sukupuoli,
     Potilas,
-    laske_yksiloity_annos
+    laske_yksiloity_annos,
+    EcogLuokka,
+    hae_ecog_kuvaus
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -319,11 +321,29 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    # Placeholder for calculators dropdown/tabs
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse..."])
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky"], key="pisteytys_laskuri_valinta")
     
-    if laskuri_valinta != "Valitse...":
-        st.write("Laskurin logiikka tulee tähän.")
+    if laskuri_valinta == "ECOG-suorituskyky":
+        st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
+        st.write("Arvioi potilaan toimintakykyä ja päivittäisistä toiminnoista suoriutumista.")
+        
+        # Create a list of options formatted as "0 - Täysin aktiivinen..."
+        ecog_vaihtoehdot = []
+        for luokka in EcogLuokka:
+            kuvaus = hae_ecog_kuvaus(luokka)
+            ecog_vaihtoehdot.append(f"ECOG {luokka.value}: {kuvaus}")
+            
+        valittu_ecog_str = st.radio("Valitse potilasta parhaiten kuvaava tila:", ecog_vaihtoehdot, key="ecog_radio_valinta")
+        
+        # Extract just the number to show the result clearly
+        if valittu_ecog_str:
+            ecog_arvo = valittu_ecog_str.split(":")[0]
+            st.success(f"**Tulos:** Potilaan suorituskyky on {ecog_arvo}.")
+            
+            # Additional logic based on score (optional, but good for context)
+            arvo_int = int(ecog_arvo.replace("ECOG ", ""))
+            if arvo_int >= 3:
+                st.warning("Huom: ECOG 3 tai huonompi on usein vasta-aihe raskaalle solunsalpaajahoidolle.")
 
 elif view == "Tietoa":
     st.info("Tämä on Streamlit-versio Onkologian Työpöytä -sovelluksesta, joka käyttää suoraan oncology_helper -kirjastoa.")
