@@ -121,7 +121,14 @@ def laske_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: boo
     return pisteet
 
 def hae_ipi_riskiryhma(pisteet: int) -> str:
-    ryhmat = {0: "Matala riski", 1: "Matala riski", 2: "Matala-kohtalainen riski", 3: "Korkea-kohtalainen riski", 4: "Korkea riski", 5: "Korkea riski"}
+    ryhmat = {
+        0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
+        1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
+        2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)", 
+        3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)", 
+        4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)", 
+        5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)"
+    }
     return ryhmat.get(pisteet, "Tuntematon riski")
 
 def laske_cns_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: bool, stage_3_4: bool, ekstranodaali_yli_1: bool, munuainen_lisamunuainen: bool) -> int:
@@ -139,25 +146,24 @@ def hae_cns_ipi_riskiryhma(pisteet: int) -> str:
     elif pisteet <= 3: return "Kohtalainen riski (2 vuoden CNS-relapsin todennäköisyys n. 3,4 %)"
     else: return "Korkea riski (2 vuoden CNS-relapsin todennäköisyys n. 10,2 %)"
 
-def laske_mipi_pisteet(ika: int, ecog: int, ldh_suhde: float, wbc: float) -> int:
-    pisteet = 0
-    # Ikä
-    if ika >= 70: pisteet += 3
-    elif ika >= 60: pisteet += 2
-    elif ika >= 50: pisteet += 1
-    # ECOG
-    if ecog >= 2: pisteet += 1
-    # LDH/viitealueen yläraja
-    if ldh_suhde >= 1.50: pisteet += 3
-    elif ldh_suhde >= 1.00: pisteet += 2
-    elif ldh_suhde >= 0.67: pisteet += 1
-    # Leukosyytit (WBC)
-    if wbc >= 15.0: pisteet += 3
-    elif wbc >= 10.0: pisteet += 2
-    elif wbc >= 6.7: pisteet += 1
-    return pisteet
+def laske_mipi_pisteet(ika_pisteet: int, ecog_pisteet: int, ldh_pisteet: int, wbc_pisteet: int) -> int:
+    return ika_pisteet + ecog_pisteet + ldh_pisteet + wbc_pisteet
 
 def hae_mipi_riskiryhma(pisteet: int) -> str:
-    if pisteet <= 3: return "Matala riski (0-3 p)"
-    elif pisteet <= 5: return "Kohtalainen riski (4-5 p)"
-    else: return "Korkea riski (≥6 p)"
+    if pisteet <= 3: return "Matala riski (0-3 p) - 5-vuoden elossaoloennuste n. 83 %"
+    elif pisteet <= 5: return "Kohtalainen riski (4-5 p) - Mediaani elossaoloaika n. 51 kk"
+    else: return "Korkea riski (≥6 p) - Mediaani elossaoloaika n. 29 kk"
+
+def laske_flipi_pisteet(ika_yli_60: bool, stage_3_4: bool, hb_alle_120: bool, nodaali_yli_4: bool, ldh_koholla: bool) -> int:
+    pisteet = 0
+    if ika_yli_60: pisteet += 1
+    if stage_3_4: pisteet += 1
+    if hb_alle_120: pisteet += 1
+    if nodaali_yli_4: pisteet += 1
+    if ldh_koholla: pisteet += 1
+    return pisteet
+
+def hae_flipi_riskiryhma(pisteet: int) -> str:
+    if pisteet <= 1: return "Matala riski (0-1 p) - 5-vuoden elossaoloennuste n. 91 % (10-vuoden n. 71 %)"
+    elif pisteet == 2: return "Kohtalainen riski (2 p) - 5-vuoden elossaoloennuste n. 78 % (10-vuoden n. 51 %)"
+    else: return "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"

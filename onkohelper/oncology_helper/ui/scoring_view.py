@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -67,6 +67,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_cns_ipi_view()
         elif valittu == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
             self.build_mipi_view()
+        elif valittu == "FLIPI (Follicular Lymphoma International Prognostic Index)":
+            self.build_flipi_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -192,28 +194,37 @@ class PisteytyksetView(ttk.Frame):
         input_frame = ttk.Frame(self.content_frame)
         input_frame.pack(anchor="w", fill="x")
         
-        self.mipi_ika_var = tk.StringVar(value="60")
-        self.mipi_ecog_var = tk.StringVar(value="0")
-        self.mipi_ldh_var = tk.StringVar(value="1.0")
-        self.mipi_wbc_var = tk.StringVar(value="5.0")
+        self.mipi_ika_var = tk.IntVar(value=0)
+        self.mipi_ecog_var = tk.IntVar(value=0)
+        self.mipi_ldh_var = tk.IntVar(value=0)
+        self.mipi_wbc_var = tk.IntVar(value=0)
         
-        # Päivitetään tulokset automaattisesti
-        self.mipi_ika_var.trace_add("write", lambda *args: self.laske_mipi())
-        self.mipi_ecog_var.trace_add("write", lambda *args: self.laske_mipi())
-        self.mipi_ldh_var.trace_add("write", lambda *args: self.laske_mipi())
-        self.mipi_wbc_var.trace_add("write", lambda *args: self.laske_mipi())
+        col1_frame = ttk.Frame(input_frame)
+        col1_frame.grid(row=0, column=0, sticky="nw", padx=(0, 40))
+        col2_frame = ttk.Frame(input_frame)
+        col2_frame.grid(row=0, column=1, sticky="nw")
         
-        ttk.Label(input_frame, text="Ikä (vuotta):").grid(row=0, column=0, sticky="w", pady=5)
-        ttk.Entry(input_frame, textvariable=self.mipi_ika_var, width=10).grid(row=0, column=1, sticky="w", pady=5, padx=5)
+        ttk.Label(col1_frame, text="Ikä (vuotta):", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,2))
+        ttk.Radiobutton(col1_frame, text="< 50 (0 p)", variable=self.mipi_ika_var, value=0, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="50 - 59 (1 p)", variable=self.mipi_ika_var, value=1, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="60 - 69 (2 p)", variable=self.mipi_ika_var, value=2, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="≥ 70 (3 p)", variable=self.mipi_ika_var, value=3, command=self.laske_mipi).pack(anchor="w")
         
-        ttk.Label(input_frame, text="ECOG-suorituskyky:").grid(row=1, column=0, sticky="w", pady=5)
-        ttk.Combobox(input_frame, textvariable=self.mipi_ecog_var, values=[str(i) for i in range(5)], width=8, state="readonly").grid(row=1, column=1, sticky="w", pady=5, padx=5)
+        ttk.Label(col1_frame, text="ECOG-suorituskyky:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(col1_frame, text="0 - 1 (0 p)", variable=self.mipi_ecog_var, value=0, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="≥ 2 (1 p)", variable=self.mipi_ecog_var, value=1, command=self.laske_mipi).pack(anchor="w")
         
-        ttk.Label(input_frame, text="LDH / viitealueen yläraja (suhdeluku esim. 1.5):").grid(row=2, column=0, sticky="w", pady=5)
-        ttk.Entry(input_frame, textvariable=self.mipi_ldh_var, width=10).grid(row=2, column=1, sticky="w", pady=5, padx=5)
+        ttk.Label(col2_frame, text="LDH / viitealueen yläraja:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,2))
+        ttk.Radiobutton(col2_frame, text="< 0.67 (0 p)", variable=self.mipi_ldh_var, value=0, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="0.67 - 0.99 (1 p)", variable=self.mipi_ldh_var, value=1, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="1.00 - 1.49 (2 p)", variable=self.mipi_ldh_var, value=2, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="≥ 1.50 (3 p)", variable=self.mipi_ldh_var, value=3, command=self.laske_mipi).pack(anchor="w")
         
-        ttk.Label(input_frame, text="Leukosyytit (WBC, E9/l):").grid(row=3, column=0, sticky="w", pady=5)
-        ttk.Entry(input_frame, textvariable=self.mipi_wbc_var, width=10).grid(row=3, column=1, sticky="w", pady=5, padx=5)
+        ttk.Label(col2_frame, text="Leukosyytit (WBC, E9/l):", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(col2_frame, text="< 6.7 (0 p)", variable=self.mipi_wbc_var, value=0, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="6.7 - 9.9 (1 p)", variable=self.mipi_wbc_var, value=1, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="10.0 - 14.9 (2 p)", variable=self.mipi_wbc_var, value=2, command=self.laske_mipi).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="≥ 15.0 (3 p)", variable=self.mipi_wbc_var, value=3, command=self.laske_mipi).pack(anchor="w")
         
         self.mipi_result_frame = ttk.Frame(self.content_frame)
         self.mipi_result_frame.pack(anchor="w", fill="x", pady=20)
@@ -225,17 +236,43 @@ class PisteytyksetView(ttk.Frame):
         self.laske_mipi()
 
     def laske_mipi(self):
-        try: ika = int(self.mipi_ika_var.get())
-        except ValueError: ika = 0
-            
-        try: ecog = int(self.mipi_ecog_var.get())
-        except ValueError: ecog = 0
-            
-        ldh = safe_float(self.mipi_ldh_var.get())
-        wbc = safe_float(self.mipi_wbc_var.get())
-            
-        pisteet = laske_mipi_pisteet(ika, ecog, ldh, wbc)
+        pisteet = laske_mipi_pisteet(self.mipi_ika_var.get(), self.mipi_ecog_var.get(), self.mipi_ldh_var.get(), self.mipi_wbc_var.get())
         riskiryhma = hae_mipi_riskiryhma(pisteet)
         
         self.mipi_result_label.config(text=f"Tulos: sMIPI-pisteet: {pisteet}")
         self.mipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
+
+    def build_flipi_view(self):
+        ttk.Label(self.content_frame, text="FLIPI (Follicular Lymphoma International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi follikulaarisen lymfooman ennustetta.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.flipi_ika_var = tk.BooleanVar(value=False)
+        self.flipi_stage_var = tk.BooleanVar(value=False)
+        self.flipi_hb_var = tk.BooleanVar(value=False)
+        self.flipi_nodaali_var = tk.BooleanVar(value=False)
+        self.flipi_ldh_var = tk.BooleanVar(value=False)
+        
+        ttk.Checkbutton(input_frame, text="Ikä > 60 vuotta", variable=self.flipi_ika_var, command=self.laske_flipi).grid(row=0, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Ann Arbor Stage III tai IV", variable=self.flipi_stage_var, command=self.laske_flipi).grid(row=1, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Hemoglobiini < 120 g/l", variable=self.flipi_hb_var, command=self.laske_flipi).grid(row=2, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Yli 4 nodaalista aluetta", variable=self.flipi_nodaali_var, command=self.laske_flipi).grid(row=3, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="LDH koholla (> viitealueen yläraja)", variable=self.flipi_ldh_var, command=self.laske_flipi).grid(row=4, column=0, columnspan=2, sticky="w", pady=5)
+        
+        self.flipi_result_frame = ttk.Frame(self.content_frame)
+        self.flipi_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.flipi_result_label = ttk.Label(self.flipi_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.flipi_result_label.pack(anchor="w")
+        self.flipi_risk_label = ttk.Label(self.flipi_result_frame, text="", font=("Segoe UI", 11))
+        self.flipi_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_flipi()
+
+    def laske_flipi(self):
+        pisteet = laske_flipi_pisteet(self.flipi_ika_var.get(), self.flipi_stage_var.get(), self.flipi_hb_var.get(), self.flipi_nodaali_var.get(), self.flipi_ldh_var.get())
+        riskiryhma = hae_flipi_riskiryhma(pisteet)
+        
+        self.flipi_result_label.config(text=f"Tulos: FLIPI-pisteet: {pisteet} / 5")
+        self.flipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
