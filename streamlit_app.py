@@ -37,7 +37,11 @@ from oncology_helper.calculators import (
     tarkista_gelf_kriteerit,
     hae_gelf_suositus,
     laske_cps_eg_pisteet,
-    hae_cps_eg_ennuste
+    hae_cps_eg_ennuste,
+    laske_ips_pisteet,
+    hae_ips_ennuste,
+    tarkista_hl_paikallinen_riskitekijat,
+    hae_hl_paikallinen_riskiryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -337,7 +341,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -380,6 +384,47 @@ elif view == "Pisteytykset":
         st.markdown("---")
         st.success(f"**Tulos:** IPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
+    elif laskuri_valinta == "IPS (International Prognostic Score - Hodgkin lymfooma)":
+        st.subheader("IPS (International Prognostic Score)")
+        st.write("Arvioi levinneen (Stage IIB-IV) Hodgkinin lymfooman ennustetta.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            ips_alb = st.checkbox("Albumiini < 40 g/l", key="ips_alb")
+            ips_hb = st.checkbox("Hemoglobiini < 105 g/l", key="ips_hb")
+            ips_mies = st.checkbox("Mies-sukupuoli", key="ips_mies")
+            ips_ika = st.checkbox("Ikä ≥ 45 vuotta", key="ips_ika")
+        with col2:
+            ips_stage = st.checkbox("Stage IV -tauti", key="ips_stage")
+            ips_wbc = st.checkbox("Leukosyytit (WBC) ≥ 15.0 E9/l", key="ips_wbc")
+            ips_lymf = st.checkbox("Lymfosyytit < 0.6 E9/l (tai < 8% WBC)", key="ips_lymf")
+            
+        pisteet = laske_ips_pisteet(ips_alb, ips_hb, ips_mies, ips_ika, ips_stage, ips_wbc, ips_lymf)
+        ennuste = hae_ips_ennuste(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** IPS-pisteet: {pisteet} / 7")
+        st.info(f"**Ennuste:** {ennuste}")
+        
+    elif laskuri_valinta == "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät":
+        st.subheader("Hodgkin lymfooma - Paikallisen taudin riskitekijät")
+        st.write("Arvioi paikallisen (Stage I-II) Hodgkinin lymfooman riskiryhmää (EORTC/GHSG -kriteerit).")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            hl_med = st.checkbox("Iso mediastinumin tuumori (> 1/3 rintakehän leveydestä)", key="hl_med")
+            hl_eks = st.checkbox("Tautia imusolmukkeen ulkopuolisessa elimessä (E-leesio)", key="hl_eks")
+        with col2:
+            hl_alue = st.checkbox("≥ 3 affisoitunutta imusolmukealuetta", key="hl_alue")
+            hl_la = st.checkbox("La > 50 mm/t (Stage IA, IIA) TAI La > 30 mm/t (Stage IB, IIB)", key="hl_la")
+            
+        pisteet = tarkista_hl_paikallinen_riskitekijat(hl_med, hl_eks, hl_alue, hl_la)
+        ryhma = hae_hl_paikallinen_riskiryhma(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** {pisteet} riskitekijä(ä) täyttyy.")
+        st.info(f"**Riskiryhmä:** {ryhma}")
         
     elif laskuri_valinta == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
         st.subheader("MIPI (Mantle Cell Lymphoma International Prognostic Index)")
@@ -492,7 +537,8 @@ elif view == "Pisteytykset":
 * **Stage IIIB:** T4, mikä tahansa N
 * **Stage IIIC:** Mikä tahansa T, N3
 
-*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*""")
+*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*  
+*(N1: 1-3 kainalo, N2: 4-9 kainalo/sis.rinta, N3: ≥10 kainalo/soliskuoppa)*""")
                     
         c_p = ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"].index(cpseg_cstage_str)
         p_p = ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"].index(cpseg_pstage_str)
