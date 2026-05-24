@@ -1,0 +1,318 @@
+import streamlit as st
+import sys
+import os
+
+# 1. Page config
+st.set_page_config(page_title="Onkologian Työpöytä", layout="wide")
+
+# Add current directory to path so we can import oncology_helper
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
+# 2. TUONNIT ONCOLOGY_HELPERISTÄ (Korvaa omat apufunktiot näillä)
+from oncology_helper.data import Tietokanta, TNM_DATA
+from oncology_helper.calculators import (
+    laske_bsa, 
+    laske_cockcroft_gault, 
+    pyorista_tabletit, 
+    laske_calvert,
+    Sukupuoli
+)
+from oncology_helper.staging import (
+    laske_stage_rintasyopa, 
+    maarita_hoitosuunnitelma_rintasyopa,
+    ReseptoriTila,
+    Ki67Tila,
+    Hoitolinja
+)
+
+# Load Data
+@st.cache_data
+def load_data():
+    Tietokanta.lataa()
+    return Tietokanta.data
+
+YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
+
+try:
+    Tietokanta.data = load_data()
+except Exception as e:
+    st.error(f"Virhe ladattaessa tietokantaa: {e}")
+
+st.title("Onkologian Työpöytä v2.3 (Streamlit)")
+
+view = st.sidebar.radio("Valitse näkymä", ["Laskuri", "Levinneisyys", "Tietoa"])
+
+if view == "Laskuri":
+    st.header("Sytostaattilaskuri")
+
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        with st.expander("Potilas", expanded=True):
+            if 'pituus' not in st.session_state: st.session_state['pituus'] = 0.0
+            if 'paino' not in st.session_state: st.session_state['paino'] = 0.0
+            if 'ika' not in st.session_state: st.session_state['ika'] = 0
+            if 'krea' not in st.session_state: st.session_state['krea'] = 0
+            if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
+
+            pituus = st.number_input("Pituus (cm)", min_value=0.0, step=1.0, format="%.1f", key="pituus")
+            paino = st.number_input("Paino (kg)", min_value=0.0, step=0.1, format="%.1f", key="paino")
+            ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
+            krea = st.number_input("Krea", min_value=0.0, step=1.0, format="%.1f", key="krea")
+            sukupuoli_str = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
+
+            # MUUTOS: Käytetään Enumia
+            sukupuoli_enum = Sukupuoli.MIES if sukupuoli_str == "Mies" else Sukupuoli.NAINEN
+
+            # MUUTOS: Käytetään funktioita calculators.py:stä
+            bsa = laske_bsa(pituus, paino)
+            gfr = laske_cockcroft_gault(ika, paino, krea, sukupuoli_enum)
+
+            st.metric("BSA", f"{bsa:.2f} m²")
+            st.metric("GFR", f"{gfr:.0f} ml/min")
+
+    with col2:
+        st.subheader("Hoito")
+        
+        indikaatiot = set()
+        for prot_data in Tietokanta.data.values():
+            tyypit = prot_data.get('syöpätyypit', [])
+            if tyypit:
+                for t in tyypit:
+                    indikaatiot.add(t)
+            else:
+                indikaatiot.add("Ei määritelty")
+        
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
+        
+        if valittu_syopatyyppi == "Kaikki":
+            protokollat = list(Tietokanta.data.keys())
+        elif valittu_syopatyyppi == "Ei määritelty":
+            protokollat = [
+                nimi for nimi, data in Tietokanta.data.items() 
+                if not data.get('syöpätyypit')
+            ]
+        else:
+            protokollat = [
+                nimi for nimi, data in Tietokanta.data.items() 
+                if valittu_syopatyyppi in data.get('syöpätyypit', [])
+            ]
+            
+        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
+
+        labrat_default = ""
+        protokolla_data = None
+
+        if valittu_protokolla and valittu_protokolla in Tietokanta.data:
+            protokolla_data = Tietokanta.data[valittu_protokolla]
+            labrat_default = protokolla_data.get('kontrollit', '')
+
+        labrat = st.text_input("Labrat", value=labrat_default, key=f"labrat_{valittu_protokolla}")
+
+        if protokolla_data:
+            st.subheader("Lääkkeet")
+
+            laske_tulokset = []
+
+            cols = st.columns([3, 2, 2, 2, 2, 2])
+            cols[0].markdown("**Lääke**")
+            cols[1].markdown("**Annos**")
+            cols[2].markdown("**Yks.**")
+            cols[3].markdown("**Vahvuus**")
+            cols[4].markdown("**Tulos (mg)**")
+            cols[5].markdown("**Määräys**")
+
+            for i, med in enumerate(protokolla_data['lääkkeet']):
+                c = st.columns([3, 2, 2, 2, 2, 2])
+                c[0].write(med['nimi'])
+
+                annos_val = med['annos']
+                annos = c[1].number_input(f"Annos {i}", value=float(annos_val), step=10.0, label_visibility="collapsed", key=f"{valittu_protokolla}_annos_{i}")
+
+                yksikkö_val = med.get('yksikkö', 'mg/m2')
+                if yksikkö_val in YKSIKKO_OPTS_BASE:
+                    yksikkö_opts = YKSIKKO_OPTS_BASE
+                else:
+                    yksikkö_opts = YKSIKKO_OPTS_BASE + (yksikkö_val,)
+                idx = yksikkö_opts.index(yksikkö_val)
+                yksikkö = c[2].selectbox(f"Yks {i}", yksikkö_opts, index=idx, label_visibility="collapsed", key=f"{valittu_protokolla}_yks_{i}")
+
+                tablettikoot = med.get("tablettikoot", [])
+                vahvuus_str = "None"
+                if tablettikoot:
+                    vahvuus_str = c[3].selectbox(f"Vahv {i}", tablettikoot, label_visibility="collapsed", key=f"{valittu_protokolla}_vahv_{i}")
+                else:
+                    c[3].write("-")
+
+                # MUUTOS: AUC-laskenta käyttää nyt calvert-funktiota
+                mg = 0.0
+                if yksikkö == "mg/m2":
+                    mg = annos * bsa
+                elif yksikkö == "mg/kg":
+                    mg = annos * paino
+                elif yksikkö == "AUC":
+                    mg = laske_calvert(annos, gfr)
+                else:
+                    mg = annos
+
+                c[4].write(f"{mg:.0f}")
+
+                fin = int(round(mg))
+                strength_mg = None
+                if vahvuus_str and vahvuus_str != "None":
+                    try:
+                        strength_mg = float(vahvuus_str.split()[0])
+                        # MUUTOS: Käytetään pyorista_tabletit calculators.py:stä
+                        fin = pyorista_tabletit(mg, strength_mg)
+                    except (ValueError, IndexError, ZeroDivisionError):
+                        pass
+
+                state_key = f"{valittu_protokolla}_maar_{i}"
+                calc_key = f"{valittu_protokolla}_calc_{i}"
+
+                if calc_key not in st.session_state or st.session_state[calc_key] != fin:
+                    st.session_state[state_key] = int(fin)
+                    st.session_state[calc_key] = fin
+
+                maarays = c[5].number_input(f"Määräys {i}", step=1, label_visibility="collapsed", key=state_key)
+
+                laske_tulokset.append({
+                    "med": med,
+                    "annos": annos,
+                    "yksikkö": yksikkö,
+                    "vahvuus": vahvuus_str,
+                    "strength_mg": strength_mg,
+                    "tulos_mg": mg,
+                    "maarays": maarays
+                })
+
+            st.subheader("Raportti")
+            report_lines = []
+            report_lines.append(f"PROTOKOLLA: {valittu_protokolla}")
+            if "sykli" in protokolla_data:
+                report_lines.append(f"Sykli: {protokolla_data['sykli']}")
+            report_lines.append(f"Labrat: {labrat}")
+            report_lines.append("-" * 40)
+
+            for item in laske_tulokset:
+                med = item['med']
+                fin_val = item['maarays']
+
+                paivat = med.get('päivät')
+                paivat_str = ""
+                if paivat:
+                    if isinstance(paivat, list):
+                        paivat_str = f" pv {', '.join(str(p) for p in paivat)}"
+                    else:
+                        paivat_str = f" pv {paivat}"
+
+                report_lines.append(f"• {med['nimi']}: {fin_val} mg{paivat_str}")
+
+                ts = item['vahvuus']
+                strength_mg = item.get('strength_mg')
+                if ts and ts != "None" and fin_val > 0 and strength_mg:
+                    try:
+                        count = fin_val / strength_mg
+                        report_lines.append(f"    -> {count:.1f} kpl ({ts})")
+                    except ZeroDivisionError:
+                        pass
+
+            report_lines.append("-" * 40)
+            report_lines.append(f"TUKIHOIDOT:\n{protokolla_data.get('esilääkitys', '-')}")
+
+            report_text = "\n".join(report_lines)
+            st.text_area("Kopioitava teksti", report_text, height=300)
+
+
+elif view == "Levinneisyys":
+    st.header("Levinneisyys & Luokitus")
+
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        st.subheader("Määritys")
+
+        tauti = st.selectbox("Syöpätyyppi", list(TNM_DATA.keys()))
+        d = TNM_DATA[tauti]
+
+        hoitolinja = st.selectbox("Hoitolinja", ["-", "Neoadjuvantti", "Adjuvantti"])
+
+        er_status = "Positiivinen"
+        her2_status = "Negatiivinen"
+        ki67_status = "Matala (<20%)"
+
+        if tauti == "Rintasyöpä":
+            st.markdown("---")
+            st.markdown("**Biologiset tekijät**")
+            er_status = st.selectbox("ER Status", ["Positiivinen", "Negatiivinen"])
+            her2_status = st.selectbox("HER2 Status", ["Positiivinen", "Negatiivinen"])
+            ki67_status = st.selectbox("Ki-67", ["Matala (<20%)", "Korkea (>=20%)"])
+            st.markdown("---")
+
+        st.markdown("**Levinneisyys**")
+        v1 = st.selectbox(f"{d['L1_Label']}", [""] + d['L1'])
+        v2 = st.selectbox(f"{d['L2_Label']}", [""] + d['L2'])
+        v3 = st.selectbox(f"{d['L3_Label']}", [""] + d['L3'])
+
+    with col2:
+        st.subheader("Tulos")
+
+        res_text = f"Diagnoosi: {tauti}\n"
+
+        c1 = v1.split(":")[0] if v1 else "?"
+        c2 = v2.split(":")[0] if v2 else "?"
+        c3 = v3.split(":")[0] if v3 else "?"
+
+        if d['Type'] == "AnnArbor":
+            stage_base = c1
+            symptoms = c2 if c2 in ["A", "B"] else ""
+            modifiers = c3 if c3 not in ["-", "?"] else ""
+
+            full_stage = f"{stage_base}{symptoms}"
+            if modifiers: full_stage += f" {modifiers}"
+
+            res_text += f"Ann Arbor levinneisyys: {full_stage}\n"
+            res_text += "-"*40 + "\n"
+            if v1: res_text += f"• Levinneisyys: {v1}\n"
+            if v2: res_text += f"• Oireet: {v2}\n"
+            if v3 and c3 != "-": res_text += f"• Lisämääre: {v3}\n"
+
+        else:
+            res_text += f"Levinneisyys (cTNM): {c1}{c2}{c3}"
+
+            if tauti == "Rintasyöpä" and "?" not in (c1, c2, c3):
+                try:
+                    # MUUTOS: Käytetään funktiota staging.py:stä
+                    st_val = laske_stage_rintasyopa(c1, c2, c3)
+                    res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+
+                    # MUUTOS: Muunnetaan Streamlit-valinnat Enumeiksi
+                    er_enum = ReseptoriTila.POSITIIVINEN if er_status == "Positiivinen" else ReseptoriTila.NEGATIIVINEN
+                    her2_enum = ReseptoriTila.POSITIIVINEN if her2_status == "Positiivinen" else ReseptoriTila.NEGATIIVINEN
+                    ki67_enum = Ki67Tila.MATALA if "Matala" in ki67_status else Ki67Tila.KORKEA
+                    
+                    hoito_enum = Hoitolinja.EI_VALITTU
+                    if hoitolinja == "Neoadjuvantti": hoito_enum = Hoitolinja.NEOADJUVANTTI
+                    elif hoitolinja == "Adjuvantti": hoito_enum = Hoitolinja.ADJUVANTTI
+
+                    # MUUTOS: Käytetään funktiota staging.py:stä oikeilla tyypeillä
+                    plan = maarita_hoitosuunnitelma_rintasyopa(
+                        st_val, c1, c2, c3,
+                        er_enum, her2_enum, ki67_enum,
+                        hoito_enum
+                    )
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
+
+            res_text += "\n" + "-"*40 + "\n"
+            if v1: res_text += f"• {d['L1_Label']}: {v1}\n"
+            if v2: res_text += f"• {d['L2_Label']}: {v2}\n"
+            if v3: res_text += f"• {d['L3_Label']}: {v3}\n"
+
+        st.text_area("Lausunto", res_text, height=400)
+
+elif view == "Tietoa":
+    st.info("Tämä on Streamlit-versio Onkologian Työpöytä -sovelluksesta, joka käyttää suoraan oncology_helper -kirjastoa.")
