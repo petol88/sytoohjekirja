@@ -12,6 +12,7 @@ from oncology_helper.data import Tietokanta
 from oncology_helper.ui.main_menu import MainMenu
 from oncology_helper.ui.calculator_view import LaskuriView
 from oncology_helper.ui.staging_view import LevinneisyysView
+from oncology_helper.ui.scoring_view import PisteytyksetView
 
 # High DPI support for Windows
 try:
@@ -36,7 +37,7 @@ class MainApp(tk.Tk):
         c.grid_columnconfigure(0, weight=1)
         
         self.frames = {}
-        for F in (MainMenu, LaskuriView, LevinneisyysView):
+        for F in (MainMenu, LaskuriView, LevinneisyysView, PisteytyksetView):
             self.frames[F.__name__] = F(c, self)
             self.frames[F.__name__].grid(row=0, column=0, sticky="nsew")
             

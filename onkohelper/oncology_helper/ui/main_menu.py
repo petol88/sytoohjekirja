@@ -16,3 +16,7 @@ class MainMenu(ttk.Frame):
         ttk.Button(c, text="LEVINNEISYYS & LUOKITUS", 
                    command=lambda: controller.show_frame("LevinneisyysView"), 
                    width=30).pack(pady=10)
+                   
+        ttk.Button(c, text="PISTEYTYKSET", 
+                   command=lambda: controller.show_frame("PisteytyksetView"), 
+                   width=30).pack(pady=10)
