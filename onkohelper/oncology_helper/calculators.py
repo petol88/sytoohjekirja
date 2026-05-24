@@ -194,3 +194,26 @@ def hae_cps_eg_ennuste(pisteet: int) -> str:
         6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %"
     }
     return ennusteet.get(pisteet, "Tuntematon ennuste")
+
+def laske_ips_pisteet(albumiini_alle_40: bool, hb_alle_105: bool, mies: bool, ika_vahintaan_45: bool, stage_4: bool, leukosyytit_yli_15: bool, lymfosyytit_alle_0_6: bool) -> int:
+    return sum([albumiini_alle_40, hb_alle_105, mies, ika_vahintaan_45, stage_4, leukosyytit_yli_15, lymfosyytit_alle_0_6])
+
+def hae_ips_ennuste(pisteet: int) -> str:
+    ennusteet = {
+        0: "0 p - 5-vuoden PFS n. 84 %, OS n. 89 %",
+        1: "1 p - 5-vuoden PFS n. 77 %, OS n. 90 %",
+        2: "2 p - 5-vuoden PFS n. 67 %, OS n. 81 %",
+        3: "3 p - 5-vuoden PFS n. 60 %, OS n. 78 %",
+        4: "4 p - 5-vuoden PFS n. 51 %, OS n. 61 %",
+        5: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+        6: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+        7: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %"
+    }
+    return ennusteet.get(pisteet, "Tuntematon ennuste")
+
+def tarkista_hl_paikallinen_riskitekijat(iso_mediastinum: bool, ekstranodaalinen: bool, alueita_vahintaan_3: bool, la_koholla: bool) -> int:
+    return sum([iso_mediastinum, ekstranodaalinen, alueita_vahintaan_3, la_koholla])
+
+def hae_hl_paikallinen_riskiryhma(pisteet: int) -> str:
+    if pisteet == 0: return "Suotuisa (Favorable) paikallinen tauti - Ei riskitekijöitä"
+    return f"Epäsuotuisa (Unfavorable) paikallinen tauti - {pisteet} riskitekijä(ä) täyttyy"
