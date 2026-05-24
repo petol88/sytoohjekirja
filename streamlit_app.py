@@ -31,7 +31,9 @@ from oncology_helper.calculators import (
     laske_flipi_pisteet,
     hae_flipi_riskiryhma,
     tarkista_gelf_kriteerit,
-    hae_gelf_suositus
+    hae_gelf_suositus,
+    laske_cps_eg_pisteet,
+    hae_cps_eg_ennuste
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -331,7 +333,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -461,3 +463,40 @@ elif view == "Pisteytykset":
         st.markdown("---")
         st.success(f"**Tulos:** {pisteet} GELF-kriteeriä täyttyy.")
         st.info(f"**Suositus:** {suositus}")
+        
+    elif laskuri_valinta == "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)":
+        st.subheader("CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)")
+        st.write("Arvioi rintasyövän ennustetta neoadjuvanttihoidon ja leikkauksen jälkeen.")
+        
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            cpseg_cstage_str = st.radio("Kliininen levinneisyys (cTNM) ennen hoitoa:", ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"], key="cpseg_cstage")
+            cpseg_pstage_str = st.radio("Patologinen levinneisyys (ypTNM) leikkauksen jälkeen:", ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"], key="cpseg_pstage")
+            
+            st.write("**Muut tekijät:**")
+            cpseg_er = st.checkbox("Estrogeenireseptori (ER) negatiivinen (1 p)", key="cpseg_er")
+            cpseg_grade = st.checkbox("Gradus 3 (1 p)", key="cpseg_grade")
+            
+        with col2:
+            st.info("**Rintasyövän Stage-muistisääntö:**\n"
+                    "• **Stage I:** T1 N0\n"
+                    "• **Stage IIA:** T0-T1 N1 tai T2 N0\n"
+                    "• **Stage IIB:** T2 N1 tai T3 N0\n"
+                    "• **Stage IIIA:** T0-T2 N2 tai T3 N1-N2\n"
+                    "• **Stage IIIB:** T4, mikä tahansa N\n"
+                    "• **Stage IIIC:** Mikä tahansa T, N3\n\n"
+                    "*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*")
+                    
+        c_p = ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"].index(cpseg_cstage_str)
+        p_p = ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"].index(cpseg_pstage_str)
+        
+        pisteet = laske_cps_eg_pisteet(c_p, p_p, cpseg_er, cpseg_grade)
+        ennuste = hae_cps_eg_ennuste(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** CPS+EG -pisteet: {pisteet} / 6")
+        st.info(f"**Ennuste:** {ennuste}")
+        
+        if pisteet >= 3:
+            st.warning("**Huom:** Jos invasiivistä jäännöstautia, niin muista olaparibi-liitännäishoidon mahdollisuus ituradan BRCA-mutaation omaavilla vuoden ajaksi.")
