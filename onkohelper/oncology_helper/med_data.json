@@ -787,5 +787,26 @@
             }
         ],
         "esilääkitys": "Ondansetroni 8 mg PO pv 1."
+    },
+    "R-pola-CHP (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Lymfooma"],
+        "kontrollit": "PVK, Neutr, Krea, Alat, Afos. (Huomioi neuropatiariski).",
+        "lääkkeet": [
+            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]},
+            {"nimi": "Polatutsumabivedotiini", "reitti": "IV", "annos": 1.8, "yksikkö": "mg/kg", "päivät": [1]},
+            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]},
+            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]},
+            {
+                "nimi": "Prednisoloni",
+                "reitti": "PO",
+                "annos": 100,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [1, 2, 3, 4, 5],
+                "tablettikoot": ["40 mg", "20 mg", "5 mg"],
+                "reseptiohje": "Aamuisin."
+            }
+        ],
+        "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."
     }
 }
