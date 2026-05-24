@@ -321,7 +321,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky"])
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -333,7 +333,7 @@ elif view == "Pisteytykset":
             kuvaus = hae_ecog_kuvaus(luokka)
             ecog_vaihtoehdot.append(f"ECOG {luokka.value}: {kuvaus}")
             
-        valittu_ecog_str = st.radio("Valitse potilasta parhaiten kuvaava tila:", ecog_vaihtoehdot)
+        valittu_ecog_str = st.radio("Valitse potilasta parhaiten kuvaava tila:", ecog_vaihtoehdot, key="ecog_radio_valinta")
         
         # Extract just the number to show the result clearly
         if valittu_ecog_str:
