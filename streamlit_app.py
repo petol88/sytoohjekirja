@@ -21,7 +21,9 @@ from oncology_helper.calculators import (
     Potilas,
     laske_yksiloity_annos,
     EcogLuokka,
-    hae_ecog_kuvaus
+    hae_ecog_kuvaus,
+    laske_ipi_pisteet,
+    hae_ipi_riskiryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -346,28 +348,4 @@ elif view == "Pisteytykset":
                 st.warning("Huom: ECOG 3 tai huonompi on usein vasta-aihe raskaalle solunsalpaajahoidolle.")
 
     elif laskuri_valinta == "IPI (International Prognostic Index)":
-        st.subheader("IPI (International Prognostic Index)")
-        st.write("Ennustetekijä aggressiivisille non-Hodgkin-lymfoomille (esim. DLBCL).")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            ika_yli_60 = st.checkbox("Ikä yli 60 vuotta", key="ipi_ika")
-            levinneisyys_3_tai_4 = st.checkbox("Levinneisyysaste III tai IV", key="ipi_stage")
-            ekstranodaalipesakkeet_yli_1 = st.checkbox("Yli 1 ekstranodaalinen pesäke", key="ipi_extra")
-            ecog_yli_1 = st.checkbox("ECOG-suorituskyky ≥ 2", key="ipi_ecog")
-            ldh_koholla = st.checkbox("Seerumin LDH yli viitearvon", key="ipi_ldh")
-            
-        with col2:
-            st.markdown("### Tulos")
-            pisteet = laske_ipi_pisteet(
-                ika_yli_60, levinneisyys_3_tai_4, ekstranodaalipesakkeet_yli_1, 
-                ecog_yli_1, ldh_koholla
-            )
-            riskiluokka = maarita_ipi_riskiluokka(pisteet)
-            
-            st.metric("IPI-pisteet", f"{pisteet} / 5")
-            st.success(f"**Riskiluokka:** {riskiluokka.value}")
-
-elif view == "Tietoa":
-    st.info("Tämä on Streamlit-versio Onkologian Työpöytä -sovelluksesta, joka käyttää suoraan oncology_helper -kirjastoa.")
+        st.subheader("IPI (International Prognost
