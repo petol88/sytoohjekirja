@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -69,6 +69,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_mipi_view()
         elif valittu == "FLIPI (Follicular Lymphoma International Prognostic Index)":
             self.build_flipi_view()
+        elif valittu == "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)":
+            self.build_gelf_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -276,3 +278,42 @@ class PisteytyksetView(ttk.Frame):
         
         self.flipi_result_label.config(text=f"Tulos: FLIPI-pisteet: {pisteet} / 5")
         self.flipi_risk_label.config(text=f"Riskiryhmä: {riskiryhma}")
+
+    def build_gelf_view(self):
+        ttk.Label(self.content_frame, text="GELF-kriteerit (Follikulaarinen lymfooma)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi aktiivihoidon indikaatiota follikulaarisessa lymfoomassa (indikaatio jos vähintään 1 täyttyy).", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.gelf_bulkki_var = tk.BooleanVar(value=False)
+        self.gelf_perna_var = tk.BooleanVar(value=False)
+        self.gelf_kompressio_var = tk.BooleanVar(value=False)
+        self.gelf_ldh_var = tk.BooleanVar(value=False)
+        self.gelf_leukemia_var = tk.BooleanVar(value=False)
+        self.gelf_syto_var = tk.BooleanVar(value=False)
+        self.gelf_b_oireet_var = tk.BooleanVar(value=False)
+        
+        ttk.Checkbutton(input_frame, text="Bulkki > 7 cm tai ≥3 imusolmukealuetta > 3 cm", variable=self.gelf_bulkki_var, command=self.laske_gelf).grid(row=0, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Oireinen splenomegalia", variable=self.gelf_perna_var, command=self.laske_gelf).grid(row=1, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Elinkompressio, pleura- tai peritoneaalieffuusio", variable=self.gelf_kompressio_var, command=self.laske_gelf).grid(row=2, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Kohonnut LDH tai β2-mikroglobuliini", variable=self.gelf_ldh_var, command=self.laske_gelf).grid(row=3, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Leukeeminen tauti (lymfosyytit > 5.0 E9/l)", variable=self.gelf_leukemia_var, command=self.laske_gelf).grid(row=4, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="Sytopeniat (Neut < 1.0 tai Tromb < 100)", variable=self.gelf_syto_var, command=self.laske_gelf).grid(row=5, column=0, columnspan=2, sticky="w", pady=5)
+        ttk.Checkbutton(input_frame, text="B-oireet", variable=self.gelf_b_oireet_var, command=self.laske_gelf).grid(row=6, column=0, columnspan=2, sticky="w", pady=5)
+        
+        self.gelf_result_frame = ttk.Frame(self.content_frame)
+        self.gelf_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.gelf_result_label = ttk.Label(self.gelf_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.gelf_result_label.pack(anchor="w")
+        self.gelf_risk_label = ttk.Label(self.gelf_result_frame, text="", font=("Segoe UI", 11))
+        self.gelf_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_gelf()
+
+    def laske_gelf(self):
+        pisteet = tarkista_gelf_kriteerit(self.gelf_bulkki_var.get(), self.gelf_perna_var.get(), self.gelf_kompressio_var.get(), self.gelf_ldh_var.get(), self.gelf_leukemia_var.get(), self.gelf_syto_var.get(), self.gelf_b_oireet_var.get())
+        suositus = hae_gelf_suositus(pisteet)
+        
+        self.gelf_result_label.config(text=f"Tulos: {pisteet} GELF-kriteeriä täyttyy.")
+        self.gelf_risk_label.config(text=f"Suositus: {suositus}")

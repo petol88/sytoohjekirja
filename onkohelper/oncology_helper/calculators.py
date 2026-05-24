@@ -167,3 +167,12 @@ def hae_flipi_riskiryhma(pisteet: int) -> str:
     if pisteet <= 1: return "Matala riski (0-1 p) - 5-vuoden elossaoloennuste n. 91 % (10-vuoden n. 71 %)"
     elif pisteet == 2: return "Kohtalainen riski (2 p) - 5-vuoden elossaoloennuste n. 78 % (10-vuoden n. 51 %)"
     else: return "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"
+
+def tarkista_gelf_kriteerit(bulkki: bool, perna: bool, kompressio: bool, ldh_b2m: bool, leukemia: bool, sytopeniat: bool, b_oireet: bool) -> int:
+    # Palautetaan täyttyvien kriteerien määrä
+    return sum([bulkki, perna, kompressio, ldh_b2m, leukemia, sytopeniat, b_oireet])
+
+def hae_gelf_suositus(pisteet: int) -> str:
+    if pisteet > 0:
+        return "Aktiivihoidon indikaatio täyttyy (≥1 GELF-kriteeri)."
+    return "Ei vahvaa aktiivihoidon indikaatiota (Watch & Wait -seuranta mahdollinen)."

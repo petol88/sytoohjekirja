@@ -29,7 +29,9 @@ from oncology_helper.calculators import (
     laske_mipi_pisteet,
     hae_mipi_riskiryhma,
     laske_flipi_pisteet,
-    hae_flipi_riskiryhma
+    hae_flipi_riskiryhma,
+    tarkista_gelf_kriteerit,
+    hae_gelf_suositus
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -329,7 +331,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -437,3 +439,25 @@ elif view == "Pisteytykset":
         st.markdown("---")
         st.success(f"**Tulos:** FLIPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
+        
+    elif laskuri_valinta == "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)":
+        st.subheader("GELF-kriteerit (Follikulaarinen lymfooma)")
+        st.write("Arvioi aktiivihoidon indikaatiota follikulaarisessa lymfoomassa (indikaatio jos vähintään 1 täyttyy).")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            gelf_bulkki = st.checkbox("Bulkki > 7 cm tai ≥3 imusolmukealuetta > 3 cm", key="gelf_bulkki")
+            gelf_perna = st.checkbox("Oireinen splenomegalia", key="gelf_perna")
+            gelf_kompressio = st.checkbox("Elinkompressio, pleura- tai peritoneaalieffuusio", key="gelf_kompressio")
+            gelf_ldh = st.checkbox("Kohonnut LDH tai β2-mikroglobuliini", key="gelf_ldh")
+        with col2:
+            gelf_leukemia = st.checkbox("Leukeeminen tauti (lymfosyytit > 5.0 E9/l)", key="gelf_leukemia")
+            gelf_syto = st.checkbox("Sytopeniat (Neut < 1.0 tai Tromb < 100)", key="gelf_syto")
+            gelf_b_oireet = st.checkbox("B-oireet", key="gelf_b_oireet")
+            
+        pisteet = tarkista_gelf_kriteerit(gelf_bulkki, gelf_perna, gelf_kompressio, gelf_ldh, gelf_leukemia, gelf_syto, gelf_b_oireet)
+        suositus = hae_gelf_suositus(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** {pisteet} GELF-kriteeriä täyttyy.")
+        st.info(f"**Suositus:** {suositus}")
