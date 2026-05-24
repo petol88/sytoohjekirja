@@ -205,10 +205,10 @@ class LaskuriView(ttk.Frame):
             self.e_len.delete(0, tk.END)
             self.e_len.insert(0, "220")
             
-        if w > 150.0:
-            w = 150.0
+        if w > 200.0:
+            w = 200.0
             self.e_wei.delete(0, tk.END)
-            self.e_wei.insert(0, "150")
+            self.e_wei.insert(0, "200")
 
         potilas = Potilas(
             pituus_cm=p,
