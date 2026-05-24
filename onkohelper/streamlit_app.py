@@ -492,7 +492,8 @@ elif view == "Pisteytykset":
 * **Stage IIIB:** T4, mikä tahansa N
 * **Stage IIIC:** Mikä tahansa T, N3
 
-*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*""")
+*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*  
+*(N1: 1-3 kainalo, N2: 4-9 kainalo/sis.rinta, N3: ≥10 kainalo/soliskuoppa)*""")
                     
         c_p = ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"].index(cpseg_cstage_str)
         p_p = ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"].index(cpseg_pstage_str)

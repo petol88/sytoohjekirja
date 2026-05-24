@@ -361,7 +361,8 @@ class PisteytyksetView(ttk.Frame):
             "Stage IIIA: T0-T2 N2 tai T3 N1-N2\n"
             "Stage IIIB: T4, mikä tahansa N\n"
             "Stage IIIC: Mikä tahansa T, N3\n\n"
-            "(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)"
+            "(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)\n"
+            "(N1: 1-3 kainalo, N2: 4-9 kainalo/sis.rinta, N3: ≥10 kainalo/soliskuoppa)"
         )
         ttk.Label(info_lf, text=stage_text, justify="left", font=("Segoe UI", 10)).pack()
         
