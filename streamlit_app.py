@@ -17,7 +17,9 @@ from oncology_helper.calculators import (
     laske_cockcroft_gault, 
     pyorista_tabletit, 
     laske_calvert,
-    Sukupuoli
+    Sukupuoli,
+    Potilas,
+    laske_yksiloity_annos
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -66,9 +68,17 @@ if view == "Laskuri":
             # MUUTOS: Käytetään Enumia
             sukupuoli_enum = Sukupuoli.MIES if sukupuoli_str == "Mies" else Sukupuoli.NAINEN
 
-            # MUUTOS: Käytetään funktioita calculators.py:stä
-            bsa = laske_bsa(pituus, paino)
-            gfr = laske_cockcroft_gault(ika, paino, krea, sukupuoli_enum)
+            # MUUTOS: Käytetään Potilas-luokkaa
+            potilas = Potilas(
+                pituus_cm=pituus,
+                paino_kg=paino,
+                ika=ika,
+                krea=krea,
+                sukupuoli=sukupuoli_enum
+            )
+
+            bsa = potilas.bsa()
+            gfr = potilas.gfr()
 
             st.metric("BSA", f"{bsa:.2f} m²")
             st.metric("GFR", f"{gfr:.0f} ml/min")
@@ -146,16 +156,8 @@ if view == "Laskuri":
                 else:
                     c[3].write("-")
 
-                # MUUTOS: AUC-laskenta käyttää nyt calvert-funktiota
-                mg = 0.0
-                if yksikkö == "mg/m2":
-                    mg = annos * bsa
-                elif yksikkö == "mg/kg":
-                    mg = annos * paino
-                elif yksikkö == "AUC":
-                    mg = laske_calvert(annos, gfr)
-                else:
-                    mg = annos
+                # MUUTOS: Käytetään valmista funktiota annoksen laskemiseen
+                mg = laske_yksiloity_annos(annos, yksikkö, bsa, paino, gfr)
 
                 c[4].write(f"{mg:.0f}")
 
