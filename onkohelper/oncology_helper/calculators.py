@@ -7,6 +7,26 @@ class Sukupuoli(Enum):
     MIES = "Mies"
     NAINEN = "Nainen"
 
+class EcogLuokka(Enum):
+    ECOG_0 = 0
+    ECOG_1 = 1
+    ECOG_2 = 2
+    ECOG_3 = 3
+    ECOG_4 = 4
+    ECOG_5 = 5
+
+def hae_ecog_kuvaus(luokka: EcogLuokka) -> str:
+    """Palauttaa ECOG-suorituskykyluokan virallisen kuvauksen."""
+    kuvaukset = {
+        EcogLuokka.ECOG_0: "Täysin aktiivinen, kykenee jatkamaan kaikkia sairautta edeltäneitä toimintoja rajoituksetta.",
+        EcogLuokka.ECOG_1: "Rajoittunut raskaassa fyysisessä rasituksessa, mutta pystyy kävelemään ja tekemään kevyttä tai istumatyötä (esim. kevyt kotityö, toimistotyö).",
+        EcogLuokka.ECOG_2: "Pystyy kävelemään ja huolehtimaan itsestään, mutta ei kykene tekemään työtä. Oloillaan jalkeilla yli 50 % valveillaoloajasta.",
+        EcogLuokka.ECOG_3: "Kykenee vain osittain huolehtimaan itsestään. Sidottu vuoteeseen tai tuoliin yli 50 % valveillaoloajasta.",
+        EcogLuokka.ECOG_4: "Täysin autettava. Ei kykene huolehtimaan itsestään lainkaan. Täysin sidottu vuoteeseen tai tuoliin.",
+        EcogLuokka.ECOG_5: "Kuollut."
+    }
+    return kuvaukset.get(luokka, "Tuntematon luokka.")
+
 def safe_float(v: Union[str, float, int]) -> float:
     """Safely converts a value to float. Returns 0.0 if conversion fails."""
     try: 
