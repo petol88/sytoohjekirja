@@ -135,6 +135,6 @@ def laske_cns_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2:
     return pisteet
 
 def hae_cns_ipi_riskiryhma(pisteet: int) -> str:
-    if pisteet <= 1: return "Matala riski"
-    elif pisteet <= 3: return "Kohtalainen riski"
-    else: return "Korkea riski"
+    if pisteet <= 1: return "Matala riski (2 vuoden CNS-relapsin todennäköisyys n. 0,6 %)"
+    elif pisteet <= 3: return "Kohtalainen riski (2 vuoden CNS-relapsin todennäköisyys n. 3,4 %)"
+    else: return "Korkea riski (2 vuoden CNS-relapsin todennäköisyys n. 10,2 %)"
