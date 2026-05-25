@@ -1,6 +1,7 @@
 import streamlit as st
 import sys
 import os
+from datetime import date, timedelta
 
 # 1. Page config
 st.set_page_config(page_title="Onkologian Työpöytä", layout="wide")
@@ -43,7 +44,9 @@ from oncology_helper.calculators import (
     tarkista_hl_paikallinen_riskitekijat,
     hae_hl_paikallinen_riskiryhma,
     laske_child_pugh_pisteet,
-    hae_child_pugh_luokka
+    hae_child_pugh_luokka,
+    laske_psadt,
+    hae_psadt_tulkinta
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -355,7 +358,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -592,3 +595,29 @@ elif view == "Pisteytykset":
         st.markdown("---")
         st.success(f"**Tulos:** Child-Pugh -pisteet: {pisteet} / 15")
         st.info(f"**Luokitus:** {luokka}")
+
+    elif laskuri_valinta == "PSA:n kahdentumisaika (PSADT)":
+        st.subheader("PSA:n kahdentumisaika (PSADT)")
+        st.write("Arvioi eturauhassyövän etenemistä mittaamalla aikaa, jossa PSA-arvo kaksinkertaistuu.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**1. mittaus**")
+            pvm1 = st.date_input("Päivämäärä 1", value=date.today() - timedelta(days=90), key="psadt_pvm1")
+            psa1 = st.number_input("PSA-arvo 1", min_value=0.0, step=0.1, value=5.0, key="psadt_psa1")
+        with col2:
+            st.markdown("**2. mittaus**")
+            pvm2 = st.date_input("Päivämäärä 2", value=date.today(), key="psadt_pvm2")
+            psa2 = st.number_input("PSA-arvo 2", min_value=0.0, step=0.1, value=10.0, key="psadt_psa2")
+            
+        if psa1 > 0 and psa2 > 0 and pvm2 > pvm1 and psa2 > psa1:
+            psadt = laske_psadt(pvm1, psa1, pvm2, psa2)
+            tulkinta = hae_psadt_tulkinta(psadt)
+            
+            st.markdown("---")
+            st.success(f"**Tulos:** PSADT = {psadt:.1f} kuukautta")
+            st.info(f"**Tulkinta:** {tulkinta}")
+        elif pvm2 <= pvm1:
+            st.warning("Jälkimmäisen päivämäärän on oltava ensimmäisen jälkeen.")
+        elif psa2 <= psa1 and psa2 != 0:
+            st.warning("Jälkimmäisen PSA-arvon on oltava suurempi kuin ensimmäisen, jotta kahdentumisaika voidaan laskea.")

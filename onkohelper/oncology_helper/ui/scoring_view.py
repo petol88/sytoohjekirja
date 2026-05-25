@@ -1,7 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+from datetime import datetime, timedelta
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, safe_float
+try:
+    from tkcalendar import DateEntry
+    HAS_TKCALENDAR = True
+except ImportError:
+    HAS_TKCALENDAR = False
+
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, laske_psadt, hae_psadt_tulkinta, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +36,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -79,6 +86,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_cps_eg_view()
         elif valittu == "Child-Pugh -luokitus (Maksan vajaatoiminta)":
             self.build_child_pugh_view()
+        elif valittu == "PSA:n kahdentumisaika (PSADT)":
+            self.build_psadt_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -525,3 +534,73 @@ class PisteytyksetView(ttk.Frame):
         
         self.cp_result_label.config(text=f"Tulos: Child-Pugh -pisteet: {pisteet} / 15")
         self.cp_risk_label.config(text=f"Luokitus: {luokka}")
+
+    def build_psadt_view(self):
+        ttk.Label(self.content_frame, text="PSA:n kahdentumisaika (PSADT)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi eturauhassyövän etenemistä mittaamalla aikaa, jossa PSA-arvo kaksinkertaistuu.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        col1_frame = ttk.Frame(input_frame)
+        col1_frame.grid(row=0, column=0, sticky="nw", padx=(0, 40))
+        col2_frame = ttk.Frame(input_frame)
+        col2_frame.grid(row=0, column=1, sticky="nw")
+        
+        ttk.Label(col1_frame, text="1. mittaus", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,5))
+        ttk.Label(col1_frame, text="Päivämäärä (pp.kk.vvvv):").pack(anchor="w")
+        self.psadt_pvm1_var = tk.StringVar(value=(datetime.now() - timedelta(days=90)).strftime("%d.%m.%Y"))
+        if HAS_TKCALENDAR:
+            DateEntry(col1_frame, textvariable=self.psadt_pvm1_var, date_pattern="dd.mm.yyyy", width=13, background='darkblue', foreground='white', borderwidth=2).pack(anchor="w", pady=(0, 10))
+        else:
+            ttk.Entry(col1_frame, textvariable=self.psadt_pvm1_var, width=15).pack(anchor="w", pady=(0, 10))
+            
+        ttk.Label(col1_frame, text="PSA-arvo 1:").pack(anchor="w")
+        self.psadt_psa1_var = tk.StringVar(value="5.0")
+        ttk.Entry(col1_frame, textvariable=self.psadt_psa1_var, width=15).pack(anchor="w")
+        
+        ttk.Label(col2_frame, text="2. mittaus", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,5))
+        ttk.Label(col2_frame, text="Päivämäärä (pp.kk.vvvv):").pack(anchor="w")
+        self.psadt_pvm2_var = tk.StringVar(value=datetime.now().strftime("%d.%m.%Y"))
+        if HAS_TKCALENDAR:
+            DateEntry(col2_frame, textvariable=self.psadt_pvm2_var, date_pattern="dd.mm.yyyy", width=13, background='darkblue', foreground='white', borderwidth=2).pack(anchor="w", pady=(0, 10))
+        else:
+            ttk.Entry(col2_frame, textvariable=self.psadt_pvm2_var, width=15).pack(anchor="w", pady=(0, 10))
+            
+        ttk.Label(col2_frame, text="PSA-arvo 2:").pack(anchor="w")
+        self.psadt_psa2_var = tk.StringVar(value="10.0")
+        ttk.Entry(col2_frame, textvariable=self.psadt_psa2_var, width=15).pack(anchor="w")
+        
+        ttk.Button(self.content_frame, text="Laske PSADT", command=self.laske_psadt_action).pack(anchor="w", pady=20)
+        
+        self.psadt_result_frame = ttk.Frame(self.content_frame)
+        self.psadt_result_frame.pack(anchor="w", fill="x")
+        self.psadt_result_label = ttk.Label(self.psadt_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.psadt_result_label.pack(anchor="w")
+        self.psadt_risk_label = ttk.Label(self.psadt_result_frame, text="", font=("Segoe UI", 11))
+        self.psadt_risk_label.pack(anchor="w", pady=(5, 0))
+        
+    def laske_psadt_action(self):
+        try:
+            pvm1 = datetime.strptime(self.psadt_pvm1_var.get(), "%d.%m.%Y").date()
+            pvm2 = datetime.strptime(self.psadt_pvm2_var.get(), "%d.%m.%Y").date()
+            psa1 = float(self.psadt_psa1_var.get().replace(",", "."))
+            psa2 = float(self.psadt_psa2_var.get().replace(",", "."))
+            
+            if pvm2 <= pvm1:
+                self.psadt_result_label.config(text="Virhe: Jälkimmäisen päivämäärän on oltava ensimmäisen jälkeen.")
+                self.psadt_risk_label.config(text="")
+                return
+            if psa2 <= psa1:
+                self.psadt_result_label.config(text="Virhe: Jälkimmäisen PSA-arvon on oltava suurempi.")
+                self.psadt_risk_label.config(text="")
+                return
+                
+            psadt = laske_psadt(pvm1, psa1, pvm2, psa2)
+            tulkinta = hae_psadt_tulkinta(psadt)
+            
+            self.psadt_result_label.config(text=f"Tulos: PSADT = {psadt:.1f} kuukautta")
+            self.psadt_risk_label.config(text=f"Tulkinta: {tulkinta}")
+        except ValueError:
+            self.psadt_result_label.config(text="Virhe: Tarkista päivämäärät (pp.kk.vvvv) ja PSA-arvot.")
+            self.psadt_risk_label.config(text="")

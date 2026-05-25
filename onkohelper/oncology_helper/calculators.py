@@ -2,6 +2,7 @@ import math
 from typing import Union, Optional
 from enum import Enum
 from dataclasses import dataclass
+from datetime import date
 
 class Sukupuoli(Enum):
     MIES = "Mies"
@@ -225,3 +226,21 @@ def hae_child_pugh_luokka(pisteet: int) -> str:
     if pisteet <= 6: return "Luokka A (5-6 p) - Hyvin kompensoitunut maksan toiminta."
     elif pisteet <= 9: return "Luokka B (7-9 p) - Merkittävä toiminnanhäiriö."
     else: return "Luokka C (10-15 p) - Dekompensoitunut maksan toiminta."
+
+def laske_psadt(pvm1: date, psa1: float, pvm2: date, psa2: float) -> float:
+    if psa1 <= 0 or psa2 <= 0 or pvm1 >= pvm2 or psa1 >= psa2:
+        return 0.0
+        
+    days_diff = (pvm2 - pvm1).days
+    months_diff = days_diff / 30.4375
+    
+    try:
+        return months_diff * (math.log(2) / math.log(psa2 / psa1))
+    except ZeroDivisionError:
+        return 0.0
+
+def hae_psadt_tulkinta(psadt: float) -> str:
+    if psadt <= 0: return "Ei arvioitavissa (PSA ei nouse tai mittausvälissä on virhe)."
+    elif psadt < 3: return "Erittäin lyhyt kahdentumisaika (< 3 kk). Korkea levinneen taudin tai relapsin riski."
+    elif psadt <= 10: return "Lyhyt kahdentumisaika (3 - 10 kk). Suurentunut riski."
+    else: return "Pitkä kahdentumisaika (> 10 kk). Pienempi riski."
