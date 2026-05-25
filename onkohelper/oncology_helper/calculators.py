@@ -15,17 +15,18 @@ class EcogLuokka(Enum):
     ECOG_4 = 4
     ECOG_5 = 5
 
+_ECOG_KUVAUKSET = {
+    EcogLuokka.ECOG_0: "Täysin aktiivinen, kykenee jatkamaan kaikkia sairautta edeltäneitä toimintoja rajoituksetta.",
+    EcogLuokka.ECOG_1: "Rajoittunut raskaassa fyysisessä rasituksessa, mutta pystyy kävelemään ja tekemään kevyttä tai istumatyötä (esim. kevyt kotityö, toimistotyö).",
+    EcogLuokka.ECOG_2: "Pystyy kävelemään ja huolehtimaan itsestään, mutta ei kykene tekemään työtä. Oloillaan jalkeilla yli 50 % valveillaoloajasta.",
+    EcogLuokka.ECOG_3: "Kykenee vain osittain huolehtimaan itsestään. Sidottu vuoteeseen tai tuoliin yli 50 % valveillaoloajasta.",
+    EcogLuokka.ECOG_4: "Täysin autettava. Ei kykene huolehtimaan itsestään lainkaan. Täysin sidottu vuoteeseen tai tuoliin.",
+    EcogLuokka.ECOG_5: "Kuollut."
+}
+
 def hae_ecog_kuvaus(luokka: EcogLuokka) -> str:
     """Palauttaa ECOG-suorituskykyluokan virallisen kuvauksen."""
-    kuvaukset = {
-        EcogLuokka.ECOG_0: "Täysin aktiivinen, kykenee jatkamaan kaikkia sairautta edeltäneitä toimintoja rajoituksetta.",
-        EcogLuokka.ECOG_1: "Rajoittunut raskaassa fyysisessä rasituksessa, mutta pystyy kävelemään ja tekemään kevyttä tai istumatyötä (esim. kevyt kotityö, toimistotyö).",
-        EcogLuokka.ECOG_2: "Pystyy kävelemään ja huolehtimaan itsestään, mutta ei kykene tekemään työtä. Oloillaan jalkeilla yli 50 % valveillaoloajasta.",
-        EcogLuokka.ECOG_3: "Kykenee vain osittain huolehtimaan itsestään. Sidottu vuoteeseen tai tuoliin yli 50 % valveillaoloajasta.",
-        EcogLuokka.ECOG_4: "Täysin autettava. Ei kykene huolehtimaan itsestään lainkaan. Täysin sidottu vuoteeseen tai tuoliin.",
-        EcogLuokka.ECOG_5: "Kuollut."
-    }
-    return kuvaukset.get(luokka, "Tuntematon luokka.")
+    return _ECOG_KUVAUKSET.get(luokka, "Tuntematon luokka.")
 
 def safe_float(v: Union[str, float, int]) -> float:
     """Safely converts a value to float. Returns 0.0 if conversion fails."""
@@ -120,16 +121,17 @@ def laske_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: boo
     if ekstranodaali_yli_1: pisteet += 1
     return pisteet
 
+_IPI_RYHMAT = {
+    0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)",
+    3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)",
+    4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
+    5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)"
+}
+
 def hae_ipi_riskiryhma(pisteet: int) -> str:
-    ryhmat = {
-        0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
-        1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
-        2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)", 
-        3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)", 
-        4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)", 
-        5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)"
-    }
-    return ryhmat.get(pisteet, "Tuntematon riski")
+    return _IPI_RYHMAT.get(pisteet, "Tuntematon riski")
 
 def laske_cns_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: bool, stage_3_4: bool, ekstranodaali_yli_1: bool, munuainen_lisamunuainen: bool) -> int:
     pisteet = 0
@@ -183,33 +185,35 @@ def laske_cps_eg_pisteet(c_stage_pisteet: int, p_stage_pisteet: int, er_negatiiv
     if grade_3: pisteet += 1
     return pisteet
 
+_CPS_EG_ENNUSTEET = {
+    0: "0 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 100 %",
+    1: "1 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 98 %",
+    2: "2 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 94 %",
+    3: "3 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 84 %",
+    4: "4 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 71 %",
+    5: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
+    6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %"
+}
+
 def hae_cps_eg_ennuste(pisteet: int) -> str:
-    ennusteet = {
-        0: "0 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 100 %",
-        1: "1 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 98 %",
-        2: "2 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 94 %",
-        3: "3 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 84 %",
-        4: "4 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 71 %",
-        5: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
-        6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %"
-    }
-    return ennusteet.get(pisteet, "Tuntematon ennuste")
+    return _CPS_EG_ENNUSTEET.get(pisteet, "Tuntematon ennuste")
 
 def laske_ips_pisteet(albumiini_alle_40: bool, hb_alle_105: bool, mies: bool, ika_vahintaan_45: bool, stage_4: bool, leukosyytit_yli_15: bool, lymfosyytit_alle_0_6: bool) -> int:
     return sum([albumiini_alle_40, hb_alle_105, mies, ika_vahintaan_45, stage_4, leukosyytit_yli_15, lymfosyytit_alle_0_6])
 
+_IPS_ENNUSTEET = {
+    0: "0 p - 5-vuoden PFS n. 84 %, OS n. 89 %",
+    1: "1 p - 5-vuoden PFS n. 77 %, OS n. 90 %",
+    2: "2 p - 5-vuoden PFS n. 67 %, OS n. 81 %",
+    3: "3 p - 5-vuoden PFS n. 60 %, OS n. 78 %",
+    4: "4 p - 5-vuoden PFS n. 51 %, OS n. 61 %",
+    5: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+    6: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+    7: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %"
+}
+
 def hae_ips_ennuste(pisteet: int) -> str:
-    ennusteet = {
-        0: "0 p - 5-vuoden PFS n. 84 %, OS n. 89 %",
-        1: "1 p - 5-vuoden PFS n. 77 %, OS n. 90 %",
-        2: "2 p - 5-vuoden PFS n. 67 %, OS n. 81 %",
-        3: "3 p - 5-vuoden PFS n. 60 %, OS n. 78 %",
-        4: "4 p - 5-vuoden PFS n. 51 %, OS n. 61 %",
-        5: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
-        6: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
-        7: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %"
-    }
-    return ennusteet.get(pisteet, "Tuntematon ennuste")
+    return _IPS_ENNUSTEET.get(pisteet, "Tuntematon ennuste")
 
 def tarkista_hl_paikallinen_riskitekijat(iso_mediastinum: bool, ekstranodaalinen: bool, alueita_vahintaan_3: bool, la_koholla: bool) -> int:
     return sum([iso_mediastinum, ekstranodaalinen, alueita_vahintaan_3, la_koholla])
