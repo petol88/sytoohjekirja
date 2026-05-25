@@ -41,7 +41,9 @@ from oncology_helper.calculators import (
     laske_ips_pisteet,
     hae_ips_ennuste,
     tarkista_hl_paikallinen_riskitekijat,
-    hae_hl_paikallinen_riskiryhma
+    hae_hl_paikallinen_riskiryhma,
+    laske_child_pugh_pisteet,
+    hae_child_pugh_luokka
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -353,7 +355,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -564,3 +566,29 @@ elif view == "Pisteytykset":
         
         if pisteet >= 3:
             st.warning("**Huom:** Jos invasiivistä jäännöstautia, niin muista olaparibi-liitännäishoidon mahdollisuus ituradan BRCA-mutaation omaavilla vuoden ajaksi.")
+            
+    elif laskuri_valinta == "Child-Pugh -luokitus (Maksan vajaatoiminta)":
+        st.subheader("Child-Pugh -luokitus")
+        st.write("Arvioi kroonisen maksasairauden / kirroosin vakavuutta ja ennustetta.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            cp_bili_str = st.radio("Bilirubiini (µmol/l)", ["< 34", "34 - 50", "> 50"], key="cp_bili")
+            cp_alb_str = st.radio("Albumiini (g/l)", ["> 35", "28 - 35", "< 28"], key="cp_alb")
+            cp_inr_str = st.radio("INR", ["< 1.7", "1.7 - 2.2", "> 2.2"], key="cp_inr")
+        with col2:
+            cp_ascites_str = st.radio("Askites", ["Ei", "Lievä / lääkityksellä hallinnassa", "Keskivaikea tai vaikea / huonosti reagoiva"], key="cp_ascites")
+            cp_enk_str = st.radio("Enkefalopatia", ["Ei", "Aste I-II (Lievä / lääkityksellä hallinnassa)", "Aste III-IV (Vaikea / kooma)"], key="cp_enk")
+            
+        bili_p = ["< 34", "34 - 50", "> 50"].index(cp_bili_str) + 1
+        alb_p = ["> 35", "28 - 35", "< 28"].index(cp_alb_str) + 1
+        inr_p = ["< 1.7", "1.7 - 2.2", "> 2.2"].index(cp_inr_str) + 1
+        ascites_p = ["Ei", "Lievä / lääkityksellä hallinnassa", "Keskivaikea tai vaikea / huonosti reagoiva"].index(cp_ascites_str) + 1
+        enk_p = ["Ei", "Aste I-II (Lievä / lääkityksellä hallinnassa)", "Aste III-IV (Vaikea / kooma)"].index(cp_enk_str) + 1
+            
+        pisteet = laske_child_pugh_pisteet(bili_p, alb_p, inr_p, ascites_p, enk_p)
+        luokka = hae_child_pugh_luokka(pisteet)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** Child-Pugh -pisteet: {pisteet} / 15")
+        st.info(f"**Luokitus:** {luokka}")

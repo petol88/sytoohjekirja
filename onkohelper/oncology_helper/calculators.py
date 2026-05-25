@@ -217,3 +217,11 @@ def tarkista_hl_paikallinen_riskitekijat(iso_mediastinum: bool, ekstranodaalinen
 def hae_hl_paikallinen_riskiryhma(pisteet: int) -> str:
     if pisteet == 0: return "Suotuisa (Favorable) paikallinen tauti - Ei riskitekijöitä"
     return f"Epäsuotuisa (Unfavorable) paikallinen tauti - {pisteet} riskitekijä(ä) täyttyy"
+
+def laske_child_pugh_pisteet(bili_p: int, alb_p: int, inr_p: int, ascites_p: int, enkefalopatia_p: int) -> int:
+    return bili_p + alb_p + inr_p + ascites_p + enkefalopatia_p
+
+def hae_child_pugh_luokka(pisteet: int) -> str:
+    if pisteet <= 6: return "Luokka A (5-6 p) - Hyvin kompensoitunut maksan toiminta."
+    elif pisteet <= 9: return "Luokka B (7-9 p) - Merkittävä toiminnanhäiriö."
+    else: return "Luokka C (10-15 p) - Dekompensoitunut maksan toiminta."

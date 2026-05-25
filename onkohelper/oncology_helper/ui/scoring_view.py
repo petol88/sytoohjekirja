@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -29,7 +29,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)"]
+        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -77,6 +77,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_gelf_view()
         elif valittu == "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)":
             self.build_cps_eg_view()
+        elif valittu == "Child-Pugh -luokitus (Maksan vajaatoiminta)":
+            self.build_child_pugh_view()
             
     def build_ecog_view(self):
         ttk.Label(self.content_frame, text="ECOG (Eastern Cooperative Oncology Group)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
@@ -464,3 +466,62 @@ class PisteytyksetView(ttk.Frame):
             self.cpseg_warning_label.config(text="Huom: Jos invasiivistä jäännöstautia, niin muista olaparibi-liitännäishoidon\nmahdollisuus ituradan BRCA-mutaation omaavilla vuoden ajaksi.")
         else:
             self.cpseg_warning_label.config(text="")
+            
+    def build_child_pugh_view(self):
+        ttk.Label(self.content_frame, text="Child-Pugh -luokitus", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi kroonisen maksasairauden / kirroosin vakavuutta ja ennustetta.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        self.cp_bili_var = tk.IntVar(value=1)
+        self.cp_alb_var = tk.IntVar(value=1)
+        self.cp_inr_var = tk.IntVar(value=1)
+        self.cp_ascites_var = tk.IntVar(value=1)
+        self.cp_enk_var = tk.IntVar(value=1)
+        
+        col1_frame = ttk.Frame(input_frame)
+        col1_frame.grid(row=0, column=0, sticky="nw", padx=(0, 40))
+        col2_frame = ttk.Frame(input_frame)
+        col2_frame.grid(row=0, column=1, sticky="nw")
+        
+        ttk.Label(col1_frame, text="Bilirubiini (µmol/l):", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,2))
+        ttk.Radiobutton(col1_frame, text="< 34 (1 p)", variable=self.cp_bili_var, value=1, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="34 - 50 (2 p)", variable=self.cp_bili_var, value=2, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="> 50 (3 p)", variable=self.cp_bili_var, value=3, command=self.laske_cp).pack(anchor="w")
+        
+        ttk.Label(col1_frame, text="Albumiini (g/l):", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(col1_frame, text="> 35 (1 p)", variable=self.cp_alb_var, value=1, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="28 - 35 (2 p)", variable=self.cp_alb_var, value=2, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="< 28 (3 p)", variable=self.cp_alb_var, value=3, command=self.laske_cp).pack(anchor="w")
+        
+        ttk.Label(col1_frame, text="INR:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(col1_frame, text="< 1.7 (1 p)", variable=self.cp_inr_var, value=1, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="1.7 - 2.2 (2 p)", variable=self.cp_inr_var, value=2, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col1_frame, text="> 2.2 (3 p)", variable=self.cp_inr_var, value=3, command=self.laske_cp).pack(anchor="w")
+        
+        ttk.Label(col2_frame, text="Askites:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(5,2))
+        ttk.Radiobutton(col2_frame, text="Ei (1 p)", variable=self.cp_ascites_var, value=1, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="Lievä / lääkityksellä hallinnassa (2 p)", variable=self.cp_ascites_var, value=2, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="Keskivaikea tai vaikea / huonosti reagoiva (3 p)", variable=self.cp_ascites_var, value=3, command=self.laske_cp).pack(anchor="w")
+        
+        ttk.Label(col2_frame, text="Enkefalopatia:", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(15,2))
+        ttk.Radiobutton(col2_frame, text="Ei (1 p)", variable=self.cp_enk_var, value=1, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="Aste I-II (Lievä / lääkityksellä hallinnassa) (2 p)", variable=self.cp_enk_var, value=2, command=self.laske_cp).pack(anchor="w")
+        ttk.Radiobutton(col2_frame, text="Aste III-IV (Vaikea / kooma) (3 p)", variable=self.cp_enk_var, value=3, command=self.laske_cp).pack(anchor="w")
+        
+        self.cp_result_frame = ttk.Frame(self.content_frame)
+        self.cp_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.cp_result_label = ttk.Label(self.cp_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.cp_result_label.pack(anchor="w")
+        self.cp_risk_label = ttk.Label(self.cp_result_frame, text="", font=("Segoe UI", 11))
+        self.cp_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_cp()
+
+    def laske_cp(self):
+        pisteet = laske_child_pugh_pisteet(self.cp_bili_var.get(), self.cp_alb_var.get(), self.cp_inr_var.get(), self.cp_ascites_var.get(), self.cp_enk_var.get())
+        luokka = hae_child_pugh_luokka(pisteet)
+        
+        self.cp_result_label.config(text=f"Tulos: Child-Pugh -pisteet: {pisteet} / 15")
+        self.cp_risk_label.config(text=f"Luokitus: {luokka}")
