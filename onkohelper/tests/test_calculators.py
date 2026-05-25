@@ -39,6 +39,15 @@ def test_laske_cockcroft_gault():
     gfr_nainen = laske_cockcroft_gault(50, 80, 100, Sukupuoli.NAINEN)
     assert round(gfr_nainen, 2) == 75.18
 
+    # Edge cases
+    # Nolla-ikä (ei välttämättä realistinen potilaalla, mutta laskenta sallii)
+    gfr_0_vuotias = laske_cockcroft_gault(0, 80, 100, Sukupuoli.MIES)
+    assert round(gfr_0_vuotias, 2) == 137.59
+
+    # Nollapaino
+    gfr_nolla_paino = laske_cockcroft_gault(50, 0, 100, Sukupuoli.MIES)
+    assert gfr_nolla_paino == 0.0
+
 def test_laske_yksiloity_annos():
     # Varmistetaan, että yksikön mukainen reititys toimii oikein
     assert laske_yksiloity_annos(100, "mg/m2", bsa=2.0, paino=80, gfr=100) == 200.0

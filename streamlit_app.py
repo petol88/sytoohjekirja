@@ -75,17 +75,26 @@ if view == "Sytostaattilaskuri":
 
     with col1:
         with st.expander("Potilas", expanded=True):
-            if 'pituus' not in st.session_state: st.session_state['pituus'] = 0.0
-            if 'paino' not in st.session_state: st.session_state['paino'] = 0.0
+            if 'pituus' not in st.session_state or st.session_state['pituus'] < 100.0: 
+                st.session_state['pituus'] = 170.0
+            if 'paino' not in st.session_state: 
+                st.session_state['paino'] = 70.0
             if 'ika' not in st.session_state: st.session_state['ika'] = 0
             if 'krea' not in st.session_state: st.session_state['krea'] = 0
             if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
 
-            pituus = st.number_input("Pituus (cm)", min_value=0.0, step=1.0, format="%.1f", key="pituus")
-            paino = st.number_input("Paino (kg)", min_value=0.0, step=0.1, format="%.1f", key="paino")
+            pituus = st.number_input("Pituus (cm)", min_value=100.0, max_value=220.0, step=1.0, format="%.1f", key="pituus")
+            paino = st.number_input("Paino (kg)", min_value=0.0, max_value=200.0, step=0.1, format="%.1f", key="paino")
             ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
             krea = st.number_input("Krea", min_value=0.0, step=1.0, format="%.1f", key="krea")
             sukupuoli_str = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
+
+            if pituus < 140.0 or pituus > 200.0:
+                st.warning("⚠️ Poikkeuksellinen pituus, tarkista syöte.")
+            if paino > 0 and (paino < 40.0 or paino > 150.0):
+                st.warning("⚠️ Poikkeuksellinen paino, tarkista syöte.")
+            if ika > 90:
+                st.warning("⚠️ Poikkeuksellisen korkea ikä, tarkista syöte.")
 
             # MUUTOS: Käytetään Enumia
             sukupuoli_enum = Sukupuoli.MIES if sukupuoli_str == "Mies" else Sukupuoli.NAINEN
@@ -104,6 +113,9 @@ if view == "Sytostaattilaskuri":
 
             st.metric("BSA", f"{bsa:.2f} m²")
             st.metric("GFR", f"{gfr:.0f} ml/min")
+            
+            if 0 < gfr < 20.0:
+                st.warning("⚠️ Erittäin matala GFR (< 20), huomioi munuaistoksisuus ja annossäädöt.")
 
     with col2:
         st.subheader("Hoito")
