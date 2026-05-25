@@ -8,7 +8,7 @@ try:
 except ImportError:
     HAS_TKCALENDAR = False
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, laske_psadt, hae_psadt_tulkinta, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, laske_psadt, hae_psadt_tulkinta, laske_mascc_pisteet, hae_mascc_suositus, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -36,7 +36,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"]
+        laskurit = ["ECOG-suorituskyky", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -68,6 +68,8 @@ class PisteytyksetView(ttk.Frame):
         
         if valittu == "ECOG-suorituskyky":
             self.build_ecog_view()
+        elif valittu == "MASCC-pisteytys (Kuumeinen neutropenia)":
+            self.build_mascc_view()
         elif valittu == "IPI (International Prognostic Index)":
             self.build_ipi_view()
         elif valittu == "CNS-IPI (CNS International Prognostic Index)":
@@ -133,6 +135,51 @@ class PisteytyksetView(ttk.Frame):
                 justify="left"
             )
             rb.pack(anchor="w", pady=5)
+
+    def build_mascc_view(self):
+        ttk.Label(self.content_frame, text="MASCC (Multinational Association for Supportive Care in Cancer)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Arvioi komplikaatioriskiä potilaalla, jolla on kuumeinen neutropenia.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        ttk.Label(input_frame, text="Oireiden vaikeusaste (valitse yksi):", font=("Segoe UI", 10, "bold")).grid(row=0, column=0, columnspan=2, sticky="w", pady=(5,2))
+        self.mascc_oire_var = tk.IntVar(value=5)
+        ttk.Radiobutton(input_frame, text="Lievät tai ei oireita (5 p)", variable=self.mascc_oire_var, value=5, command=self.laske_mascc).grid(row=1, column=0, columnspan=2, sticky="w")
+        ttk.Radiobutton(input_frame, text="Kohtalaiset oireet (3 p)", variable=self.mascc_oire_var, value=3, command=self.laske_mascc).grid(row=2, column=0, columnspan=2, sticky="w")
+        ttk.Radiobutton(input_frame, text="Vaikeat oireet (0 p)", variable=self.mascc_oire_var, value=0, command=self.laske_mascc).grid(row=3, column=0, columnspan=2, sticky="w")
+        
+        ttk.Label(input_frame, text="Muut kriteerit:", font=("Segoe UI", 10, "bold")).grid(row=4, column=0, columnspan=2, sticky="w", pady=(15,2))
+        
+        self.mascc_hypo_var = tk.BooleanVar(value=False)
+        self.mascc_copd_var = tk.BooleanVar(value=False)
+        self.mascc_tumor_var = tk.BooleanVar(value=False)
+        self.mascc_dehydr_var = tk.BooleanVar(value=False)
+        self.mascc_outpat_var = tk.BooleanVar(value=False)
+        self.mascc_age_var = tk.BooleanVar(value=False)
+        
+        ttk.Checkbutton(input_frame, text="Ei hypotensiota (RR systolinen > 90 mmHg) (5 p)", variable=self.mascc_hypo_var, command=self.laske_mascc).grid(row=5, column=0, columnspan=2, sticky="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Ei aktiivista COPD:tä (keuhkoahtaumatautia) (4 p)", variable=self.mascc_copd_var, command=self.laske_mascc).grid(row=6, column=0, columnspan=2, sticky="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Solidi tuumori TAI hematologinen syöpä ilman aiempaa sieni-infektiota (4 p)", variable=self.mascc_tumor_var, command=self.laske_mascc).grid(row=7, column=0, columnspan=2, sticky="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Ei suonensisäisen nestehoidon tarvetta kuivumisen vuoksi (3 p)", variable=self.mascc_dehydr_var, command=self.laske_mascc).grid(row=8, column=0, columnspan=2, sticky="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Potilas on ollut avohoidossa kuumeen alkaessa (3 p)", variable=self.mascc_outpat_var, command=self.laske_mascc).grid(row=9, column=0, columnspan=2, sticky="w", pady=2)
+        ttk.Checkbutton(input_frame, text="Ikä alle 60 vuotta (2 p)", variable=self.mascc_age_var, command=self.laske_mascc).grid(row=10, column=0, columnspan=2, sticky="w", pady=2)
+        
+        self.mascc_result_frame = ttk.Frame(self.content_frame)
+        self.mascc_result_frame.pack(anchor="w", fill="x", pady=20)
+        self.mascc_result_label = ttk.Label(self.mascc_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.mascc_result_label.pack(anchor="w")
+        self.mascc_risk_label = ttk.Label(self.mascc_result_frame, text="", font=("Segoe UI", 11))
+        self.mascc_risk_label.pack(anchor="w", pady=(5, 0))
+        
+        self.laske_mascc()
+
+    def laske_mascc(self):
+        pisteet = laske_mascc_pisteet(self.mascc_oire_var.get(), self.mascc_hypo_var.get(), self.mascc_copd_var.get(), self.mascc_tumor_var.get(), self.mascc_dehydr_var.get(), self.mascc_outpat_var.get(), self.mascc_age_var.get())
+        suositus = hae_mascc_suositus(pisteet)
+        
+        self.mascc_result_label.config(text=f"Tulos: MASCC-pisteet: {pisteet} / 26")
+        self.mascc_risk_label.config(text=f"Suositus: {suositus}")
 
     def build_ipi_view(self):
         ttk.Label(self.content_frame, text="IPI (International Prognostic Index)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))

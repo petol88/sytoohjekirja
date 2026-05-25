@@ -360,3 +360,27 @@ def hae_psadt_tulkinta(psadt: float) -> str:
     elif psadt < 3: return "Erittäin lyhyt kahdentumisaika (< 3 kk). Korkea levinneen taudin tai relapsin riski."
     elif psadt <= 10: return "Lyhyt kahdentumisaika (3 - 10 kk). Suurentunut riski."
     else: return "Pitkä kahdentumisaika (> 10 kk). Pienempi riski."
+
+def laske_mascc_pisteet(
+    oireiden_vaikeusaste: int,
+    ei_hypotensiota: bool,
+    ei_keuhkoahtaumatautia: bool,
+    solidi_tuumori_tai_ei_sienioiretta: bool,
+    ei_kuivumista: bool,
+    avohoitopotilas_kuumeen_alkaessa: bool,
+    ika_alle_60: bool
+) -> int:
+    pisteet = oireiden_vaikeusaste
+    if ei_hypotensiota: pisteet += 5
+    if ei_keuhkoahtaumatautia: pisteet += 4
+    if solidi_tuumori_tai_ei_sienioiretta: pisteet += 4
+    if ei_kuivumista: pisteet += 3
+    if avohoitopotilas_kuumeen_alkaessa: pisteet += 3
+    if ika_alle_60: pisteet += 2
+    return pisteet
+
+def hae_mascc_suositus(pisteet: int) -> str:
+    if pisteet >= 21:
+        return "Matala riski (≥ 21 p). Komplikaatioiden riski on pieni. Potilasta voidaan usein hoitaa turvallisesti avohoidossa (po antibiootit)."
+    else:
+        return "Korkea riski (< 21 p). Merkittävä komplikaatioiden riski. Sairaalahoito ja iv-antibiootit ovat indisoituja."

@@ -330,3 +330,71 @@ def maarita_hoitosuunnitelma_keuhkosyopa(stage: str, t: str, n: str, m: str) -> 
     else:
         res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
     return res
+
+def laske_stage_munuaissyopa(t: str, n: str, m: str) -> str:
+    t_puhdas = pura_luokka(t)
+    n_puhdas = pura_luokka(n)
+    m_puhdas = pura_luokka(m)
+
+    if m_puhdas == "M1": return "Stage IV"
+    if t_puhdas == "T4": return "Stage IV"
+    if n_puhdas == "N1": return "Stage III"
+    if t_puhdas.startswith("T3"): return "Stage III"
+    if t_puhdas.startswith("T2"): return "Stage II"
+    if t_puhdas.startswith("T1"): return "Stage I"
+    return "Ei määritettävissä"
+
+def maarita_hoitosuunnitelma_munuaissyopa(stage: str, t: str, n: str, m: str) -> str:
+    if "Stage IV" in stage or "M1" in m:
+        return (
+            "Levinnyt munuaissyöpä:\n"
+            "• Hoitolinjaus perustuu IMDC-riskipisteytykseen (suotuisa, kohtalainen, huono).\n"
+            "• Ensisijaisena hoitona immunoterapia + TKI -yhdistelmä (esim. Pembrolitsumabi + Aksitinibi tai Nivolumabi + Kabotsantinibi) tai IO+IO (Nivolumabi + Ipilimumabi).\n"
+            "• Solunsalpaajahoitoja ei rutiinisti käytetä (munuaissyöpä on niille yleensä resistentti)."
+        )
+    res = "Lääkehoitosuositus (Paikallinen tauti):\n"
+    if "Stage III" in stage or "Stage II" in stage:
+        res += "• Ensisijainen hoito on radikaali nefrektomia (tai osapoisto).\n"
+        res += "• Korkean uusiutumisriskin taudissa (esim. pT3 tai pN1) voidaan harkita adjuvantti-immunoterapiaa (Pembrolitsumabi 1 vuoden ajan) leikkauksen jälkeen.\n"
+    elif "Stage I" in stage:
+        res += "• Radikaali leikkaushoito (munuaisen osapoisto suositeltavin T1-taudissa).\n"
+        res += "• Adjuvanttihoitoa ei suositella, pelkkä seuranta leikkauksen jälkeen.\n"
+    else:
+        res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
+    return res
+
+def laske_stage_haimasyopa(t: str, n: str, m: str) -> str:
+    t_puhdas = pura_luokka(t)
+    n_puhdas = pura_luokka(n)
+    m_puhdas = pura_luokka(m)
+
+    if m_puhdas == "M1": return "Stage IV"
+    if t_puhdas == "T4": return "Stage III"
+    if n_puhdas == "N2": return "Stage III"
+    if n_puhdas == "N1": return "Stage IIB"
+    if n_puhdas == "N0":
+        if t_puhdas == "T3": return "Stage IIA"
+        if t_puhdas == "T2": return "Stage IB"
+        if t_puhdas == "T1": return "Stage IA"
+        if t_puhdas == "Tis": return "Stage 0"
+    return "Ei määritettävissä"
+
+def maarita_hoitosuunnitelma_haimasyopa(stage: str, t: str, n: str, m: str) -> str:
+    if "Stage IV" in stage or "M1" in m:
+        return (
+            "Levinnyt haimasyöpä (Stage IV):\n"
+            "• Palliatiivinen lääkehoito hyväkuntoisille (ECOG 0-1) potilaille.\n"
+            "• Ensisijaiset solunsalpaajavaihtoehdot: FOLFIRINOX tai Gemssitabiini + Nab-paklitakseli.\n"
+            "• Hauraammilla potilailla (ECOG 2) Gemssitabiini-monoterapia."
+        )
+    res = "Hoitosuositus (Paikallinen tauti):\n"
+    if "Stage III" in stage or "T4" in t:
+        res += "• Paikallisesti levinnyt / inoperabeli tauti (SMA/keliakia-akseli affisioitu).\n"
+        res += "• Usein aloitetaan induktiosolunsalpaajahoidolla (FOLFIRINOX). Jos vaste hyvä, voidaan harkita kemosädehoitoa tai uudelleenarvioida leikkausmahdollisuutta.\n"
+    elif "Stage I" in stage or "Stage II" in stage:
+        res += "• Operabeli (resektoitava) tauti: Radikaalileikkaus ensisijainen.\n"
+        res += "• Borderline resectable -taudissa suositellaan neoadjuvanttihoitoa (esim. FOLFIRINOX) ennen leikkausta.\n"
+        res += "• Radikaalileikkauksen (R0/R1) jälkeen adjuvanttisolunsalpaajahoito (mFOLFIRINOX 6 kk, tai vaihtoehtoisesti Gemssitabiini-Kapesitabiini).\n"
+    else:
+        res += "• Suositusta ei voida antaa automaattisesti näillä arvoilla.\n"
+    return res

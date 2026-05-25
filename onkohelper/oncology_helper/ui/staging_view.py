@@ -5,7 +5,9 @@ from oncology_helper.staging import (laske_stage_rintasyopa, maarita_hoitosuunni
                                      laske_stage_suolistosyopa, maarita_hoitosuunnitelma_suolistosyopa,
                                      laske_stage_melanooma, maarita_hoitosuunnitelma_melanooma,
                                      laske_stage_keuhkosyopa, maarita_hoitosuunnitelma_keuhkosyopa,
-                                     IsupLuokka, PsaTaso, laske_riskiryhma_eturauhassyopa, maarita_hoitosuunnitelma_eturauhassyopa)
+                                     IsupLuokka, PsaTaso, laske_riskiryhma_eturauhassyopa, maarita_hoitosuunnitelma_eturauhassyopa,
+                                     laske_stage_munuaissyopa, maarita_hoitosuunnitelma_munuaissyopa,
+                                     laske_stage_haimasyopa, maarita_hoitosuunnitelma_haimasyopa)
 
 class LevinneisyysView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -218,6 +220,20 @@ class LevinneisyysView(ttk.Frame):
                 
                 # Eturauhassyövän hoitosuunnitelma
                 plan = maarita_hoitosuunnitelma_eturauhassyopa(riski, c1, c2, c3)
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Munuaissyöpä" and "?" not in (c1, c2, c3):
+                st = laske_stage_munuaissyopa(c1, c2, c3)
+                res += f"\nAnatominen levinneisyysryhmä: {st}"
+                
+                plan = maarita_hoitosuunnitelma_munuaissyopa(st, c1, c2, c3)
+                res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                
+            elif tauti == "Haimasyöpä" and "?" not in (c1, c2, c3):
+                st = laske_stage_haimasyopa(c1, c2, c3)
+                res += f"\nAnatominen levinneisyysryhmä: {st}"
+                
+                plan = maarita_hoitosuunnitelma_haimasyopa(st, c1, c2, c3)
                 res += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
                 
             res += "\n" + "-"*40 + "\n"

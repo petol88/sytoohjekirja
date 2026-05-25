@@ -46,15 +46,32 @@ from oncology_helper.calculators import (
     laske_child_pugh_pisteet,
     hae_child_pugh_luokka,
     laske_psadt,
-    hae_psadt_tulkinta
+    hae_psadt_tulkinta,
+    laske_mascc_pisteet,
+    hae_mascc_suositus
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
     maarita_hoitosuunnitelma_rintasyopa,
+    laske_stage_suolistosyopa,
+    maarita_hoitosuunnitelma_suolistosyopa,
+    laske_stage_melanooma,
+    maarita_hoitosuunnitelma_melanooma,
+    laske_stage_keuhkosyopa,
+    maarita_hoitosuunnitelma_keuhkosyopa,
+    laske_riskiryhma_eturauhassyopa,
+    maarita_hoitosuunnitelma_eturauhassyopa,
+    laske_stage_munuaissyopa,
+    maarita_hoitosuunnitelma_munuaissyopa,
+    laske_stage_haimasyopa,
+    maarita_hoitosuunnitelma_haimasyopa,
     ReseptoriTila,
     Ki67Tila,
-    Hoitolinja
+    Hoitolinja,
+    IsupLuokka,
+    PsaTaso
 )
+from oncology_helper.guidelines import OHJEET
 
 # Load Data
 @st.cache_data
@@ -71,7 +88,7 @@ except Exception as e:
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
-view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Tietoa"])
+view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Ohjeet", "Tietoa"])
 
 if view == "Sytostaattilaskuri":
     st.header("Sytostaattilaskuri")
@@ -283,6 +300,8 @@ elif view == "Levinneisyys":
         er_status = "Positiivinen"
         her2_status = "Negatiivinen"
         ki67_status = "Matala (<20%)"
+        isup_status = IsupLuokka.ISUP_1.value
+        psa_status = PsaTaso.ALLE_10.value
 
         if tauti == "Rintasyöpä":
             st.markdown("---")
@@ -290,6 +309,12 @@ elif view == "Levinneisyys":
             er_status = st.selectbox("ER Status", ["Positiivinen", "Negatiivinen"])
             her2_status = st.selectbox("HER2 Status", ["Positiivinen", "Negatiivinen"])
             ki67_status = st.selectbox("Ki-67", ["Matala (<20%)", "Korkea (>=20%)"])
+            st.markdown("---")
+        elif tauti == "Eturauhassyöpä":
+            st.markdown("---")
+            st.markdown("**Eturauhassyövän lisätekijät (EAU-riskiluokitus)**")
+            isup_status = st.selectbox("ISUP-luokka", [e.value for e in IsupLuokka])
+            psa_status = st.selectbox("PSA-taso", [e.value for e in PsaTaso])
             st.markdown("---")
 
         st.markdown("**Levinneisyys**")
@@ -348,6 +373,56 @@ elif view == "Levinneisyys":
                 except Exception as e:
                     res_text += f"\nVirhe laskettaessa: {e}"
 
+                elif tauti == "Suolistosyöpä" and "?" not in (c1, c2, c3):
+                    try:
+                        st_val = laske_stage_suolistosyopa(c1, c2, c3)
+                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                        plan = maarita_hoitosuunnitelma_suolistosyopa(st_val, c1, c2, c3)
+                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                    except Exception as e:
+                        res_text += f"\nVirhe laskettaessa: {e}"
+
+                elif tauti == "Melanooma" and "?" not in (c1, c2, c3):
+                    try:
+                        st_val = laske_stage_melanooma(c1, c2, c3)
+                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                        plan = maarita_hoitosuunnitelma_melanooma(st_val, c1, c2, c3)
+                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                    except Exception as e:
+                        res_text += f"\nVirhe laskettaessa: {e}"
+
+                elif tauti == "Keuhkosyöpä (NSCLC)" and "?" not in (c1, c2, c3):
+                    try:
+                        st_val = laske_stage_keuhkosyopa(c1, c2, c3)
+                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                        plan = maarita_hoitosuunnitelma_keuhkosyopa(st_val, c1, c2, c3)
+                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                    except Exception as e:
+                        res_text += f"\nVirhe laskettaessa: {e}"
+
+                elif tauti == "Eturauhassyöpä" and "?" not in (c1, c2, c3):
+                    try:
+                        isup_enum = next((e for e in IsupLuokka if e.value == isup_status), IsupLuokka.ISUP_1)
+                        psa_enum = next((e for e in PsaTaso if e.value == psa_status), PsaTaso.ALLE_10)
+                        riski = laske_riskiryhma_eturauhassyopa(c1, c2, c3, isup_enum, psa_enum)
+                        res_text += f"\nRiskiluokitus / Levinneisyys: {riski}"
+                        plan = maarita_hoitosuunnitelma_eturauhassyopa(riski, c1, c2, c3)
+                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                    except Exception as e:
+                        res_text += f"\nVirhe laskettaessa: {e}"
+
+                elif tauti == "Munuaissyöpä" and "?" not in (c1, c2, c3):
+                    st_val = laske_stage_munuaissyopa(c1, c2, c3)
+                    res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                    plan = maarita_hoitosuunnitelma_munuaissyopa(st_val, c1, c2, c3)
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+
+                elif tauti == "Haimasyöpä" and "?" not in (c1, c2, c3):
+                    st_val = laske_stage_haimasyopa(c1, c2, c3)
+                    res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                    plan = maarita_hoitosuunnitelma_haimasyopa(st_val, c1, c2, c3)
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+
             res_text += "\n" + "-"*40 + "\n"
             if v1: res_text += f"• {d['L1_Label']}: {v1}\n"
             if v2: res_text += f"• {d['L2_Label']}: {v2}\n"
@@ -358,7 +433,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -381,6 +456,34 @@ elif view == "Pisteytykset":
             arvo_int = int(ecog_arvo.replace("ECOG ", ""))
             if arvo_int >= 3:
                 st.warning("Huom: ECOG 3 tai huonompi on usein vasta-aihe raskaalle solunsalpaajahoidolle.")
+
+    elif laskuri_valinta == "MASCC-pisteytys (Kuumeinen neutropenia)":
+        st.subheader("MASCC (Multinational Association for Supportive Care in Cancer)")
+        st.write("Arvioi komplikaatioriskiä potilaalla, jolla on kuumeinen neutropenia.")
+        
+        st.markdown("**Oireiden vaikeusaste (valitse yksi):**")
+        mascc_oire_str = st.radio("Oireet", ["Lievät tai ei oireita (5 p)", "Kohtalaiset oireet (3 p)", "Vaikeat oireet (0 p)"], key="mascc_oire")
+        
+        if "Lievät" in mascc_oire_str: mascc_oire_val = 5
+        elif "Kohtalaiset" in mascc_oire_str: mascc_oire_val = 3
+        else: mascc_oire_val = 0
+        
+        st.markdown("**Muut kriteerit:**")
+        mascc_hypo = st.checkbox("Ei hypotensiota (RR systolinen > 90 mmHg) (5 p)", key="mascc_hypo")
+        mascc_copd = st.checkbox("Ei aktiivista COPD:tä (keuhkoahtaumatautia) (4 p)", key="mascc_copd")
+        mascc_tumor = st.checkbox("Solidi tuumori TAI hematologinen syöpä ilman aiempaa sieni-infektiota (4 p)", key="mascc_tumor")
+        mascc_dehydr = st.checkbox("Ei suonensisäisen nestehoidon tarvetta kuivumisen vuoksi (3 p)", key="mascc_dehydr")
+        mascc_outpat = st.checkbox("Potilas on ollut avohoidossa kuumeen alkaessa (3 p)", key="mascc_outpat")
+        mascc_age = st.checkbox("Ikä alle 60 vuotta (2 p)", key="mascc_age")
+        
+        pisteet = laske_mascc_pisteet(mascc_oire_val, mascc_hypo, mascc_copd, mascc_tumor, mascc_dehydr, mascc_outpat, mascc_age)
+        suositus = hae_mascc_suositus(pisteet)
+        
+        st.markdown("---")
+        if pisteet >= 21:
+            st.success(f"**Tulos:** MASCC-pisteet: {pisteet} / 26\n\n**Suositus:** {suositus}")
+        else:
+            st.error(f"**Tulos:** MASCC-pisteet: {pisteet} / 26\n\n**Suositus:** {suositus}")
 
     elif laskuri_valinta == "IPI (International Prognostic Index)":
         st.subheader("IPI (International Prognostic Index)")
@@ -621,3 +724,13 @@ elif view == "Pisteytykset":
             st.warning("Jälkimmäisen päivämäärän on oltava ensimmäisen jälkeen.")
         elif psa2 <= psa1 and psa2 != 0:
             st.warning("Jälkimmäisen PSA-arvon on oltava suurempi kuin ensimmäisen, jotta kahdentumisaika voidaan laskea.")
+
+elif view == "Ohjeet":
+    st.header("Ohjeet ja Protokollat")
+    
+    ohje_valinta = st.selectbox("Valitse ohje", ["Valitse..."] + list(OHJEET.keys()))
+    
+    if ohje_valinta and ohje_valinta != "Valitse...":
+        st.markdown("---")
+        # Näytetään Markdown-muotoiltu teksti siististi
+        st.markdown(OHJEET[ohje_valinta])
