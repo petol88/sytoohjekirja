@@ -120,16 +120,17 @@ def laske_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: boo
     if ekstranodaali_yli_1: pisteet += 1
     return pisteet
 
+_IPI_RISKIRYHMAT = {
+    0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)",
+    3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)",
+    4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
+    5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)"
+}
+
 def hae_ipi_riskiryhma(pisteet: int) -> str:
-    ryhmat = {
-        0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
-        1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)", 
-        2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)", 
-        3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)", 
-        4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)", 
-        5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)"
-    }
-    return ryhmat.get(pisteet, "Tuntematon riski")
+    return _IPI_RISKIRYHMAT.get(pisteet, "Tuntematon riski")
 
 def laske_cns_ipi_pisteet(ika_yli_60: bool, ldh_koholla: bool, ecog_vahintaan_2: bool, stage_3_4: bool, ekstranodaali_yli_1: bool, munuainen_lisamunuainen: bool) -> int:
     pisteet = 0
