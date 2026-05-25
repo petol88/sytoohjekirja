@@ -373,55 +373,55 @@ elif view == "Levinneisyys":
                 except Exception as e:
                     res_text += f"\nVirhe laskettaessa: {e}"
 
-                elif tauti == "Suolistosyöpä" and "?" not in (c1, c2, c3):
-                    try:
-                        st_val = laske_stage_suolistosyopa(c1, c2, c3)
-                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
-                        plan = maarita_hoitosuunnitelma_suolistosyopa(st_val, c1, c2, c3)
-                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
-                    except Exception as e:
-                        res_text += f"\nVirhe laskettaessa: {e}"
-
-                elif tauti == "Melanooma" and "?" not in (c1, c2, c3):
-                    try:
-                        st_val = laske_stage_melanooma(c1, c2, c3)
-                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
-                        plan = maarita_hoitosuunnitelma_melanooma(st_val, c1, c2, c3)
-                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
-                    except Exception as e:
-                        res_text += f"\nVirhe laskettaessa: {e}"
-
-                elif tauti == "Keuhkosyöpä (NSCLC)" and "?" not in (c1, c2, c3):
-                    try:
-                        st_val = laske_stage_keuhkosyopa(c1, c2, c3)
-                        res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
-                        plan = maarita_hoitosuunnitelma_keuhkosyopa(st_val, c1, c2, c3)
-                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
-                    except Exception as e:
-                        res_text += f"\nVirhe laskettaessa: {e}"
-
-                elif tauti == "Eturauhassyöpä" and "?" not in (c1, c2, c3):
-                    try:
-                        isup_enum = next((e for e in IsupLuokka if e.value == isup_status), IsupLuokka.ISUP_1)
-                        psa_enum = next((e for e in PsaTaso if e.value == psa_status), PsaTaso.ALLE_10)
-                        riski = laske_riskiryhma_eturauhassyopa(c1, c2, c3, isup_enum, psa_enum)
-                        res_text += f"\nRiskiluokitus / Levinneisyys: {riski}"
-                        plan = maarita_hoitosuunnitelma_eturauhassyopa(riski, c1, c2, c3)
-                        res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
-                    except Exception as e:
-                        res_text += f"\nVirhe laskettaessa: {e}"
-
-                elif tauti == "Munuaissyöpä" and "?" not in (c1, c2, c3):
-                    st_val = laske_stage_munuaissyopa(c1, c2, c3)
+            elif tauti == "Suolistosyöpä" and "?" not in (c1, c2, c3):
+                try:
+                    st_val = laske_stage_suolistosyopa(c1, c2, c3)
                     res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
-                    plan = maarita_hoitosuunnitelma_munuaissyopa(st_val, c1, c2, c3)
+                    plan = maarita_hoitosuunnitelma_suolistosyopa(st_val, c1, c2, c3)
                     res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
 
-                elif tauti == "Haimasyöpä" and "?" not in (c1, c2, c3):
-                    st_val = laske_stage_haimasyopa(c1, c2, c3)
+            elif tauti == "Melanooma" and "?" not in (c1, c2, c3):
+                try:
+                    st_val = laske_stage_melanooma(c1, c2, c3)
                     res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
-                    plan = maarita_hoitosuunnitelma_haimasyopa(st_val, c1, c2, c3)
+                    plan = maarita_hoitosuunnitelma_melanooma(st_val, c1, c2, c3)
                     res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
+
+            elif tauti == "Keuhkosyöpä (NSCLC)" and "?" not in (c1, c2, c3):
+                try:
+                    st_val = laske_stage_keuhkosyopa(c1, c2, c3)
+                    res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                    plan = maarita_hoitosuunnitelma_keuhkosyopa(st_val, c1, c2, c3)
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
+
+            elif tauti == "Eturauhassyöpä" and "?" not in (c1, c2, c3):
+                try:
+                    isup_enum = next((e for e in IsupLuokka if e.value == isup_status), IsupLuokka.ISUP_1)
+                    psa_enum = next((e for e in PsaTaso if e.value == psa_status), PsaTaso.ALLE_10)
+                    riski = laske_riskiryhma_eturauhassyopa(c1, c2, c3, isup_enum, psa_enum)
+                    res_text += f"\nRiskiluokitus / Levinneisyys: {riski}"
+                    plan = maarita_hoitosuunnitelma_eturauhassyopa(riski, c1, c2, c3)
+                    res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+                except Exception as e:
+                    res_text += f"\nVirhe laskettaessa: {e}"
+
+            elif tauti == "Munuaissyöpä" and "?" not in (c1, c2, c3):
+                st_val = laske_stage_munuaissyopa(c1, c2, c3)
+                res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                plan = maarita_hoitosuunnitelma_munuaissyopa(st_val, c1, c2, c3)
+                res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
+
+            elif tauti == "Haimasyöpä" and "?" not in (c1, c2, c3):
+                st_val = laske_stage_haimasyopa(c1, c2, c3)
+                res_text += f"\nAnatominen levinneisyysryhmä: {st_val}"
+                plan = maarita_hoitosuunnitelma_haimasyopa(st_val, c1, c2, c3)
+                res_text += f"\n\n--- HOITOSUUNNITELMA ---\n{plan}"
 
             res_text += "\n" + "-"*40 + "\n"
             if v1: res_text += f"• {d['L1_Label']}: {v1}\n"
