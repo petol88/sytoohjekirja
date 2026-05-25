@@ -61,8 +61,9 @@ YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
 try:
     Tietokanta.data = load_data()
-except Exception as e:
-    st.error(f"Virhe ladattaessa tietokantaa: {e}")
+except (OSError, ValueError) as e:
+    print(f"DEBUG: Internal error loading data: {e}")
+    st.error("Tietokannan lataaminen epäonnistui järjestelmävirheen vuoksi.")
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
