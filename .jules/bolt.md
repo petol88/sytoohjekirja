@@ -5,3 +5,7 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+
+## 2024-05-18 - [Python Memory & Function Calling Overhead]
+**Learning:** Python's `sum([a, b, c])` creates a temporary list in memory and introduces function call overhead. For summing explicit boolean values, `a + b + c` is significantly faster. Similarly, local dictionaries declared inside functions are re-instantiated and allocated in memory on every call, heavily impacting performance for frequently called risk/staging parsers.
+**Action:** Extract static dictionaries to module-level constants. Replace `sum([...])` with direct addition `+` when the elements are explicit boolean arguments.
