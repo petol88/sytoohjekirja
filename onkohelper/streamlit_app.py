@@ -50,7 +50,7 @@ from oncology_helper.calculators import (
     laske_mascc_pisteet,
     hae_mascc_suositus,
     laske_qtc,
-    hae_qtc_suositus
+    hae_qtc_suositus,
     laske_antrasykliini_kertyma
 )
 from oncology_helper.staging import (
