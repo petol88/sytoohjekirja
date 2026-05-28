@@ -252,7 +252,9 @@ def tarkista_gelf_kriteerit(
     b_oireet: bool,
 ) -> int:
     # Palautetaan täyttyvien kriteerien määrä
-    return sum([bulkki, perna, kompressio, ldh_b2m, leukemia, sytopeniat, b_oireet])
+    # Optimoitu: Suora yhteenlasku (boolit ovat int-aliluokkia Pythonissa)
+    # välttää listojen allokaation ja sum() funktiokutsun ylijäämän.
+    return bulkki + perna + kompressio + ldh_b2m + leukemia + sytopeniat + b_oireet
 
 
 def hae_gelf_suositus(pisteet: int) -> str:
@@ -294,16 +296,15 @@ def laske_ips_pisteet(
     leukosyytit_yli_15: bool,
     lymfosyytit_alle_0_6: bool,
 ) -> int:
-    return sum(
-        [
-            albumiini_alle_40,
-            hb_alle_105,
-            mies,
-            ika_vahintaan_45,
-            stage_4,
-            leukosyytit_yli_15,
-            lymfosyytit_alle_0_6,
-        ]
+    # Optimoitu: Suora yhteenlasku on nopeampi kuin sum([...]) välttämällä listan luonnin.
+    return (
+        albumiini_alle_40
+        + hb_alle_105
+        + mies
+        + ika_vahintaan_45
+        + stage_4
+        + leukosyytit_yli_15
+        + lymfosyytit_alle_0_6
     )
 
 
@@ -327,7 +328,8 @@ def tarkista_hl_paikallinen_riskitekijat(
     alueita_vahintaan_3: bool,
     la_koholla: bool,
 ) -> int:
-    return sum([iso_mediastinum, ekstranodaalinen, alueita_vahintaan_3, la_koholla])
+    # Optimoitu: Suora yhteenlasku sum([...]) sijaan prestandan parantamiseksi.
+    return iso_mediastinum + ekstranodaalinen + alueita_vahintaan_3 + la_koholla
 
 
 def hae_hl_paikallinen_riskiryhma(pisteet: int) -> str:
