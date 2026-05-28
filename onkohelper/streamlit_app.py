@@ -493,18 +493,42 @@ elif view == "Pisteytykset":
         st.subheader("Kertyvän annoksen seuranta (Antrasykliinit)")
         st.write("Laskee antrasykliinien kumulatiivisen annoksen doksorubisiini-ekvivalentteina. Doksorubisiinin suositeltu elinikäinen maksimiannos on sydäntoksisuuden vuoksi 450–500 mg/m².")
         
+        syotto_mode = st.radio("Syötettävien annosten yksikkö:", ["mg/m²", "Absoluuttinen (mg)"], horizontal=True, key="antr_mode")
+        
+        bsa = 1.0
+        bsa_text = ""
+        if syotto_mode == "Absoluuttinen (mg)":
+            st.markdown("**Potilaan tiedot (BSA:n laskentaa varten):**")
+            col_p, col_w = st.columns(2)
+            with col_p:
+                h = st.number_input("Pituus (cm)", min_value=100.0, max_value=220.0, step=1.0, format="%.1f", key="pituus")
+            with col_w:
+                w = st.number_input("Paino (kg)", min_value=0.0, max_value=200.0, step=0.1, format="%.1f", key="paino")
+            bsa = laske_bsa(h, w)
+            bsa_text = f" (BSA: {bsa:.2f} m²)"
+            st.info(f"Laskettu BSA: {bsa:.2f} m²")
+            unit_label = "mg"
+        else:
+            unit_label = "mg/m²"
+            
+        st.markdown(f"**Syötä potilaan aiemmin saamat kokonaisannokset ({unit_label}):**")
         col1, col2 = st.columns(2)
         with col1:
-            doxo_mg = st.number_input("Doksorubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_doxo")
-            epi_mg = st.number_input("Epirubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_epi")
+            doxo_input = st.number_input(f"Doksorubisiini ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_doxo")
+            epi_input = st.number_input(f"Epirubisiini ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_epi")
         with col2:
-            ida_mg = st.number_input("Idarubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_ida")
-            mito_mg = st.number_input("Mitoksantroni (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_mito")
+            ida_input = st.number_input(f"Idarubisiini ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_ida")
+            mito_input = st.number_input(f"Mitoksantroni ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_mito")
             
+        doxo_mg = doxo_input / bsa if syotto_mode == "Absoluuttinen (mg)" else doxo_input
+        epi_mg = epi_input / bsa if syotto_mode == "Absoluuttinen (mg)" else epi_input
+        ida_mg = ida_input / bsa if syotto_mode == "Absoluuttinen (mg)" else ida_input
+        mito_mg = mito_input / bsa if syotto_mode == "Absoluuttinen (mg)" else mito_input
+        
         equiv, remaining, suositus = laske_antrasykliini_kertyma(doxo_mg, epi_mg, ida_mg, mito_mg)
         
         st.markdown("---")
-        st.success(f"**Tulos:** Doksorubisiini-ekvivalentti kertyvä annos: **{equiv:.0f} mg/m²**")
+        st.success(f"**Tulos{bsa_text}:** Doksorubisiini-ekvivalentti kertyvä annos: **{equiv:.0f} mg/m²**")
         
         rem_str = ""
         if remaining > 0:
