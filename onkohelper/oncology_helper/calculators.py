@@ -1,5 +1,5 @@
 import math
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 from enum import Enum
 from dataclasses import dataclass
 from datetime import date
@@ -384,3 +384,39 @@ def hae_mascc_suositus(pisteet: int) -> str:
         return "Matala riski (≥ 21 p). Komplikaatioiden riski on pieni. Potilasta voidaan usein hoitaa turvallisesti avohoidossa (po antibiootit)."
     else:
         return "Korkea riski (< 21 p). Merkittävä komplikaatioiden riski. Sairaalahoito ja iv-antibiootit ovat indisoituja."
+
+def laske_qtc(qt_ms: float, hr_bpm: float) -> Tuple[float, float]:
+    if hr_bpm <= 0 or qt_ms <= 0:
+        return 0.0, 0.0
+    rr_s = 60.0 / hr_bpm
+    qtc_b = qt_ms / math.sqrt(rr_s)
+    qtc_f = qt_ms / (rr_s ** (1.0 / 3.0))
+    return qtc_b, qtc_f
+
+def hae_qtc_suositus(qtc_ms: float) -> str:
+    if qtc_ms <= 0:
+        return ""
+    if qtc_ms > 500:
+        return "Korkea riski (> 500 ms): Vakava pidentymä. Syöpälääkkeen (esim. TK-estäjät, Ribosiklibi) tauotus tai annospudotus on usein aiheellista. Tarkista elektrolyytit (K, Mg, Ca) ja muut QT-aikaa pidentävät lääkkeet."
+    elif qtc_ms > 480:
+        return "Kohonnut riski (481 - 500 ms): Huomioi mahdolliset interaktiot ja elektrolyyttihäiriöt. Tihennä EKG-seurantaa."
+    else:
+        return "Normaali tai lievästi pidentynyt QTc (≤ 480 ms). Seuranta normaaliin tapaan."
+
+def laske_antrasykliini_kertyma(doxo: float, epi: float, ida: float, mito: float) -> Tuple[float, float, str]:
+    # Muunnoskertoimet doksorubisiini-ekvivalenteiksi
+    equiv = doxo + (epi * 0.5) + (ida * 3.0) + (mito * 3.0)
+    limit = 450.0
+    limit_upper = 500.0
+    remaining = max(0.0, limit - equiv)
+    
+    if equiv >= limit_upper:
+        suositus = "Kriittinen raja (500 mg/m²) ylittynyt. Lisähoitoa antrasykliineillä ei suositella korkean sydäntoksisuusriskin vuoksi."
+    elif equiv >= limit:
+        suositus = "Suositeltu maksimiraja (450 mg/m²) saavutettu tai ylittynyt. Erityistä varovaisuutta ja kardiologista arviota (LVEF) vaaditaan, jos lisähoitoa harkitaan (absoluuttinen max 500 mg/m²)."
+    elif equiv >= 300:
+        suositus = "Kertyvä annos on kliinisesti merkittävä. Seuraa sydämen pumppaustoimintaa (LVEF)."
+    else:
+        suositus = "Kertyvä annos on toistaiseksi turvallisella tasolla."
+        
+    return equiv, remaining, suositus

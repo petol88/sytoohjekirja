@@ -48,7 +48,10 @@ from oncology_helper.calculators import (
     laske_psadt,
     hae_psadt_tulkinta,
     laske_mascc_pisteet,
-    hae_mascc_suositus
+    hae_mascc_suositus,
+    laske_qtc,
+    hae_qtc_suositus
+    laske_antrasykliini_kertyma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -88,6 +91,13 @@ except Exception as e:
 
 st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
+# Session state defaults (Jaettu tila)
+if 'pituus' not in st.session_state or st.session_state['pituus'] < 100.0: st.session_state['pituus'] = 170.0
+if 'paino' not in st.session_state: st.session_state['paino'] = 70.0
+if 'ika' not in st.session_state: st.session_state['ika'] = 0
+if 'krea' not in st.session_state: st.session_state['krea'] = 0.0
+if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
+
 view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Ohjeet", "Tietoa"])
 
 if view == "Sytostaattilaskuri":
@@ -97,19 +107,12 @@ if view == "Sytostaattilaskuri":
 
     with col1:
         with st.expander("Potilas", expanded=True):
-            if 'pituus' not in st.session_state or st.session_state['pituus'] < 100.0: 
-                st.session_state['pituus'] = 170.0
-            if 'paino' not in st.session_state: 
-                st.session_state['paino'] = 70.0
-            if 'ika' not in st.session_state: st.session_state['ika'] = 0
-            if 'krea' not in st.session_state: st.session_state['krea'] = 0
-            if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
-
             pituus = st.number_input("Pituus (cm)", min_value=100.0, max_value=220.0, step=1.0, format="%.1f", key="pituus")
             paino = st.number_input("Paino (kg)", min_value=0.0, max_value=200.0, step=0.1, format="%.1f", key="paino")
             ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
             krea = st.number_input("Krea", min_value=0.0, step=1.0, format="%.1f", key="krea")
             sukupuoli_str = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
+            cap_bsa = st.checkbox("Max 2.2 m²", value=False, help="Rajoita BSA arvoon 2.2 m²", key="cap_bsa")
 
             if pituus < 140.0 or pituus > 200.0:
                 st.warning("⚠️ Poikkeuksellinen pituus, tarkista syöte.")
@@ -130,7 +133,8 @@ if view == "Sytostaattilaskuri":
                 sukupuoli=sukupuoli_enum
             )
 
-            bsa = potilas.bsa()
+            cap = 2.2 if cap_bsa else None
+            bsa = potilas.bsa(cap)
             gfr = potilas.gfr()
 
             st.metric("BSA", f"{bsa:.2f} m²")
@@ -253,6 +257,13 @@ if view == "Sytostaattilaskuri":
                 report_lines.append(f"Sykli: {protokolla_data['sykli']}")
             report_lines.append(f"Labrat: {labrat}")
             report_lines.append("-" * 40)
+            
+            if 0 < gfr < 60:
+                report_lines.append(f"⚠️ YLEISVAROITUS: GFR on alentunut ({gfr:.0f} ml/min).")
+                report_lines.append("  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
+                
+            if cap_bsa and bsa == 2.2:
+                report_lines.append("HUOM: BSA on rajoitettu maksimiarvoon 2.2 m².\n")
 
             for item in laske_tulokset:
                 med = item['med']
@@ -266,16 +277,37 @@ if view == "Sytostaattilaskuri":
                     else:
                         paivat_str = f" pv {paivat}"
 
-                report_lines.append(f"• {med['nimi']}: {fin_val} mg{paivat_str}")
+                yksikko_raw = item.get('yksikkö', '')
+                lisamaare = ""
+                if yksikko_raw and " " in yksikko_raw:
+                    lisamaare = " " + yksikko_raw.split(" ", 1)[1]
+                    
+                kpl_lisamaare = lisamaare if "x" in lisamaare.lower() else ""
+
+                reitti = med.get('reitti', '')
+                reitti_str = f" {reitti}" if reitti else ""
+                
+                kesto = med.get('kesto', '')
+                lisatieto = med.get('lisätieto', '')
+                extra_info = []
+                if kesto: extra_info.append(f"kesto: {kesto}")
+                if lisatieto: extra_info.append(lisatieto)
+                extra_str = f" ({', '.join(extra_info)})" if extra_info else ""
+
+                report_lines.append(f"• {med['nimi']}{reitti_str} {fin_val} mg{lisamaare}{paivat_str}{extra_str}")
 
                 ts = item['vahvuus']
                 strength_mg = item.get('strength_mg')
                 if ts and ts != "None" and fin_val > 0 and strength_mg:
                     try:
                         count = fin_val / strength_mg
-                        report_lines.append(f"    -> {count:.1f} kpl ({ts})")
+                        report_lines.append(f"    -> {count:.1f} kpl{kpl_lisamaare} ({ts})")
                     except ZeroDivisionError:
                         pass
+                        
+                min_gfr = med.get('min_gfr')
+                if min_gfr and 0 < gfr < min_gfr:
+                    report_lines.append(f"    ⚠️ VAROITUS: Potilaan GFR ({gfr:.0f}) on lääkkeen ({med['nimi']}) suositusrajan ({min_gfr}) alapuolella!")
 
             report_lines.append("-" * 40)
             report_lines.append(f"TUKIHOIDOT:\n{protokolla_data.get('esilääkitys', '-')}")
@@ -433,7 +465,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -456,6 +488,68 @@ elif view == "Pisteytykset":
             arvo_int = int(ecog_arvo.replace("ECOG ", ""))
             if arvo_int >= 3:
                 st.warning("Huom: ECOG 3 tai huonompi on usein vasta-aihe raskaalle solunsalpaajahoidolle.")
+                
+    elif laskuri_valinta == "Kertyvä annos (Antrasykliinit)":
+        st.subheader("Kertyvän annoksen seuranta (Antrasykliinit)")
+        st.write("Laskee antrasykliinien kumulatiivisen annoksen doksorubisiini-ekvivalentteina. Doksorubisiinin suositeltu elinikäinen maksimiannos on sydäntoksisuuden vuoksi 450–500 mg/m².")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            doxo_mg = st.number_input("Doksorubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_doxo")
+            epi_mg = st.number_input("Epirubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_epi")
+        with col2:
+            ida_mg = st.number_input("Idarubisiini (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_ida")
+            mito_mg = st.number_input("Mitoksantroni (mg/m²)", min_value=0.0, step=10.0, value=0.0, key="antr_mito")
+            
+        equiv, remaining, suositus = laske_antrasykliini_kertyma(doxo_mg, epi_mg, ida_mg, mito_mg)
+        
+        st.markdown("---")
+        st.success(f"**Tulos:** Doksorubisiini-ekvivalentti kertyvä annos: **{equiv:.0f} mg/m²**")
+        
+        rem_str = ""
+        if remaining > 0:
+            rem_str = "\n\n**Jäljellä oleva annos maksimirajaan (450 mg/m²) eri lääkkeinä:**\n"
+            if syotto_mode == "Absoluuttinen (mg)":
+                rem_str += f"- Doksorubisiini: {remaining:.0f} mg/m² (n. {remaining * bsa:.0f} mg)\n"
+                rem_str += f"- Epirubisiini: {remaining / 0.5:.0f} mg/m² (n. {(remaining / 0.5) * bsa:.0f} mg)\n"
+                rem_str += f"- Idarubisiini: {remaining / 3.0:.0f} mg/m² (n. {(remaining / 3.0) * bsa:.0f} mg)\n"
+                rem_str += f"- Mitoksantroni: {remaining / 3.0:.0f} mg/m² (n. {(remaining / 3.0) * bsa:.0f} mg)"
+            else:
+                rem_str += f"- Doksorubisiini: {remaining:.0f} mg/m²\n"
+                rem_str += f"- Epirubisiini: {remaining / 0.5:.0f} mg/m²\n"
+                rem_str += f"- Idarubisiini: {remaining / 3.0:.0f} mg/m²\n"
+                rem_str += f"- Mitoksantroni: {remaining / 3.0:.0f} mg/m²"
+                
+        if equiv >= 500 or equiv >= 450:
+            st.error(f"**Tulkinta:** ⚠️ {suositus}")
+        elif equiv >= 300:
+            st.warning(f"**Tulkinta:** {suositus}{rem_str}")
+        else:
+            st.info(f"**Tulkinta:** {suositus}{rem_str}")
+                
+    elif laskuri_valinta == "QTc-ajan korjauslaskuri (Bazett & Fridericia)":
+        st.subheader("QTc-ajan korjauslaskuri")
+        st.write("Laskee sykekorjatun QT-ajan (QTc) Bazettin ja Friderician kaavoilla. Syöpähoidoissa (esim. TK-estäjät) suositellaan usein Friderician kaavaa.")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            qt_ms = st.number_input("Sähkökardiogrammin QT-aika (ms)", min_value=0.0, max_value=1000.0, value=400.0, step=1.0, key="qtc_qt")
+        with col2:
+            hr_bpm = st.number_input("Syke (bpm)", min_value=0.0, max_value=300.0, value=60.0, step=1.0, key="qtc_hr")
+            
+        if qt_ms > 0 and hr_bpm > 0:
+            qtc_b, qtc_f = laske_qtc(qt_ms, hr_bpm)
+            suositus = hae_qtc_suositus(qtc_f)
+            
+            st.markdown("---")
+            st.success(f"**Tulos:** Bazett (QTcB): {qtc_b:.0f} ms  |  Fridericia (QTcF): {qtc_f:.0f} ms")
+            
+            if qtc_f > 500:
+                st.error(f"**Tulkinta (Fridericia):** {suositus}")
+            elif qtc_f > 480:
+                st.warning(f"**Tulkinta (Fridericia):** {suositus}")
+            else:
+                st.info(f"**Tulkinta (Fridericia):** {suositus}")
 
     elif laskuri_valinta == "MASCC-pisteytys (Kuumeinen neutropenia)":
         st.subheader("MASCC (Multinational Association for Supportive Care in Cancer)")

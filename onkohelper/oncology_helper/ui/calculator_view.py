@@ -70,26 +70,26 @@ class LaskuriView(ttk.Frame):
         f1.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
         
         ttk.Label(f1, text="Pituus (cm):").grid(row=0, column=0)
-        self.e_len = ttk.Entry(f1, width=8)
+        self.e_len = ttk.Entry(f1, width=8, textvariable=self.controller.shared_pituus)
         self.e_len.grid(row=0, column=1, padx=5)
         self.e_len.bind("<KeyRelease>", self.validate_float)
         
         ttk.Label(f1, text="Paino (kg):").grid(row=0, column=2)
-        self.e_wei = ttk.Entry(f1, width=8)
+        self.e_wei = ttk.Entry(f1, width=8, textvariable=self.controller.shared_paino)
         self.e_wei.grid(row=0, column=3, padx=5)
         self.e_wei.bind("<KeyRelease>", self.validate_float)
         
         ttk.Label(f1, text="Ikä:").grid(row=1, column=0)
-        self.e_age = ttk.Entry(f1, width=8)
+        self.e_age = ttk.Entry(f1, width=8, textvariable=self.controller.shared_ika)
         self.e_age.grid(row=1, column=1, padx=5)
         self.e_age.bind("<KeyRelease>", self.validate_float)
         
         ttk.Label(f1, text="Krea:").grid(row=2, column=0)
-        self.e_krea = ttk.Entry(f1, width=8)
+        self.e_krea = ttk.Entry(f1, width=8, textvariable=self.controller.shared_krea)
         self.e_krea.grid(row=2, column=1, padx=5)
         self.e_krea.bind("<KeyRelease>", self.validate_float)
         
-        self.v_sex = tk.StringVar(value="Mies")
+        self.v_sex = self.controller.shared_sex
         ttk.OptionMenu(f1, self.v_sex, "Mies", "Mies", "Nainen").grid(row=1, column=3, padx=5)
         
         self.l_bsa = ttk.Label(f1, text="BSA: -", font=("Arial", 9, "bold"))
@@ -104,12 +104,18 @@ class LaskuriView(ttk.Frame):
         f_prot = ttk.Frame(p)
         f_prot.grid(row=1, column=0, sticky="ew", pady=(10, 2), padx=5)
         
-        ttk.Label(f_prot, text="Protokolla:").grid(row=0, column=0, sticky="w")
+        ttk.Label(f_prot, text="Haku:").grid(row=0, column=0, sticky="w")
+        self.v_search = tk.StringVar()
+        self.e_search = ttk.Entry(f_prot, textvariable=self.v_search, width=15)
+        self.e_search.grid(row=1, column=0, sticky="w", padx=(0, 10))
+        self.e_search.bind("<KeyRelease>", self.filter_protocols)
+        
+        ttk.Label(f_prot, text="Protokolla:").grid(row=0, column=1, sticky="w")
         self.c_prot = ttk.Combobox(f_prot, values=list(Tietokanta.data.keys()), state="readonly", width=40)
-        self.c_prot.grid(row=1, column=0, sticky="w", padx=(0, 20))
+        self.c_prot.grid(row=1, column=1, sticky="w", padx=(0, 20))
         self.c_prot.bind("<<ComboboxSelected>>", self.update_meds)
         
-        ttk.Label(f_prot, text="Rajaa syöpätyypillä:").grid(row=0, column=1, sticky="w")
+        ttk.Label(f_prot, text="Rajaa syöpätyypillä:").grid(row=0, column=2, sticky="w")
         
         syopatyypit = set()
         for d in Tietokanta.data.values():
@@ -117,17 +123,17 @@ class LaskuriView(ttk.Frame):
                 syopatyypit.add(st)
         type_values = ["Kaikki"] + sorted(list(syopatyypit))
         
-        self.c_type = ttk.Combobox(f_prot, values=type_values, state="readonly", width=25)
-        self.c_type.grid(row=1, column=1, sticky="w")
+        self.c_type = ttk.Combobox(f_prot, values=type_values, state="readonly", width=20)
+        self.c_type.grid(row=1, column=2, sticky="w")
         self.c_type.set("Kaikki")
         self.c_type.bind("<<ComboboxSelected>>", self.filter_protocols)
         
-        ttk.Label(f_prot, text="Annoksen suhteutus:").grid(row=0, column=2, sticky="w", padx=10)
+        ttk.Label(f_prot, text="Annoksen suhteutus:").grid(row=0, column=3, sticky="w", padx=10)
         self.v_suhde = tk.StringVar(value="100 %")
         self.c_suhde = ttk.Combobox(f_prot, textvariable=self.v_suhde, 
                                     values=["100 %", "80 %", "75 %", "50 %", "25 %"], 
-                                    state="readonly", width=15)
-        self.c_suhde.grid(row=1, column=2, sticky="w", padx=10)
+                                    state="readonly", width=12)
+        self.c_suhde.grid(row=1, column=3, sticky="w", padx=10)
 
         f2 = ttk.Frame(p)
         f2.grid(row=2, column=0, sticky="ew", pady=10)
@@ -142,11 +148,16 @@ class LaskuriView(ttk.Frame):
 
     def filter_protocols(self, event=None):
         selected_type = self.c_type.get()
-        if selected_type == "Kaikki" or not selected_type:
-            filtered = list(Tietokanta.data.keys())
-        else:
-            filtered = [k for k, v in Tietokanta.data.items() if selected_type in v.get("syöpätyypit", [])]
+        search_text = self.v_search.get().lower()
         
+        filtered = []
+        for k, v in Tietokanta.data.items():
+            if selected_type != "Kaikki" and selected_type and selected_type not in v.get("syöpätyypit", []):
+                continue
+            if search_text and search_text not in k.lower():
+                continue
+            filtered.append(k)
+            
         self.c_prot['values'] = filtered
         if self.c_prot.get() not in filtered:
             self.c_prot.set('')
@@ -310,6 +321,8 @@ class LaskuriView(ttk.Frame):
             if " " in yksikko_raw:
                 lisamaare = " " + yksikko_raw.split(" ", 1)[1]
                 
+            kpl_lisamaare = lisamaare if "x" in lisamaare.lower() else ""
+                
             reitti = r['d'].get('reitti', '')
             reitti_str = f" {reitti}" if reitti else ""
             
@@ -327,7 +340,7 @@ class LaskuriView(ttk.Frame):
             if ts and ts != "None" and fin > 0:
                 try: 
                     strength = float(ts.split()[0])
-                    out.append(f"    -> {fin/strength:.1f} kpl ({ts})")
+                    out.append(f"    -> {fin/strength:.1f} kpl{kpl_lisamaare} ({ts})")
                 except: 
                     pass
                     
@@ -349,6 +362,12 @@ class LaskuriView(ttk.Frame):
         messagebox.showinfo("OK", "Kopioitu.")
 
     def tyhjenna(self):
+        self.controller.shared_pituus.set("")
+        self.controller.shared_paino.set("")
+        self.controller.shared_ika.set("")
+        self.controller.shared_krea.set("")
+        self.controller.shared_sex.set("Mies")
+        
         for e in [self.e_len, self.e_wei, self.e_age, self.e_krea, self.e_labs]:
             e.delete(0, tk.END)
             e.config(foreground="black")

@@ -8,7 +8,7 @@ try:
 except ImportError:
     HAS_TKCALENDAR = False
 
-from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, laske_psadt, hae_psadt_tulkinta, laske_mascc_pisteet, hae_mascc_suositus, safe_float
+from oncology_helper.calculators import EcogLuokka, hae_ecog_kuvaus, laske_ipi_pisteet, hae_ipi_riskiryhma, laske_cns_ipi_pisteet, hae_cns_ipi_riskiryhma, laske_mipi_pisteet, hae_mipi_riskiryhma, laske_flipi_pisteet, hae_flipi_riskiryhma, tarkista_gelf_kriteerit, hae_gelf_suositus, laske_cps_eg_pisteet, hae_cps_eg_ennuste, laske_ips_pisteet, hae_ips_ennuste, tarkista_hl_paikallinen_riskitekijat, hae_hl_paikallinen_riskiryhma, laske_child_pugh_pisteet, hae_child_pugh_luokka, laske_psadt, hae_psadt_tulkinta, laske_mascc_pisteet, hae_mascc_suositus, laske_qtc, hae_qtc_suositus, laske_antrasykliini_kertyma, laske_bsa, safe_float
 
 class PisteytyksetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -36,7 +36,7 @@ class PisteytyksetView(ttk.Frame):
         self.laskuri_listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.laskuri_listbox.pack(fill="both", expand=True)
         
-        laskurit = ["ECOG-suorituskyky", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"]
+        laskurit = ["ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"]
         for item in laskurit:
             self.laskuri_listbox.insert(tk.END, item)
             
@@ -68,6 +68,10 @@ class PisteytyksetView(ttk.Frame):
         
         if valittu == "ECOG-suorituskyky":
             self.build_ecog_view()
+        elif valittu == "Kertyvä annos (Antrasykliinit)":
+            self.build_kumulatiivinen_view()
+        elif valittu == "QTc-ajan korjauslaskuri (Bazett & Fridericia)":
+            self.build_qtc_view()
         elif valittu == "MASCC-pisteytys (Kuumeinen neutropenia)":
             self.build_mascc_view()
         elif valittu == "IPI (International Prognostic Index)":
@@ -135,6 +139,175 @@ class PisteytyksetView(ttk.Frame):
                 justify="left"
             )
             rb.pack(anchor="w", pady=5)
+            
+    def build_kumulatiivinen_view(self):
+        ttk.Label(self.content_frame, text="Kertyvän annoksen seuranta (Antrasykliinit)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Laskee antrasykliinien kumulatiivisen annoksen doksorubisiini-ekvivalentteina.\nDoksorubisiinin suositeltu elinikäinen maksimiannos on sydäntoksisuuden vuoksi 450–500 mg/m².", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        self.syotto_mode = tk.StringVar(value="mg/m2")
+        
+        mode_frame = ttk.Frame(self.content_frame)
+        mode_frame.pack(anchor="w", fill="x", pady=(0, 10))
+        ttk.Label(mode_frame, text="Syötettävien annosten yksikkö:", font=("Segoe UI", 10, "bold")).pack(side="left", padx=(0, 10))
+        ttk.Radiobutton(mode_frame, text="mg/m²", variable=self.syotto_mode, value="mg/m2", command=self.toggle_kertyva_mode).pack(side="left", padx=5)
+        ttk.Radiobutton(mode_frame, text="Absoluuttinen (mg)", variable=self.syotto_mode, value="mg", command=self.toggle_kertyva_mode).pack(side="left", padx=5)
+        
+        self.patient_frame = ttk.LabelFrame(self.content_frame, text="Potilaan tiedot (BSA:n laskentaa varten)", padding=10)
+        
+        ttk.Label(self.patient_frame, text="Pituus (cm):").grid(row=0, column=0, sticky="w", pady=5)
+        self.kertyva_pituus = self.controller.shared_pituus
+        ttk.Entry(self.patient_frame, textvariable=self.kertyva_pituus, width=10).grid(row=0, column=1, sticky="w", padx=10, pady=5)
+        
+        ttk.Label(self.patient_frame, text="Paino (kg):").grid(row=0, column=2, sticky="w", pady=5, padx=(10,0))
+        self.kertyva_paino = self.controller.shared_paino
+        ttk.Entry(self.patient_frame, textvariable=self.kertyva_paino, width=10).grid(row=0, column=3, sticky="w", padx=10, pady=5)
+        
+        self.input_frame = ttk.Frame(self.content_frame)
+        self.input_frame.pack(anchor="w", fill="x")
+        
+        self.lbl_ohje = ttk.Label(self.input_frame, text="Syötä potilaan aiemmin saamat kokonaisannokset (mg/m²):", font=("Segoe UI", 10, "bold"))
+        self.lbl_ohje.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 10))
+        
+        self.lbl_doxo = ttk.Label(self.input_frame, text="Doksorubisiini (mg/m²):")
+        self.lbl_doxo.grid(row=1, column=0, sticky="w", pady=5)
+        self.doxo_var = tk.StringVar(value="0")
+        ttk.Entry(self.input_frame, textvariable=self.doxo_var, width=15).grid(row=1, column=1, sticky="w", padx=10, pady=5)
+        
+        self.lbl_epi = ttk.Label(self.input_frame, text="Epirubisiini (mg/m²):")
+        self.lbl_epi.grid(row=2, column=0, sticky="w", pady=5)
+        self.epi_var = tk.StringVar(value="0")
+        ttk.Entry(self.input_frame, textvariable=self.epi_var, width=15).grid(row=2, column=1, sticky="w", padx=10, pady=5)
+        
+        self.lbl_ida = ttk.Label(self.input_frame, text="Idarubisiini (mg/m²):")
+        self.lbl_ida.grid(row=3, column=0, sticky="w", pady=5)
+        self.ida_var = tk.StringVar(value="0")
+        ttk.Entry(self.input_frame, textvariable=self.ida_var, width=15).grid(row=3, column=1, sticky="w", padx=10, pady=5)
+        
+        self.lbl_mito = ttk.Label(self.input_frame, text="Mitoksantroni (mg/m²):")
+        self.lbl_mito.grid(row=4, column=0, sticky="w", pady=5)
+        self.mito_var = tk.StringVar(value="0")
+        ttk.Entry(self.input_frame, textvariable=self.mito_var, width=15).grid(row=4, column=1, sticky="w", padx=10, pady=5)
+        
+        ttk.Button(self.content_frame, text="Laske kumulatiivinen annos", command=self.laske_kertyva_action).pack(anchor="w", pady=20)
+        
+        self.kertyva_result_frame = ttk.Frame(self.content_frame)
+        self.kertyva_result_frame.pack(anchor="w", fill="x")
+        self.kertyva_result_label = ttk.Label(self.kertyva_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.kertyva_result_label.pack(anchor="w")
+        self.kertyva_risk_label = ttk.Label(self.kertyva_result_frame, text="", font=("Segoe UI", 11), wraplength=700)
+        self.kertyva_risk_label.pack(anchor="w", pady=(5, 0))
+        self.kertyva_warning_label = ttk.Label(self.kertyva_result_frame, text="", font=("Segoe UI", 11, "bold"), foreground="red", wraplength=700)
+        self.kertyva_warning_label.pack(anchor="w", pady=(5, 0))
+        
+    def toggle_kertyva_mode(self):
+        if self.syotto_mode.get() == "mg":
+            self.patient_frame.pack(before=self.input_frame, anchor="w", fill="x", pady=(0, 10))
+            self.lbl_ohje.config(text="Syötä potilaan aiemmin saamat absoluuttiset kokonaisannokset (mg):")
+            self.lbl_doxo.config(text="Doksorubisiini (mg):")
+            self.lbl_epi.config(text="Epirubisiini (mg):")
+            self.lbl_ida.config(text="Idarubisiini (mg):")
+            self.lbl_mito.config(text="Mitoksantroni (mg):")
+        else:
+            self.patient_frame.pack_forget()
+            self.lbl_ohje.config(text="Syötä potilaan aiemmin saamat kokonaisannokset (mg/m²):")
+            self.lbl_doxo.config(text="Doksorubisiini (mg/m²):")
+            self.lbl_epi.config(text="Epirubisiini (mg/m²):")
+            self.lbl_ida.config(text="Idarubisiini (mg/m²):")
+            self.lbl_mito.config(text="Mitoksantroni (mg/m²):")
+        
+    def laske_kertyva_action(self):
+        doxo = safe_float(self.doxo_var.get())
+        epi = safe_float(self.epi_var.get())
+        ida = safe_float(self.ida_var.get())
+        mito = safe_float(self.mito_var.get())
+        
+        bsa_text = ""
+        if self.syotto_mode.get() == "mg":
+            h = safe_float(self.kertyva_pituus.get())
+            w = safe_float(self.kertyva_paino.get())
+            bsa = laske_bsa(h, w)
+            if bsa <= 0:
+                self.kertyva_result_label.config(text="Tarkista pituus ja paino!")
+                self.kertyva_risk_label.config(text="")
+                self.kertyva_warning_label.config(text="")
+                return
+            doxo = doxo / bsa
+            epi = epi / bsa
+            ida = ida / bsa
+            mito = mito / bsa
+            bsa_text = f" (BSA: {bsa:.2f} m²)"
+
+        equiv, remaining, suositus = laske_antrasykliini_kertyma(doxo, epi, ida, mito)
+        self.kertyva_result_label.config(text=f"Tulos{bsa_text}: Doksorubisiini-ekvivalentti kertyvä annos on {equiv:.0f} mg/m²")
+        
+        rem_str = ""
+        if remaining > 0:
+            rem_str = "\n\nJäljellä oleva annos maksimirajaan (450 mg/m²) eri lääkkeinä:\n"
+            if self.syotto_mode.get() == "mg":
+                rem_str += f"• Doksorubisiini: {remaining:.0f} mg/m² (n. {remaining * bsa:.0f} mg)\n"
+                rem_str += f"• Epirubisiini: {remaining / 0.5:.0f} mg/m² (n. {(remaining / 0.5) * bsa:.0f} mg)\n"
+                rem_str += f"• Idarubisiini: {remaining / 3.0:.0f} mg/m² (n. {(remaining / 3.0) * bsa:.0f} mg)\n"
+                rem_str += f"• Mitoksantroni: {remaining / 3.0:.0f} mg/m² (n. {(remaining / 3.0) * bsa:.0f} mg)"
+            else:
+                rem_str += f"• Doksorubisiini: {remaining:.0f} mg/m²\n"
+                rem_str += f"• Epirubisiini: {remaining / 0.5:.0f} mg/m²\n"
+                rem_str += f"• Idarubisiini: {remaining / 3.0:.0f} mg/m²\n"
+                rem_str += f"• Mitoksantroni: {remaining / 3.0:.0f} mg/m²"
+                
+        if equiv >= 450:
+            self.kertyva_risk_label.config(text="")
+            self.kertyva_warning_label.config(text=f"⚠️ {suositus}")
+        elif equiv >= 300:
+            self.kertyva_risk_label.config(text=f"Tulkinta: {suositus}{rem_str}")
+            self.kertyva_warning_label.config(text="Huom: Annoskertymä on suuri, huomioi sydäntoksisuuden riski.")
+        else:
+            self.kertyva_risk_label.config(text=f"Tulkinta: {suositus}{rem_str}")
+            self.kertyva_warning_label.config(text="")
+            
+    def build_qtc_view(self):
+        ttk.Label(self.content_frame, text="QTc-ajan korjauslaskuri", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="Laskee sykekorjatun QT-ajan (QTc) Bazettin ja Friderician kaavoilla.\nSyöpähoidoissa (esim. TK-estäjät) suositellaan usein Friderician kaavaa.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 20))
+        
+        input_frame = ttk.Frame(self.content_frame)
+        input_frame.pack(anchor="w", fill="x")
+        
+        ttk.Label(input_frame, text="Sähkökardiogrammin QT-aika (ms):", font=("Segoe UI", 10, "bold")).grid(row=0, column=0, sticky="w", pady=5)
+        self.qt_var = tk.StringVar(value="400")
+        ttk.Entry(input_frame, textvariable=self.qt_var, width=15).grid(row=0, column=1, sticky="w", padx=10, pady=5)
+        
+        ttk.Label(input_frame, text="Syke (bpm):", font=("Segoe UI", 10, "bold")).grid(row=1, column=0, sticky="w", pady=5)
+        self.hr_var = tk.StringVar(value="60")
+        ttk.Entry(input_frame, textvariable=self.hr_var, width=15).grid(row=1, column=1, sticky="w", padx=10, pady=5)
+        
+        ttk.Button(self.content_frame, text="Laske QTc", command=self.laske_qtc_action).pack(anchor="w", pady=20)
+        
+        self.qtc_result_frame = ttk.Frame(self.content_frame)
+        self.qtc_result_frame.pack(anchor="w", fill="x")
+        self.qtc_result_label = ttk.Label(self.qtc_result_frame, text="", font=("Segoe UI", 12, "bold"))
+        self.qtc_result_label.pack(anchor="w")
+        self.qtc_risk_label = ttk.Label(self.qtc_result_frame, text="", font=("Segoe UI", 11))
+        self.qtc_risk_label.pack(anchor="w", pady=(5, 0))
+        self.qtc_warning_label = ttk.Label(self.qtc_result_frame, text="", font=("Segoe UI", 11, "bold"), foreground="red")
+        self.qtc_warning_label.pack(anchor="w", pady=(5, 0))
+        
+    def laske_qtc_action(self):
+        qt = safe_float(self.qt_var.get())
+        hr = safe_float(self.hr_var.get())
+        
+        qtc_b, qtc_f = laske_qtc(qt, hr)
+        
+        if qtc_b == 0.0:
+            self.qtc_result_label.config(text="Tarkista syötteet (QT ja syke on oltava > 0).")
+            self.qtc_risk_label.config(text="")
+            self.qtc_warning_label.config(text="")
+            return
+            
+        self.qtc_result_label.config(text=f"Bazett (QTcB): {qtc_b:.0f} ms  |  Fridericia (QTcF): {qtc_f:.0f} ms")
+        self.qtc_risk_label.config(text=f"Tulkinta (Fridericia): {hae_qtc_suositus(qtc_f)}")
+        
+        if qtc_f > 500: self.qtc_warning_label.config(text="⚠️ VAKAVA QTc-PIDENTYMÄ YLI 500 ms!")
+        elif qtc_f > 480: self.qtc_warning_label.config(text="⚠️ QTc-Aika > 480 ms!")
+        else: self.qtc_warning_label.config(text="")
 
     def build_mascc_view(self):
         ttk.Label(self.content_frame, text="MASCC (Multinational Association for Supportive Care in Cancer)", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))

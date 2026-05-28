@@ -11,7 +11,7 @@
                 "yksikkö": "mg (kiinteä)",  
                 "päivät": ["Jatkuva"], 
                 "tablettikoot": ["80 mg", "40 mg"],  
-                "reseptiohje": "Kerran päivässä samaan aikaan." 
+                "lisätieto": "Kerran päivässä samaan aikaan." 
             } 
         ], 
         "esilääkitys": "Tarvittaessa loperamidi." 
@@ -28,7 +28,7 @@
                 "yksikkö": "mg/m2 x2",  
                 "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 
                 "tablettikoot": ["500 mg"],  
-                "reseptiohje": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
+                "lisätieto": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
             } 
         ], 
         "esilääkitys": "Tarvittaessa metoklopramidi." 
@@ -52,7 +52,7 @@
                 "yksikkö": "mg/m2 x2",
                 "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
                 "tablettikoot": ["500 mg", "150 mg"],
-                "reseptiohje": "Aamuin illoin, ruoan jälkeen. Tauko päivinä 15-21."
+                "lisätieto": "Aamuin illoin, ruoan jälkeen. Tauko päivinä 15-21."
             }
         ],
         "esilääkitys": "Ennen oksaliplatiiniä: Ondansetroni 8mg, Deksametasoni 8mg."
@@ -65,7 +65,7 @@
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
             {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
             {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0}, 
+            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0, "lisätieto": "Max 2 mg"}, 
             { 
                 "nimi": "Prednisoloni",  
                 "reitti": "PO",
@@ -73,7 +73,7 @@
                 "yksikkö": "mg (kiinteä)",  
                 "päivät": [1, 2, 3, 4, 5], 
                 "tablettikoot": ["40 mg", "20 mg", "5 mg"], 
-                "reseptiohje": "Aamuisin." 
+                "lisätieto": "Aamuisin." 
             } 
         ], 
         "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg." 
@@ -86,7 +86,7 @@
             {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
             {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
             {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0}, 
+            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0, "lisätieto": "Max 2 mg"}, 
             {"nimi": "Etoposidi", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
             { 
                 "nimi": "Prednisoloni",  
@@ -120,10 +120,10 @@
                 "nimi": "Akalabrutinibi",
                 "reitti": "PO",
                 "annos": 100,
-                "yksikkö": "mg",
+                "yksikkö": "mg x2",
                 "päivät": ["Jatkuva"],
                 "tablettikoot": ["100 mg"],
-                "reseptiohje": "1 tabletti 2 kertaa vuorokaudessa (aamuin illoin)."
+                "lisätieto": "1 tabletti 2 kertaa vuorokaudessa (aamuin illoin)."
             }
         ],
         "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO."
@@ -345,9 +345,10 @@
                 "nimi": "Alektinibi",
                 "reitti": "PO",
                 "annos": 600,
-                "yksikkö": "mg (4 x 150 mg kapselia)",
-                "päivät": ["Kahdesti päivässä"],
-                "reseptiohje": "Otettava ruuan kanssa."
+                "yksikkö": "mg x2",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["150 mg"],
+                "lisätieto": "Otettava ruuan kanssa."
             }
         ]
     },
@@ -360,9 +361,10 @@
                 "nimi": "Abemasiklibi",
                 "reitti": "PO",
                 "annos": 150,
-                "yksikkö": "mg",
-                "päivät": ["Kahdesti päivässä"],
-                "reseptiohje": "Yhdistelmähoitona endokriinisen hoidon kanssa."
+                "yksikkö": "mg x2",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["150 mg", "100 mg", "50 mg"],
+                "lisätieto": "Yhdistelmähoitona endokriinisen hoidon kanssa."
             }
         ],
         "esilääkitys": "Tarvittaessa loperamidi."
@@ -377,8 +379,8 @@
                 "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg (2 x 200 mg tablettia)",
-                "päivät": ["Kerran päivässä"],
-                "reseptiohje": "Otettava samaan aikaan joka päivä."
+                "päivät": ["Jatkuva"],
+                "lisätieto": "Otettava samaan aikaan joka päivä."
             }
         ]
     },
@@ -392,15 +394,15 @@
                 "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg",
-                "päivät": ["Kerran päivässä"]
+                "päivät": ["Jatkuva"]
             },
             {
                 "nimi": "Prednisoloni",
                 "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
-                "päivät": ["Kerran päivässä"],
-                "reseptiohje": "Otettava aamulla."
+                "päivät": ["Jatkuva"],
+                "lisätieto": "Otettava aamulla."
             }
         ]
     },
@@ -420,10 +422,10 @@
                 "nimi": "Darolutamidi (Nubeqa)",
                 "reitti": "PO",
                 "annos": 600,
-                "yksikkö": "mg",
-                "päivät": ["Kahdesti päivässä"],
+                "yksikkö": "mg x2",
+                "päivät": ["Jatkuva"],
                 "tablettikoot": ["300 mg"],
-                "reseptiohje": "Otetaan ruokailun yhteydessä."
+                "lisätieto": "Otetaan ruokailun yhteydessä."
             }
         ],
         "esilääkitys": "Deksametasoni 8mg PO päivää ennen dosetakselia, hoitopäivänä ja hoitoa seuraavana päivänä. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."
@@ -445,7 +447,7 @@
                 "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
-                "päivät": ["Kerran päivässä"],
+                "päivät": ["Jatkuva"],
                 "tablettikoot": ["5 mg", "10 mg"]
             }
         ],
@@ -461,7 +463,7 @@
                 "reitti": "PO",
                 "annos": 160,
                 "yksikkö": "mg",
-                "päivät": ["Kerran päivässä"],
+                "päivät": ["Jatkuva"],
                 "tablettikoot": ["40 mg"]
             }
         ],
@@ -533,7 +535,7 @@
                 "reitti": "PO",
                 "annos": 300,
                 "yksikkö": "mg",
-                "päivät": ["Kerran päivässä"],
+                "päivät": ["Jatkuva"],
                 "tablettikoot": ["75 mg", "50 mg"]
             }
         ],
@@ -804,7 +806,7 @@
                 "yksikkö": "mg (kiinteä)",
                 "päivät": [1, 2, 3, 4, 5],
                 "tablettikoot": ["40 mg", "20 mg", "5 mg"],
-                "reseptiohje": "Aamuisin."
+                "lisätieto": "Aamuisin."
             }
         ],
         "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."

@@ -31,6 +31,13 @@ class MainApp(tk.Tk):
         # Load Data
         Tietokanta.lataa()
         
+        # Jaettu tila potilastiedoille (Session Linkage)
+        self.shared_pituus = tk.StringVar(value="")
+        self.shared_paino = tk.StringVar(value="")
+        self.shared_ika = tk.StringVar(value="")
+        self.shared_krea = tk.StringVar(value="")
+        self.shared_sex = tk.StringVar(value="Mies")
+        
         # Container
         c = ttk.Frame(self)
         c.pack(fill="both", expand=True)
