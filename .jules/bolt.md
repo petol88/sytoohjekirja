@@ -5,3 +5,6 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2024-05-24 - Optimize list allocations and redundant dictionaries in calculators
+**Learning:** Python's `sum([bool1, bool2, ...])` creates unnecessary list allocations and incurs function call overhead. Similarly, creating static mapping dictionaries inside function bodies re-allocates memory on every function call.
+**Action:** Replace `sum([list_of_bools])` with direct addition `bool1 + bool2 + ...` (since bool inherits from int) to avoid the list overhead. Extract static dictionaries out of function bodies and define them as module-level constants (e.g., `_IPI_RISKIRYHMAT`) to ensure they are only allocated once.
