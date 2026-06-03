@@ -5,3 +5,8 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2026-06-03 - Refactoring Calculators for Performance
+
+**Learning:** In highly-called functions (like `tarkista_gelf_kriteerit` or `laske_ips_pisteet`), using `sum([bool1, bool2, ...])` creates redundant list allocations and introduces generator/function call overhead. Additionally, defining static dictionaries (like for risk groups or prognosis mappings) directly within functions (e.g. `hae_ipi_riskiryhma`) forces the dictionary to be instantiated on every call, heavily impacting iteration performance.
+
+**Action:** Replace `sum([...])` with direct boolean-to-integer addition (e.g., `bool1 + bool2 + ...`) to avoid list allocation overhead. Extract function-level static dictionaries to module-level constants (e.g. `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, `_IPS_ENNUSTEET`) to prevent unnecessary allocations on each execution.
