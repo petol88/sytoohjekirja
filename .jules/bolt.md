@@ -5,3 +5,7 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+
+## 2024-05-18 - [Optimize protocol filtering in Streamlit]
+**Learning:** Pre-calculating derived UI mappings (like `protokolla_map` and `syopatyyppi_opts`) inside a `@st.cache_data` function avoids costly O(N) calculations and object creations during every interaction in Streamlit.
+**Action:** Always aim to pre-calculate mappings inside the cache function rather than calculating on-the-fly during UI rendering, especially when dealing with dropdown lists.
