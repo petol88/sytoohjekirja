@@ -252,7 +252,8 @@ def tarkista_gelf_kriteerit(
     b_oireet: bool,
 ) -> int:
     # Palautetaan täyttyvien kriteerien määrä
-    return sum([bulkki, perna, kompressio, ldh_b2m, leukemia, sytopeniat, b_oireet])
+    # Bolt optimization: replaced sum([...]) with mathematical addition to avoid list allocation overhead
+    return bulkki + perna + kompressio + ldh_b2m + leukemia + sytopeniat + b_oireet
 
 
 def hae_gelf_suositus(pisteet: int) -> str:
@@ -327,7 +328,8 @@ def tarkista_hl_paikallinen_riskitekijat(
     alueita_vahintaan_3: bool,
     la_koholla: bool,
 ) -> int:
-    return sum([iso_mediastinum, ekstranodaalinen, alueita_vahintaan_3, la_koholla])
+    # Bolt optimization: replaced sum([...]) with mathematical addition to avoid list allocation overhead
+    return iso_mediastinum + ekstranodaalinen + alueita_vahintaan_3 + la_koholla
 
 
 def hae_hl_paikallinen_riskiryhma(pisteet: int) -> str:
