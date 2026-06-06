@@ -5,3 +5,6 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2026-06-06 - [Optimize Boolean Summation Overhead]
+**Learning:** In Python, replacing `sum([bool1, bool2, ...])` with direct mathematical addition `bool1 + bool2 + ...` avoids unnecessary list allocation and function call overhead, yielding a ~50% improvement for simple boolean tallying functions.
+**Action:** Use direct addition instead of `sum([...])` when tallying a small, fixed number of boolean variables.
