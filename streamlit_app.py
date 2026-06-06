@@ -898,4 +898,9 @@ elif view == "IO-haitat":
         ohjeet = IO_HAITTAVAIKUTUKSET[haitta]
         for gradus, ohje in ohjeet.items():
             st.markdown(f"**{gradus}:**")
-            st.info(ohje)
+            if gradus.startswith("Diagnostiikka ja huomioitavaa"):
+                st.warning(ohje)
+            elif gradus.startswith("Gradus 3") or gradus.startswith("Gradus 4"):
+                st.error(ohje)
+            else:
+                st.info(ohje)
