@@ -28,3 +28,7 @@ class MainMenu(ttk.Frame):
         ttk.Button(c, text="HAITTAVAIKUTUKSET", 
                    command=lambda: controller.show_frame("ToxicityView"), 
                    width=30).pack(pady=10)
+                   
+        ttk.Button(c, text="IO-HAITTOJEN HOITO", 
+                   command=lambda: controller.show_frame("IOToxicityView"), 
+                   width=30).pack(pady=10)

@@ -1,49 +1,185 @@
+ANNOSTASOT = {
+    "Osimertinibi (Tagrisso)": {
+        "Aloitusannos": "80 mg x 1",
+        "1. annoslasku": "40 mg x 1",
+        "2. annoslasku": "Lopeta hoito"
+    },
+    "Kapesitabiini (Xeloda)": {
+        "Aloitusannos": "100 % (esim. 1250 mg/m² x 2)",
+        "1. annoslasku": "75 % aloitusannoksesta",
+        "2. annoslasku": "50 % aloitusannoksesta",
+        "3. annoslasku": "Lopeta hoito"
+    },
+    "Ribosiklibi (Kisqali)": {
+        "Aloitusannos": "600 mg x 1",
+        "1. annoslasku": "400 mg x 1",
+        "2. annoslasku": "200 mg x 1",
+        "3. annoslasku": "Lopeta hoito"
+    },
+    "Abemasiklibi (Verzenios)": {
+        "Aloitusannos": "150 mg x 2",
+        "1. annoslasku": "100 mg x 2",
+        "2. annoslasku": "50 mg x 2",
+        "3. annoslasku": "Lopeta hoito"
+    },
+    "Palbosiklibi (Ibrance)": {
+        "Aloitusannos": "125 mg x 1",
+        "1. annoslasku": "100 mg x 1",
+        "2. annoslasku": "75 mg x 1",
+        "3. annoslasku": "Lopeta hoito (alle 75 mg annosta ei suositella)"
+    },
+    "Patsopanibi (Votrient)": {
+        "Aloitusannos": "800 mg x 1",
+        "1. annoslasku": "600 mg x 1",
+        "2. annoslasku": "400 mg x 1",
+        "3. annoslasku": "200 mg x 1",
+        "4. annoslasku": "Lopeta hoito"
+    },
+    "Aksitinibi (Inlyta)": {
+        "Aloitusannos": "5 mg x 2",
+        "1. annoslasku": "3 mg x 2",
+        "2. annoslasku": "2 mg x 2",
+        "Annosnosto (jos sietää)": "7 mg x 2 -> 10 mg x 2"
+    },
+    "Lenvatinibi (Lenvima)": {
+        "Aloitusannos": "Indikaation mukaan (esim. 24 mg, 20 mg, 18 mg tai 14 mg)",
+        "Esim. 24 mg aloitus": "24 mg -> 20 mg -> 14 mg -> 10 mg",
+        "Esim. 20 mg aloitus": "20 mg -> 14 mg -> 10 mg -> 8 mg",
+        "Esim. 18 mg aloitus": "18 mg -> 14 mg -> 10 mg -> 8 mg"
+    }
+}
+
 HAITTAVAIKUTUKSET = {
     "Osimertinibi (Tagrisso)": {
         "Maksaentsyymien (ALAT/ASAT) nousu": {
-            "Gradus 1-2": "Jatka hoitoa normaalisti. Seuraa arvoja.",
-            "Gradus 3 (ALAT/ASAT 5-20 x viiteyläraja)": "Tauota hoito (enintään 3 viikkoa). Kun arvot palautuvat tasolle ≤ Gradus 2, jatka hoitoa alkuperäisellä (80 mg) tai alennetulla annoksella (40 mg).",
-            "Gradus 4 (ALAT/ASAT > 20 x viiteyläraja)": "Lopeta hoito pysyvästi."
+            "Gradus 1-2 (ALAT/ASAT ≤ 5 x ULN)": "Jatka hoitoa normaalisti. Seuraa arvoja.",
+            "Gradus 3 (ALAT/ASAT > 5 - 20 x ULN)": "Tauota hoito (enintään 3 viikkoa). Kun arvot palautuvat tasolle ≤ Gradus 2, jatka hoitoa alkuperäisellä (80 mg) tai alennetulla annoksella (40 mg).",
+            "Gradus 4 (ALAT/ASAT > 20 x ULN)": "Lopeta hoito pysyvästi."
         },
         "QTc-ajan pidentyminen": {
-            "QTc > 500 ms kahdessa erillisessä EKG:ssä": "Tauota hoito. Kun QTc < 481 ms tai palautuu lähtötasolle, jatka alennetulla annoksella (40 mg).",
-            "QTc-pidentymä ja hengenvaarallinen rytmihäiriö": "Lopeta hoito pysyvästi."
+            "Gradus 3 (QTc > 500 ms kahdessa erillisessä EKG:ssä)": "Tauota hoito. Kun QTc < 481 ms tai palautuu lähtötasolle, jatka alennetulla annoksella (40 mg).",
+            "Gradus 4 (QTc > 500 ms ja hengenvaarallinen rytmihäiriö)": "Lopeta hoito pysyvästi."
         },
         "Interstitiaalinen keuhkosairaus (ILD) / Pneumoniitti": {
-            "Mikä tahansa gradus": "Tauota hoito välittömästi epäiltäessä ILD:tä. Jos ILD vahvistetaan, lopeta hoito pysyvästi."
+            "Mikä tahansa gradus (oireinen tai kuvantamislöydös)": "Tauota hoito välittömästi epäiltäessä ILD:tä. Jos ILD vahvistetaan, lopeta hoito pysyvästi."
         }
     },
     "Kapesitabiini (Xeloda)": {
         "Ripuli": {
             "Gradus 2 (4-6 ulostetta/vrk yli lähtötason)": "Tauota hoito, kunnes palautuu tasolle Gradus 0-1. Jatka: 1. kerralla 100% annoksella, 2. kerralla 75% annoksella, 3. kerralla 50% annoksella. 4. kerralla lopeta.",
-            "Gradus 3 (≥7 ulostetta/vrk yli lähtötason)": "Tauota hoito, kunnes palautuu tasolle Gradus 0-1. Jatka: 1. kerralla 75% annoksella, 2. kerralla 50% annoksella. 3. kerralla lopeta.",
-            "Gradus 4 (hengenvaarallinen)": "Lopeta hoito pysyvästi TAI tauota kunnes Gradus 0-1 ja jatka suoraan 50% annoksella."
+            "Gradus 3 (≥ 7 ulostetta/vrk yli lähtötason tai inkontinenssi)": "Tauota hoito, kunnes palautuu tasolle Gradus 0-1. Jatka: 1. kerralla 75% annoksella, 2. kerralla 50% annoksella. 3. kerralla lopeta.",
+            "Gradus 4 (hengenvaarallinen / hemodynaaminen romahdus)": "Lopeta hoito pysyvästi TAI tauota kunnes Gradus 0-1 ja jatka suoraan 50% annoksella."
         },
         "Käsi-jalka-oireyhtymä": {
-            "Gradus 2 (kivulias eryteema/turvotus, häiritsee toimia)": "Tauota hoito, kunnes palautuu Gradus 0-1. Jatka: 1. kerralla 100% annoksella, 2. kerralla 75% annoksella, 3. kerralla 50% annoksella.",
-            "Gradus 3 (kosteat deskvamaatiot, haavaumat, kova kipu)": "Tauota hoito, kunnes palautuu Gradus 0-1. Jatka: 1. kerralla 75% annoksella, 2. kerralla 50% annoksella. 3. kerralla lopeta."
+            "Gradus 2 (kivulias eryteema/turvotus, häiritsee päivittäisiä toimia)": "Tauota hoito, kunnes palautuu Gradus 0-1. Jatka: 1. kerralla 100% annoksella, 2. kerralla 75% annoksella, 3. kerralla 50% annoksella.",
+            "Gradus 3 (kosteat deskvamaatiot, haavaumat, kova kipu, estää toimet)": "Tauota hoito, kunnes palautuu Gradus 0-1. Jatka: 1. kerralla 75% annoksella, 2. kerralla 50% annoksella. 3. kerralla lopeta."
         }
     },
     "Ribosiklibi (Kisqali)": {
         "Maksaentsyymien (ALAT/ASAT) nousu": {
-            "Gradus 1-2": "Jatka samalla annoksella. Seuraa arvoja.",
-            "Gradus 3": "Tauota hoito. Kun palautuu tasolle ≤ Gradus 2, jatka seuraavaksi pienemmällä annostasolla. Jos palautumiseen menee > 28 vrk, lopeta hoito.",
-            "Gradus 4": "Lopeta hoito pysyvästi."
+            "Gradus 1-2 (ALAT/ASAT ≤ 5 x ULN)": "Jatka samalla annoksella. Seuraa arvoja.",
+            "Gradus 3 (ALAT/ASAT > 5 - 20 x ULN)": "Tauota hoito. Kun palautuu tasolle ≤ Gradus 2, jatka seuraavaksi pienemmällä annostasolla. Jos palautumiseen menee > 28 vrk, lopeta hoito.",
+            "Gradus 4 (ALAT/ASAT > 20 x ULN)": "Lopeta hoito pysyvästi."
         },
         "Neutropenia": {
-            "Gradus 1-2 (ANC ≥ 1.0)": "Jatka samalla annoksella.",
-            "Gradus 3 (ANC 0.5 - <1.0)": "Tauota hoito, kunnes ANC ≥ 1.0. Jatka 1. kerralla samalla annoksella. Jos uusiutuu, tauota ja jatka alennetulla annoksella.",
-            "Gradus 4 (ANC < 0.5)": "Tauota hoito, kunnes ANC ≥ 1.0. Jatka alennetulla annoksella."
+            "Gradus 1-2 (ANC ≥ 1.0 E9/l)": "Jatka samalla annoksella.",
+            "Gradus 3 (ANC 0.5 - < 1.0 E9/l)": "Tauota hoito, kunnes ANC ≥ 1.0. Jatka 1. kerralla samalla annoksella. Jos uusiutuu, tauota ja jatka alennetulla annoksella.",
+            "Gradus 4 (ANC < 0.5 E9/l)": "Tauota hoito, kunnes ANC ≥ 1.0. Jatka alennetulla annoksella."
         }
     },
     "Abemasiklibi (Verzenios)": {
         "Ripuli": {
-            "Gradus 2": "Jos ei korjaudu 24 tunnissa loperamidilla, tauota hoito kunnes korjaantuu (Gradus ≤1). Jatka samalla annoksella.",
-            "Gradus 2, jos toistuu / Gradus 3 tai 4": "Tauota hoito kunnes korjaantuu (Gradus ≤1). Jatka hoitoa seuraavaksi pienemmällä annoksella."
+            "Gradus 2 (4-6 ulostetta/vrk yli lähtötason)": "Jos ei korjaudu 24 tunnissa loperamidilla, tauota hoito kunnes korjaantuu (Gradus ≤1). Jatka samalla annoksella.",
+            "Gradus 2 toistuessa TAI Gradus 3-4 (≥ 7 ulostetta/vrk tai vaikea)": "Tauota hoito kunnes korjaantuu (Gradus ≤1). Jatka hoitoa seuraavaksi pienemmällä annoksella."
         },
         "Neutropenia": {
-            "Gradus 3 (ANC 0.5 - <1.0)": "Tauota hoito kunnes palautuu tasolle Gradus ≤2. Jatka samalla annoksella. Jos uusiutuu, tauota ja jatka pienemmällä annoksella.",
-            "Gradus 4 (ANC < 0.5)": "Tauota hoito kunnes palautuu tasolle Gradus ≤2. Jatka seuraavaksi pienemmällä annoksella."
+            "Gradus 3 (ANC 0.5 - < 1.0 E9/l)": "Tauota hoito kunnes palautuu tasolle Gradus ≤2 (ANC ≥ 1.0). Jatka samalla annoksella. Jos uusiutuu, tauota ja jatka pienemmällä annoksella.",
+            "Gradus 4 (ANC < 0.5 E9/l)": "Tauota hoito kunnes palautuu tasolle Gradus ≤2 (ANC ≥ 1.0). Jatka seuraavaksi pienemmällä annoksella."
         }
+    },
+    "Palbosiklibi (Ibrance)": {
+        "Neutropenia": {
+            "Gradus 1-2 (ANC ≥ 1.0 E9/l)": "Jatka samalla annoksella. Seuraa verenkuvaa.",
+            "Gradus 3 (ANC 0.5 - < 1.0 E9/l)": "Tauota hoito, kunnes palautuu tasolle ≤ Gradus 2 (ANC ≥ 1.0). Jatka seuraavalla syklillä samalla annoksella. Jos uusiutuu, tauota ja jatka alennetulla annoksella (100 mg tai 75 mg).",
+            "Gradus 4 (ANC < 0.5 E9/l)": "Tauota hoito, kunnes palautuu tasolle ≤ Gradus 2 (ANC ≥ 1.0). Jatka alennetulla annoksella (100 mg tai 75 mg)."
+        }
+    },
+    "Patsopanibi (Votrient)": {
+        "Maksaentsyymien (ALAT/ASAT) nousu": {
+            "Gradus 1 (ALAT < 3 x ULN)": "Jatka hoitoa normaalisti. Seuraa maksa-arvoja.",
+            "Gradus 2 (ALAT 3-8 x ULN)": "Jatka hoitoa normaalisti. Seuraa maksa-arvoja viikoittain, kunnes palautuvat tasolle Gradus 1 tai lähtötasolle.",
+            "Gradus 3 (ALAT > 8 x ULN)": "Tauota hoito, kunnes palautuu tasolle Gradus 1 tai lähtötasolle. Jos tauko on ollut > 3 viikkoa, jatka alennetulla annoksella (esim. 400 mg).",
+            "ALAT > 3 x ULN ja Bilirubiini > 2 x ULN": "Lopeta hoito pysyvästi."
+        },
+        "Hypertensio": {
+            "Gradus 2 (Verenpaine koholla, esim. > 140/90 mmHg, oireeton)": "Aloita verenpainelääkitys tai muokkaa nykyistä lääkitystä. Jatka patsopanibihoitoa.",
+            "Gradus 3 (Verenpaine ≥ 160/100 mmHg, vaatii sairaalahoitoa tai usean lääkkeen)": "Tauota hoito, kunnes verenpaine on hallinnassa (< 150/90 mmHg). Jatka hoitoa alkuperäisellä tai alennetulla annoksella.",
+            "Gradus 4 (hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        }
+    },
+    "Aksitinibi (Inlyta)": {
+        "Hypertensio": {
+            "Gradus 2-3 (Kohonnut verenpaine, esim. > 140/90 mmHg)": "Aloita verenpainelääkitys tai tehosta sitä. Jos verenpaine on huonosti hallinnassa (> 150/90 mmHg) lääkityksestä huolimatta, tauota aksitinibi. Kun verenpaine on hallinnassa, jatka hoitoa alennetulla annoksella.",
+            "Gradus 4 (Hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        },
+        "Proteinuria": {
+            "Gradus 1-2 (Proteinuria < 3.5 g/24 h tai < 3+ liuskalla)": "Jatka samalla annoksella. Seuraa virtsan proteiinia.",
+            "Gradus 3 (Proteinuria ≥ 3.5 g/24 h)": "Tauota hoito, kunnes proteinuria laskee tasolle < 2 g/24 h. Jatka hoitoa alennetulla annoksella."
+        }
+    },
+    "Lenvatinibi (Lenvima)": {
+        "Hypertensio": {
+            "Gradus 2-3 (verenpaine ≥ 140/90 mmHg)": "Aloita verenpainelääkitys tai muokkaa nykyistä. Jos verenpaine on lääkityksestä huolimatta ≥ 160/100 mmHg, tauota lenvatinibi, kunnes VP on hallinnassa. Jatka alennetulla annoksella.",
+            "Gradus 4 (Hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        },
+        "Proteinuria": {
+            "Gradus 1-2 (Proteinuria < 2 g/24 h tai 1-2+ liuskalla)": "Tarkista vuorokausivirtsan proteiini. Jos proteinuria < 2 g/24 h, jatka samalla annoksella.",
+            "Gradus 3 (Proteinuria ≥ 2 g/24 h)": "Tauota lenvatinibi, kunnes proteinuria on < 2 g/24 h. Jatka alennetulla annoksella.",
+            "Gradus 4 (Nefroottinen oireyhtymä)": "Lopeta hoito pysyvästi."
+        }
+    }
+}
+
+IO_HAITTAVAIKUTUKSET = {
+    "Immunologinen koliitti / Ripuli": {
+        "Gradus 1 (Ripuli < 4 ulostuskertaa/vrk yli lähtötason)": "Jatka IO-hoitoa. Oireenmukainen hoito (esim. loperamidi). Seuraa tilannetta.",
+        "Gradus 2 (Ripuli 4-6 kertaa/vrk yli lähtötason tai vatsakipu)": "Tauota IO-hoito. Jos oireet jatkuvat > 3-5 vrk, aloita systeeminen kortikosteroidi (esim. Prednisolon 1-2 mg/kg/vrk).",
+        "Gradus 3 (Ripuli ≥ 7 kertaa/vrk, vaikea vatsakipu tai sairaalahoitoa vaativa)": "Tauota IO-hoito pysyvästi (tai kunnes < G1 pitkällä tauolla lääkekohtaisesti). Sairaalahoito. Metyyliprednisoloni iv 1-2 mg/kg/vrk. Jos ei vastetta 3-5 vrk kuluessa, harkitse infliksimabia.",
+        "Gradus 4 (Hengenvaarallinen, perforaatio-epäily)": "Lopeta IO-hoito pysyvästi. Sairaalahoito, iv-steroidit ja tarvittaessa infliksimabi. Kirurgian konsultaatio."
+    },
+    "Immunologinen pneumoniitti": {
+        "Gradus 1 (Oireeton, löydös kuvantamisessa)": "Tauota IO-hoito. Seuraa kuvantamisella 3-4 viikon välein. Jos paranee, voi harkita hoidon jatkamista.",
+        "Gradus 2 (Lievät oireet, ei hapentarvetta)": "Tauota IO-hoito. Aloita systeeminen kortikosteroidi (Prednisolon 1-2 mg/kg/vrk). Kun palautuu ≤ G1, hidas steroidin purku (yli 4 viikkoa).",
+        "Gradus 3-4 (Vaikeat oireet, hapentarve tai hengenvaarallinen)": "Lopeta IO-hoito pysyvästi. Sairaalahoito. Metyyliprednisoloni iv 2-4 mg/kg/vrk. Jos ei vastetta 48h, lisää mykofenolaattimofetiili, infliksimabi tai syklofosfamidi."
+    },
+    "Immunologinen hepatiitti": {
+        "Gradus 1 (ALAT/ASAT 3-5 x ULN tai Bilirubiini 1.5-3 x ULN)": "Tauota IO-hoito, kunnes palautuu tasolle ≤ G1. Seuraa maksa-arvoja 1-2 kertaa viikossa.",
+        "Gradus 2 (ALAT/ASAT 3-5 x ULN tai Bilirubiini 1.5-3 x ULN - pitkittynyt)": "Tauota IO-hoito. Aloita Prednisolon 1 mg/kg/vrk.",
+        "Gradus 3 (ALAT/ASAT 5-20 x ULN tai Bilirubiini 3-10 x ULN)": "Tauota IO-hoito pysyvästi. Aloita Metyyliprednisoloni iv 1-2 mg/kg/vrk. Seuraa arvoja päivittäin. Jos ei vastetta 2-3 vrk, aloita mykofenolaattimofetiili (HUOM: Infliksimabi on vasta-aiheinen hepatiitissa!).",
+        "Gradus 4 (ALAT/ASAT > 20 x ULN tai Bilirubiini > 10 x ULN)": "Lopeta IO-hoito pysyvästi. Metyyliprednisoloni iv 2 mg/kg/vrk. Sairaalahoito."
+    },
+    "Hypotyreoosi": {
+        "Gradus 1 (Oireeton, TSH koholla, T4v normaali)": "Jatka IO-hoitoa. Ei välitöntä lääkitystarvetta, seuraa labroja 3-4 viikon välein.",
+        "Gradus 2 (Oireinen TAI TSH koholla ja T4v matala)": "Jatka IO-hoitoa. Aloita tyroksiinikorvaushoito (esim. levotyroksiini 0.5-1.5 µg/kg/vrk). Seuraa arvoja.",
+        "Gradus 3-4 (Vaikeat oireet, estää päivittäisiä toimia TAI hengenvaarallinen mykseedeemakooma)": "Tauota IO-hoito, kunnes oireet hallinnassa. Sairaalahoito ja endokrinologin konsultaatio."
+    },
+    "Hypertyreoosi (Usein tyreoitiitin alkuvaihe)": {
+        "Diagnostiikka ja huomioitavaa": "Tyreotoksikoosi: Kliininen oireyhtymä, joka johtuu kilpirauhashormonien (T4v/T3v) ylimäärästä kudoksissa. Oireina mm. voimakas takykardia, rytmihäiriöt, vapina, levottomuus, kuumeilu ja hikoilu. Vaatii nopeaa puuttumista.",
+        "Gradus 1 (Oireeton, TSH matala, T4v normaali tai lievästi koholla)": "Jatka IO-hoitoa. Seuraa arvoja 2-3 viikon välein.",
+        "Gradus 2 (Oireinen, esim. palpitaatio, hikoilu)": "Jatka IO-hoitoa. Oireenmukainen hoito (esim. beetasalpaaja kuten propranololi). Huomioi mahdollinen siirtyminen hypotyreoosiin myöhemmin.",
+        "Gradus 3-4 (Vaikeat oireet TAI tyreotoksikoosi)": "Tauota IO-hoito. Sairaalahoito ja endokrinologin konsultaatio (harkitaan kortikosteroidia, esim. Prednisolon 1-2 mg/kg/vrk, jos epäillään vaikeaa tyreoidiittia)."
+    },
+    "Immunologinen ihottuma (Makulopapulaarinen)": {
+        "Diagnostiikka ja huomioitavaa": "Ihopinta-alan (BSA) arviointi:\n• Kämmen-sääntö: Potilaan oman kämmenen pinta-ala (sormet mukaan lukien) vastaa noin 1 % hänen kehonsa kokonaispinta-alasta.\n• Yhdeksän sääntö: Koko yläraaja = 9 %, Koko alaraaja = 18 %, Vartalon etupuoli = 18 %, Vartalon selkäpuoli = 18 %.",
+        "Gradus 1 (Pinta-ala < 10 % BSA)": "Jatka IO-hoitoa. Paikalliset miedot/keskivahvat kortikosteroidivoiteet.",
+        "Gradus 2 (Pinta-ala 10-30 % BSA)": "Tauota IO-hoito, kunnes ≤ G1. Paikalliset vahvat kortikosteroidivoiteet. Tarvittaessa systeeminen kortikosteroidi (Prednisolon 0.5-1 mg/kg/vrk).",
+        "Gradus 3 (Pinta-ala > 30 % BSA tai vaikeat oireet)": "Tauota IO-hoito. Systeeminen kortikosteroidi (Prednisolon 1-2 mg/kg/vrk).",
+        "Gradus 4 (SJS, TEN, DRESS)": "Lopeta IO-hoito pysyvästi. Sairaalahoito, iv-steroidit."
+    },
+    "Hypofysiitti (Aivolisäkkeen vajaatoiminta)": {
+        "Diagnostiikka ja huomioitavaa": "Oireet: Päänsärky, huimaus, uupumus, näköhäiriöt.\nLabrat (suositeltavaa ottaa aamulla klo 8-10): S-Korsol (kortisolin puute on vaarallisin ja yleinen IO-haitoissa!), fS-TSH, S-T4v, fS-ACTH, S-LH, S-FSH, S-Testo / S-Oesd.\nKuvantaminen: Aivolisäkkeen MRI (usein todetaan aivolisäkkeen turvotus akuuttivaiheessa).\nHUOMIO: Korvaa AINA ensin kortisolin puute ennen tyroksiinin aloitusta (lisämunuaiskriisin riski)!",
+        "Gradus 1 (Oireeton tai lievä, diagnoosi tehty labroin tai kuvantaen)": "Jatka IO-hoitoa. Aloita fysiologinen hormonikorvaushoito (esim. hydrokortisoni 15-25 mg/vrk jaettuna 2-3 annokseen, jos kortisolipuutos todettu). Endokrinologin konsultaatio.",
+        "Gradus 2 (Kohtalaiset oireet, esim. häiritsevä päänsärky)": "Tauota IO-hoito. Endokrinologin konsultaatio. Aloita fysiologinen korvaushoito. Jos epäillään akuuttia tulehdusta/turvotusta, aloita lisäksi systeeminen kortikosteroidi (esim. Prednisolon 1 mg/kg/vrk).",
+        "Gradus 3-4 (Vaikeat oireet, esim. vaikea päänsärky, näkökenttäpuutos, sekavuus tai lisämunuaiskriisi)": "Tauota IO-hoito (G4: pysyvästi). Päivystyksellinen sairaalahoito. Korkea-annoksinen iv-kortikosteroidi (Metyyliprednisoloni 1-2 mg/kg/vrk). Endokrinologin ja tarv. silmälääkärin konsultaatio."
     }
 }

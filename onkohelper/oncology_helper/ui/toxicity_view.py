@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from oncology_helper.toxicity import HAITTAVAIKUTUKSET
+from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
 
 class ToxicityView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -45,17 +45,35 @@ class ToxicityView(ttk.Frame):
             self.haitta_var.set("")
             self.text_widget.delete("1.0", tk.END)
             
+            if laake in ANNOSTASOT:
+                self.text_widget.insert(tk.END, self._format_annostasot(laake))
+            
     def on_haitta_select(self, event=None):
         laake = self.laake_var.get()
         haitta = self.haitta_var.get()
         self.text_widget.delete("1.0", tk.END)
         
-        if laake and haitta:
-            ohjeet = HAITTAVAIKUTUKSET[laake][haitta]
-            out = f"TOIMENPIDEOHJEET:\n{laake} – {haitta}\n"
-            out += "=" * 60 + "\n\n"
-            
-            for gradus, ohje in ohjeet.items():
-                out += f"[{gradus}]\n{ohje}\n\n"
+        if laake:
+            out = ""
+            if laake in ANNOSTASOT:
+                out += self._format_annostasot(laake)
                 
+            if haitta:
+                ohjeet = HAITTAVAIKUTUKSET[laake][haitta]
+                out += f"TOIMENPIDEOHJEET:\n{laake} – {haitta}\n"
+                out += "=" * 60 + "\n\n"
+                
+                for gradus, ohje in ohjeet.items():
+                    out += f"[{gradus}]\n{ohje}\n\n"
+                    
             self.text_widget.insert(tk.END, out)
+            
+    def _format_annostasot(self, laake):
+        tasot = ANNOSTASOT.get(laake, {})
+        if not tasot: return ""
+        out = f"ANNOSTASOT ({laake}):\n"
+        out += "=" * 60 + "\n"
+        for k, v in tasot.items():
+            out += f"• {k}: {v}\n"
+        out += "\n"
+        return out

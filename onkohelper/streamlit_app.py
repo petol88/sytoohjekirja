@@ -98,7 +98,7 @@ if 'ika' not in st.session_state: st.session_state['ika'] = 0
 if 'krea' not in st.session_state: st.session_state['krea'] = 0.0
 if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
 
-view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Haittavaikutukset", "Ohjeet", "Tietoa"])
+view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Haittavaikutukset", "IO-haitat", "Ohjeet", "Tietoa"])
 
 if view == "Sytostaattilaskuri":
     st.header("Sytostaattilaskuri")
@@ -857,7 +857,7 @@ elif view == "Haittavaikutukset":
     st.header("Haittavaikutusten hallinta")
     st.write("Valitse tablettilääke ja kyseisen lääkkeen tyyppihaitta nähdäksesi valmisteyhteenvedon mukaiset annosreduktio- ja tauotusohjeet.")
     
-    from oncology_helper.toxicity import HAITTAVAIKUTUKSET
+    from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
     
     col1, col2 = st.columns(2)
     with col1:
@@ -867,11 +867,35 @@ elif view == "Haittavaikutukset":
         haitat = ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET[laake].keys())) if laake and laake != "Valitse..." else ["Valitse lääke ensin"]
         haitta = st.selectbox("Valitse haittavaikutus", haitat)
         
-    if laake and laake != "Valitse..." and haitta and haitta not in ["Valitse...", "Valitse lääke ensin"]:
+    if laake and laake != "Valitse...":
         st.markdown("---")
-        st.subheader(f"Toimenpideohjeet: {laake} – {haitta}")
+        if laake in ANNOSTASOT:
+            st.subheader(f"Annostasot: {laake}")
+            for k, v in ANNOSTASOT[laake].items():
+                st.write(f"**{k}:** {v}")
+                
+        if haitta and haitta not in ["Valitse...", "Valitse lääke ensin"]:
+            st.markdown("---")
+            st.subheader(f"Toimenpideohjeet: {laake} – {haitta}")
+            
+            ohjeet = HAITTAVAIKUTUKSET[laake][haitta]
+            for gradus, ohje in ohjeet.items():
+                st.markdown(f"**{gradus}:**")
+                st.info(ohje)
+                
+elif view == "IO-haitat":
+    st.header("Immuno-onkologisten haittojen hoito")
+    st.write("Valitse immunoterapiaan (PD-1, PD-L1, CTLA-4 estäjät) liittyvä haittavaikutus nähdäksesi hoitosuositukset (esim. ESMO/SITC).")
+    
+    from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET
+    
+    haitta = st.selectbox("Valitse IO-haittavaikutus", ["Valitse..."] + sorted(list(IO_HAITTAVAIKUTUKSET.keys())))
+    
+    if haitta and haitta != "Valitse...":
+        st.markdown("---")
+        st.subheader(f"Toimenpideohjeet: {haitta}")
         
-        ohjeet = HAITTAVAIKUTUKSET[laake][haitta]
+        ohjeet = IO_HAITTAVAIKUTUKSET[haitta]
         for gradus, ohje in ohjeet.items():
             st.markdown(f"**{gradus}:**")
             st.info(ohje)
