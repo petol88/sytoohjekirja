@@ -148,6 +148,7 @@ IO_HAITTAVAIKUTUKSET = {
         "Gradus 4 (Hengenvaarallinen, perforaatio-epäily)": "Lopeta IO-hoito pysyvästi. Sairaalahoito, iv-steroidit ja tarvittaessa infliksimabi. Kirurgian konsultaatio."
     },
     "Immunologinen pneumoniitti": {
+        "Diagnostiikka ja huomioitavaa": "Oireet: Uusi tai paheneva hengenahdistus, yskä, rintakipu tai happisaturaation lasku.\nDiagnostiikka: Keuhkojen HRCT (korkearesoluutio-TT) on ensisijainen tutkimus. Tyypillisesti nähdään 'ground-glass' (mattalasi) samentumaa tai organisoituvan pneumonian kaltaisia muutoksia.\nHUOMIO: Sulje AINA pois infektio (esim. atyyppiset patogeenit, COVID, sieni) ja syövän progressio ennen korkea-annoksisen kortikosteroidin aloitusta! Bronkoskopia ja BAL-näyte voivat olla tarpeen.",
         "Gradus 1 (Oireeton, löydös kuvantamisessa)": "Tauota IO-hoito. Seuraa kuvantamisella 3-4 viikon välein. Jos paranee, voi harkita hoidon jatkamista.",
         "Gradus 2 (Lievät oireet, ei hapentarvetta)": "Tauota IO-hoito. Aloita systeeminen kortikosteroidi (Prednisolon 1-2 mg/kg/vrk). Kun palautuu ≤ G1, hidas steroidin purku (yli 4 viikkoa).",
         "Gradus 3-4 (Vaikeat oireet, hapentarve tai hengenvaarallinen)": "Lopeta IO-hoito pysyvästi. Sairaalahoito. Metyyliprednisoloni iv 2-4 mg/kg/vrk. Jos ei vastetta 48h, lisää mykofenolaattimofetiili, infliksimabi tai syklofosfamidi."
@@ -181,5 +182,26 @@ IO_HAITTAVAIKUTUKSET = {
         "Gradus 1 (Oireeton tai lievä, diagnoosi tehty labroin tai kuvantaen)": "Jatka IO-hoitoa. Aloita fysiologinen hormonikorvaushoito (esim. hydrokortisoni 15-25 mg/vrk jaettuna 2-3 annokseen, jos kortisolipuutos todettu). Endokrinologin konsultaatio.",
         "Gradus 2 (Kohtalaiset oireet, esim. häiritsevä päänsärky)": "Tauota IO-hoito. Endokrinologin konsultaatio. Aloita fysiologinen korvaushoito. Jos epäillään akuuttia tulehdusta/turvotusta, aloita lisäksi systeeminen kortikosteroidi (esim. Prednisolon 1 mg/kg/vrk).",
         "Gradus 3-4 (Vaikeat oireet, esim. vaikea päänsärky, näkökenttäpuutos, sekavuus tai lisämunuaiskriisi)": "Tauota IO-hoito (G4: pysyvästi). Päivystyksellinen sairaalahoito. Korkea-annoksinen iv-kortikosteroidi (Metyyliprednisoloni 1-2 mg/kg/vrk). Endokrinologin ja tarv. silmälääkärin konsultaatio."
+    },
+    "Immunologinen nefriitti (Munuaistoksisuus)": {
+        "Diagnostiikka ja huomioitavaa": "Seuraa säännöllisesti S-Krea ja U-KemSeul (proteinuria, hematuria). Sulje ensin pois muut syyt (dehydraatio, hypovolemia, muut nefrotoksiset lääkkeet kuten NSAIDit tai varjoaineet, postrenaalinen este).",
+        "Gradus 1 (Krea nousee yli lähtötason, mutta ≤ 1.5 x lähtötaso)": "Jatka IO-hoitoa varoen. Seuraa krea-arvoa tihennetysti (esim. 1-2 kertaa viikossa). Varmista riittävä nesteytys.",
+        "Gradus 2 (Krea > 1.5 - 3 x lähtötaso)": "Tauota IO-hoito. Aloita systeeminen kortikosteroidi (esim. Prednisolon 0.5 - 1 mg/kg/vrk). Seuraa krea-arvoa tiheästi.",
+        "Gradus 3 (Krea > 3 - 6 x lähtötaso)": "Tauota IO-hoito (yleensä pysyvästi). Sairaalahoito. Metyyliprednisoloni iv 1-2 mg/kg/vrk. Nefrologin konsultaatio. Jos steroidivastetta ei tule 1 viikon sisällä, harkitse muuta immunosuppressiota (esim. mykofenolaattimofetiili).",
+        "Gradus 4 (Krea > 6 x lähtötaso tai dialyysintarve)": "Lopeta IO-hoito pysyvästi. Sairaalahoito, iv-steroidit 1-2 mg/kg/vrk, tarvittaessa dialyysi."
+    },
+    "Immunologinen pankreatiitti (Haimatulehdus)": {
+        "Diagnostiikka ja huomioitavaa": "Oireet: Vatsakipu (usein säteilee selkään), pahoinvointi, oksentelu.\nLabrat: P-Amyl, P-Lipas (lipaasi on spesifisempi haimalle). HUOM: Oireeton amylaasin/lipaasin nousu ei yksinään vaadi rutiininomaista IO-hoidon tauotusta, ellei se ole huomattava (> 3x ULN).\nKuvantaminen: Vatsan TT tai MRI haimatulehduksen vahvistamiseksi ja muiden syiden poissulkemiseksi.",
+        "Gradus 1 (Oireeton entsyyminousu < 3 x ULN)": "Jatka IO-hoitoa. Ei tarvetta spesifiselle hoidolle, seuraa labroja.",
+        "Gradus 2 (Oireeton entsyyminousu 3 - 5 x ULN TAI lievät oireet)": "Tauota IO-hoito. Seuraa arvoja. Jos oireinen, aloita systeeminen kortikosteroidi (Prednisolon 0.5 - 1 mg/kg/vrk).",
+        "Gradus 3 (Entsyyminousu > 5 x ULN TAI vaikea vatsakipu)": "Tauota IO-hoito (usein pysyvästi). Sairaalahoito. Aloita metyyliprednisoloni iv 1-2 mg/kg/vrk. Nestehoito ja kivunlievitys.",
+        "Gradus 4 (Hengenvaaralliset seuraukset, hemodynaaminen romahdus)": "Lopeta IO-hoito pysyvästi. Teho-osastohoito, korkea-annoksinen iv-steroidi."
+    },
+    "Immunologinen myokardiitti (Sydänlihastulehdus)": {
+        "Diagnostiikka ja huomioitavaa": "Oireet: Rintakipu, hengenahdistus, palpitaatio, synkopee, uusi sydämen vajaatoiminta tai rytmihäiriöt.\nLabrat: TnT/TnI (Troponiini), proBNP, EKG.\nKuvantaminen: Sydämen UÄ (ECHO) ja mahdollisuuksien mukaan sydämen MRI.\nHUOMIO: Myokardiitti on harvinainen mutta potentiaalisesti fataali haitta, joka voi kehittyä nopeasti kardiogeeniseksi sokiksi! Kynnys kardiologin konsultaatioon ja steroidien aloitukseen tulee olla erittäin matala.",
+        "Gradus 1 (Oireeton, lievä biomarkkereiden tai EKG:n muutos)": "Tauota IO-hoito. Sairaalahoito (valvonta) ja kardiologin konsultaatio. Seuraa biomarkkereita (TnT, BNP) ja EKG:tä päivittäin. Harkitse kortikosteroidia heti, jos epäily vahvistuu.",
+        "Gradus 2 (Lievät oireet, ei sydämen vajaatoimintaa)": "Tauota IO-hoito (usein pysyvästi). Sairaalahoito ja kardiologin konsultaatio. Aloita systeeminen kortikosteroidi (Prednisolon 1-2 mg/kg/vrk).",
+        "Gradus 3 (Vaikeat oireet, lepohengenahdistus, lievä/kohtalainen vajaatoiminta)": "Lopeta IO-hoito pysyvästi. Valvonta- tai tehohoito. Aloita korkea-annoksinen iv-kortikosteroidi (esim. Metyyliprednisoloni 500-1000 mg/vrk pulssihoitona 3-5 vrk).",
+        "Gradus 4 (Hengenvaarallinen, kardiogeeninen sokki tai vaikea rytmihäiriö)": "Lopeta IO-hoito pysyvästi. Teho-osasto. Iv-steroidipulssi (Metyyliprednisoloni 500-1000 mg/vrk). Jos ei vastetta 24h kuluessa, muu immunosuppressio (esim. abatasepti, mykofenolaattimofetiili tai ATG. HUOM: Infliksimabi on vasta-aiheinen sydämen vajaatoiminnassa!)."
     }
 }
