@@ -93,12 +93,16 @@ st.title("Onkologian Työpöytä v2.3 (Streamlit)")
 
 # Session state defaults (Jaettu tila)
 if 'pituus' not in st.session_state or st.session_state['pituus'] < 100.0: st.session_state['pituus'] = 170.0
+# Constants for UI Options
+_VIEW_OPTS = ("Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Haittavaikutukset", "IO-haitat", "Ohjeet", "Tietoa")
+_LASKURI_OPTS = ("Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)")
+
 if 'paino' not in st.session_state: st.session_state['paino'] = 70.0
 if 'ika' not in st.session_state: st.session_state['ika'] = 0
 if 'krea' not in st.session_state: st.session_state['krea'] = 0.0
 if 'sukupuoli' not in st.session_state: st.session_state['sukupuoli'] = "Mies"
 
-view = st.sidebar.radio("Valitse näkymä", ["Sytostaattilaskuri", "Levinneisyys", "Pisteytykset", "Haittavaikutukset", "IO-haitat", "Ohjeet", "Tietoa"])
+view = st.sidebar.radio("Valitse näkymä", _VIEW_OPTS)
 
 if view == "Sytostaattilaskuri":
     st.header("Sytostaattilaskuri")
@@ -465,7 +469,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", _LASKURI_OPTS, key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
