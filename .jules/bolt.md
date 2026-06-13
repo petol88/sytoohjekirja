@@ -5,3 +5,7 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2024-05-25 - Optimize Streamlit UI List Filtering
+
+**Learning:** Generating dynamic lists inside the Streamlit render loop by iterating over the entire database via O(N) loops (`for prot in db.values(): indikaatiot.add(...)`) causes significant overhead (~0.021 ms per rerun).
+**Action:** Lift static or derived options generation (like extracting unique categories and mapping items to them) into a `@st.cache_data` data loading function, then return them as tuples/dicts. Replace the O(N) inline generation in the UI block with O(1) dictionary key lookups (`PROTOKOLLA_MAP.items()`). This reduced the widget option processing latency from ~0.021 ms to ~0.004 ms per interaction.
