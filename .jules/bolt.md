@@ -5,3 +5,6 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2024-05-25 - [Optimize Dictionary Instantiation and Boolean Summation]
+**Learning:** Re-instantiating static dictionaries on every function call (e.g. `ryhmat = {...}`) and using `sum([bool1, bool2, ...])` inside scoring functions introduces unnecessary memory allocation and list/function call overhead. Python evaluates direct addition of booleans (e.g., `bool1 + bool2`) much faster than allocating a list and calling `sum()`.
+**Action:** Extract static dictionaries to module-level constants (e.g. `_IPI_RISKIRYHMAT`) and replace `sum([...])` for boolean accumulations with direct addition to improve performance.
