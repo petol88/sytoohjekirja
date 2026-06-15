@@ -5,3 +5,6 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2024-05-24 - [Cache derived UI state mappings in Streamlit]
+**Learning:** Pre-calculating derived UI state (like mappings from 'syöpätyyppi' to 'protokolla' list) during `@st.cache_data` function initialization eliminates the need for redundant O(N) list filtering, sorting, and widget generation per interaction.
+**Action:** Lift complex data manipulation logic into the data loader's caching context to return pre-calculated lookups, preventing expensive loops during the normal rendering cycle.
