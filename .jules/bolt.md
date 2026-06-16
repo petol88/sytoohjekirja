@@ -5,3 +5,7 @@
 
 **Learning:** Recreating static dictionaries on every function call introduces unnecessary overhead. By hoisting these dictionaries to the module level, we can significantly reduce the execution time of simple getter functions without changing the API.
 **Action:** Lifted `kuvaukset` to `_ECOG_KUVAUKSET` in `hae_ecog_kuvaus`.
+## 2024-05-24 - Pre-calculate Derived UI Mappings
+
+**Learning:** Computing derived UI mappings (like filtering a protocol list based on a selected cancer type) inside the main Streamlit render path causes O(N) recalculations on every interaction. This can add significant overhead (e.g. ~0.02ms vs ~0.0001ms) as the dataset grows.
+**Action:** Move the pre-calculation of derived UI state into the `@st.cache_data` load function and return a pre-computed mapping (e.g., `protokolla_map`), allowing the render path to perform an O(1) dictionary lookup instead of filtering lists.
