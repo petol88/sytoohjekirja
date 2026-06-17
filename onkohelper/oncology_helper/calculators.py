@@ -19,6 +19,36 @@ class EcogLuokka(Enum):
     ECOG_5 = 5
 
 
+_IPI_RISKIRYHMAT = {
+    0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
+    2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)",
+    3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)",
+    4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
+    5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
+}
+
+_CPS_EG_ENNUSTEET = {
+    0: "0 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 100 %",
+    1: "1 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 98 %",
+    2: "2 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 94 %",
+    3: "3 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 84 %",
+    4: "4 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 71 %",
+    5: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
+    6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
+}
+
+_IPS_ENNUSTEET = {
+    0: "0 p - 5-vuoden PFS n. 84 %, OS n. 89 %",
+    1: "1 p - 5-vuoden PFS n. 77 %, OS n. 90 %",
+    2: "2 p - 5-vuoden PFS n. 67 %, OS n. 81 %",
+    3: "3 p - 5-vuoden PFS n. 60 %, OS n. 78 %",
+    4: "4 p - 5-vuoden PFS n. 51 %, OS n. 61 %",
+    5: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+    6: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+    7: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
+}
+
 _ECOG_KUVAUKSET = {
     EcogLuokka.ECOG_0: "Täysin aktiivinen, kykenee jatkamaan kaikkia sairautta edeltäneitä toimintoja rajoituksetta.",
     EcogLuokka.ECOG_1: "Rajoittunut raskaassa fyysisessä rasituksessa, mutta pystyy kävelemään ja tekemään kevyttä tai istumatyötä (esim. kevyt kotityö, toimistotyö).",
@@ -153,15 +183,7 @@ def laske_ipi_pisteet(
 
 
 def hae_ipi_riskiryhma(pisteet: int) -> str:
-    ryhmat = {
-        0: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
-        1: "Matala riski (5-vuoden elossaoloennuste n. 90 %)",
-        2: "Matala-kohtalainen riski (5-vuoden elossaoloennuste n. 77 %)",
-        3: "Korkea-kohtalainen riski (5-vuoden elossaoloennuste n. 67 %)",
-        4: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
-        5: "Korkea riski (5-vuoden elossaoloennuste n. 55 %)",
-    }
-    return ryhmat.get(pisteet, "Tuntematon riski")
+    return _IPI_RISKIRYHMAT.get(pisteet, "Tuntematon riski")
 
 
 def laske_cns_ipi_pisteet(
@@ -273,16 +295,7 @@ def laske_cps_eg_pisteet(
 
 
 def hae_cps_eg_ennuste(pisteet: int) -> str:
-    ennusteet = {
-        0: "0 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 100 %",
-        1: "1 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 98 %",
-        2: "2 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 94 %",
-        3: "3 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 84 %",
-        4: "4 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 71 %",
-        5: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
-        6: "5-6 p - 5-vuoden tautispesifinen elossaoloennuste (DSS) n. 42 %",
-    }
-    return ennusteet.get(pisteet, "Tuntematon ennuste")
+    return _CPS_EG_ENNUSTEET.get(pisteet, "Tuntematon ennuste")
 
 
 def laske_ips_pisteet(
@@ -308,17 +321,7 @@ def laske_ips_pisteet(
 
 
 def hae_ips_ennuste(pisteet: int) -> str:
-    ennusteet = {
-        0: "0 p - 5-vuoden PFS n. 84 %, OS n. 89 %",
-        1: "1 p - 5-vuoden PFS n. 77 %, OS n. 90 %",
-        2: "2 p - 5-vuoden PFS n. 67 %, OS n. 81 %",
-        3: "3 p - 5-vuoden PFS n. 60 %, OS n. 78 %",
-        4: "4 p - 5-vuoden PFS n. 51 %, OS n. 61 %",
-        5: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
-        6: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
-        7: "5-7 p - 5-vuoden PFS n. 42 %, OS n. 56 %",
-    }
-    return ennusteet.get(pisteet, "Tuntematon ennuste")
+    return _IPS_ENNUSTEET.get(pisteet, "Tuntematon ennuste")
 
 
 def tarkista_hl_paikallinen_riskitekijat(
