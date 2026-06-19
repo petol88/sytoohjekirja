@@ -810,5 +810,35 @@
             }
         ],
         "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h infuusion jälkeen."
+    },
+    "Karboplatiini-Gemsitabiini (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Uroteelikarsinooma"],
+        "kontrollit": "PVK, Krea (GFR), Alat.",
+        "lääkkeet": [
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8]},
+            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}
+        ],
+        "esilääkitys": "Ondansetroni 8 mg IV pv 1 ja pv 8. Deksametasoni 8 mg IV pv 1."
+    },
+    "Sisplatiini-Gemsitabiini (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Uroteelikarsinooma"],
+        "kontrollit": "PVK, Krea (GFR), Mg, K, Na.",
+        "lääkkeet": [
+            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8]},
+            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 70, "yksikkö": "mg/m2", "päivät": [1]}
+        ],
+        "esilääkitys": "Ondansetroni 8 mg IV pv 1 ja pv 8. Deksametasoni 8 mg IV pv 1. Muista nesteytys ennen ja jälkeen sisplatiinin."
+    },
+    "Enfortumabi vedotiini + Pembrolitsumabi (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Uroteelikarsinooma"],
+        "kontrollit": "PVK, Krea, Alat, Verensokeriseuranta. Huomioi ihoreaktiot ja neuropatia.",
+        "lääkkeet": [
+            {"nimi": "Enfortumabi vedotiini (Padcev)", "reitti": "IV", "annos": 1.25, "yksikkö": "mg/kg", "päivät": [1, 8]},
+            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 200, "yksikkö": "mg (kiinteä)", "päivät": [1]}
+        ],
+        "esilääkitys": "Ei tarvetta rutiininomaisesti."
     }
 }
