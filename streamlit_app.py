@@ -1,4 +1,23 @@
 import streamlit as st
+
+_SUKUPUOLI_OPTS = ("Mies", "Nainen")
+_ANTR_MODE_OPTS = ("mg/m²", "Absoluuttinen (mg)")
+_HOITOLINJA_OPTS = ("-", "Neoadjuvantti", "Adjuvantti")
+_STATUS_OPTS = ("Positiivinen", "Negatiivinen")
+_KI67_OPTS = ("Matala (<20%)", "Korkea (>=20%)")
+_MASCC_OIRE_OPTS = ("Lievät tai ei oireita (5 p)", "Kohtalaiset oireet (3 p)", "Vaikeat oireet (0 p)")
+_MIPI_IKA_OPTS = ("< 50", "50 - 59", "60 - 69", "≥ 70")
+_MIPI_ECOG_OPTS = ("0 - 1", "≥ 2")
+_MIPI_LDH_OPTS = ("< 0.67", "0.67 - 0.99", "1.00 - 1.49", "≥ 1.50")
+_MIPI_WBC_OPTS = ("< 6.7", "6.7 - 9.9", "10.0 - 14.9", "≥ 15.0")
+_CPSEG_CSTAGE_OPTS = ("Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC")
+_CPSEG_PSTAGE_OPTS = ("Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC")
+_CP_BILI_OPTS = ("< 34", "34 - 50", "> 50")
+_CP_ALB_OPTS = ("> 35", "28 - 35", "< 28")
+_CP_INR_OPTS = ("< 1.7", "1.7 - 2.2", "> 2.2")
+_CP_ASCITES_OPTS = ("Ei", "Lievä / lääkityksellä hallinnassa", "Keskivaikea tai vaikea / huonosti reagoiva")
+_CP_ENK_OPTS = ("Ei", "Aste I-II (Lievä / lääkityksellä hallinnassa)", "Aste III-IV (Vaikea / kooma)")
+_LASKURI_OPTS = ("Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)")
 import sys
 import os
 from datetime import date, timedelta
@@ -111,7 +130,7 @@ if view == "Sytostaattilaskuri":
             paino = st.number_input("Paino (kg)", min_value=0.0, max_value=200.0, step=0.1, format="%.1f", key="paino")
             ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
             krea = st.number_input("Krea", min_value=0.0, step=1.0, format="%.1f", key="krea")
-            sukupuoli_str = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
+            sukupuoli_str = st.selectbox("Sukupuoli", _SUKUPUOLI_OPTS, key="sukupuoli")
             cap_bsa = st.checkbox("Max 2.2 m²", value=False, help="Rajoita BSA arvoon 2.2 m²", key="cap_bsa")
 
             if pituus < 140.0 or pituus > 200.0:
@@ -327,7 +346,7 @@ elif view == "Levinneisyys":
         tauti = st.selectbox("Syöpätyyppi", list(TNM_DATA.keys()))
         d = TNM_DATA[tauti]
 
-        hoitolinja = st.selectbox("Hoitolinja", ["-", "Neoadjuvantti", "Adjuvantti"])
+        hoitolinja = st.selectbox("Hoitolinja", _HOITOLINJA_OPTS)
 
         er_status = "Positiivinen"
         her2_status = "Negatiivinen"
@@ -338,9 +357,9 @@ elif view == "Levinneisyys":
         if tauti == "Rintasyöpä":
             st.markdown("---")
             st.markdown("**Biologiset tekijät**")
-            er_status = st.selectbox("ER Status", ["Positiivinen", "Negatiivinen"])
-            her2_status = st.selectbox("HER2 Status", ["Positiivinen", "Negatiivinen"])
-            ki67_status = st.selectbox("Ki-67", ["Matala (<20%)", "Korkea (>=20%)"])
+            er_status = st.selectbox("ER Status", _STATUS_OPTS)
+            her2_status = st.selectbox("HER2 Status", _STATUS_OPTS)
+            ki67_status = st.selectbox("Ki-67", _KI67_OPTS)
             st.markdown("---")
         elif tauti == "Eturauhassyöpä":
             st.markdown("---")
@@ -465,7 +484,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", _LASKURI_OPTS, key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -493,7 +512,7 @@ elif view == "Pisteytykset":
         st.subheader("Kertyvän annoksen seuranta (Antrasykliinit)")
         st.write("Laskee antrasykliinien kumulatiivisen annoksen doksorubisiini-ekvivalentteina. Doksorubisiinin suositeltu elinikäinen maksimiannos on sydäntoksisuuden vuoksi 450–500 mg/m².")
         
-        syotto_mode = st.radio("Syötettävien annosten yksikkö:", ["mg/m²", "Absoluuttinen (mg)"], horizontal=True, key="antr_mode")
+        syotto_mode = st.radio("Syötettävien annosten yksikkö:", _ANTR_MODE_OPTS, horizontal=True, key="antr_mode")
         
         bsa = 1.0
         bsa_text = ""
@@ -580,7 +599,7 @@ elif view == "Pisteytykset":
         st.write("Arvioi komplikaatioriskiä potilaalla, jolla on kuumeinen neutropenia.")
         
         st.markdown("**Oireiden vaikeusaste (valitse yksi):**")
-        mascc_oire_str = st.radio("Oireet", ["Lievät tai ei oireita (5 p)", "Kohtalaiset oireet (3 p)", "Vaikeat oireet (0 p)"], key="mascc_oire")
+        mascc_oire_str = st.radio("Oireet", _MASCC_OIRE_OPTS, key="mascc_oire")
         
         if "Lievät" in mascc_oire_str: mascc_oire_val = 5
         elif "Kohtalaiset" in mascc_oire_str: mascc_oire_val = 3
@@ -670,16 +689,16 @@ elif view == "Pisteytykset":
         
         col1, col2 = st.columns(2)
         with col1:
-            mipi_ika_str = st.radio("Ikä (vuotta)", ["< 50", "50 - 59", "60 - 69", "≥ 70"], key="mipi_ika")
-            mipi_ecog_str = st.radio("ECOG-suorituskyky", ["0 - 1", "≥ 2"], key="mipi_ecog")
+            mipi_ika_str = st.radio("Ikä (vuotta)", _MIPI_IKA_OPTS, key="mipi_ika")
+            mipi_ecog_str = st.radio("ECOG-suorituskyky", _MIPI_ECOG_OPTS, key="mipi_ecog")
         with col2:
-            mipi_ldh_str = st.radio("LDH / viitealueen yläraja", ["< 0.67", "0.67 - 0.99", "1.00 - 1.49", "≥ 1.50"], key="mipi_ldh")
-            mipi_wbc_str = st.radio("Leukosyytit (WBC, E9/l)", ["< 6.7", "6.7 - 9.9", "10.0 - 14.9", "≥ 15.0"], key="mipi_wbc")
+            mipi_ldh_str = st.radio("LDH / viitealueen yläraja", _MIPI_LDH_OPTS, key="mipi_ldh")
+            mipi_wbc_str = st.radio("Leukosyytit (WBC, E9/l)", _MIPI_WBC_OPTS, key="mipi_wbc")
             
-        ika_p = ["< 50", "50 - 59", "60 - 69", "≥ 70"].index(mipi_ika_str)
-        ecog_p = ["0 - 1", "≥ 2"].index(mipi_ecog_str)
-        ldh_p = ["< 0.67", "0.67 - 0.99", "1.00 - 1.49", "≥ 1.50"].index(mipi_ldh_str)
-        wbc_p = ["< 6.7", "6.7 - 9.9", "10.0 - 14.9", "≥ 15.0"].index(mipi_wbc_str)
+        ika_p = _MIPI_IKA_OPTS.index(mipi_ika_str)
+        ecog_p = _MIPI_ECOG_OPTS.index(mipi_ecog_str)
+        ldh_p = _MIPI_LDH_OPTS.index(mipi_ldh_str)
+        wbc_p = _MIPI_WBC_OPTS.index(mipi_wbc_str)
             
         pisteet = laske_mipi_pisteet(ika_p, ecog_p, ldh_p, wbc_p)
         riskiryhma = hae_mipi_riskiryhma(pisteet)
@@ -758,8 +777,8 @@ elif view == "Pisteytykset":
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            cpseg_cstage_str = st.radio("Kliininen levinneisyys (cTNM) ennen hoitoa:", ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"], key="cpseg_cstage")
-            cpseg_pstage_str = st.radio("Patologinen levinneisyys (ypTNM) leikkauksen jälkeen:", ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"], key="cpseg_pstage")
+            cpseg_cstage_str = st.radio("Kliininen levinneisyys (cTNM) ennen hoitoa:", _CPSEG_CSTAGE_OPTS, key="cpseg_cstage")
+            cpseg_pstage_str = st.radio("Patologinen levinneisyys (ypTNM) leikkauksen jälkeen:", _CPSEG_PSTAGE_OPTS, key="cpseg_pstage")
             
             st.write("**Muut tekijät:**")
             cpseg_er = st.checkbox("Estrogeenireseptori (ER) negatiivinen (1 p)", key="cpseg_er")
@@ -778,8 +797,8 @@ elif view == "Pisteytykset":
 *(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*  
 *(N1: 1-3 kainalo, N2: 4-9 kainalo/sis.rinta, N3: ≥10 kainalo/soliskuoppa)*""")
                     
-        c_p = ["Stage I - IIA", "Stage IIB - IIIA", "Stage IIIB - IIIC"].index(cpseg_cstage_str)
-        p_p = ["Stage 0 tai I", "Stage IIA - IIB", "Stage IIIA - IIIC"].index(cpseg_pstage_str)
+        c_p = _CPSEG_CSTAGE_OPTS.index(cpseg_cstage_str)
+        p_p = _CPSEG_PSTAGE_OPTS.index(cpseg_pstage_str)
         
         pisteet = laske_cps_eg_pisteet(c_p, p_p, cpseg_er, cpseg_grade)
         ennuste = hae_cps_eg_ennuste(pisteet)
@@ -797,18 +816,18 @@ elif view == "Pisteytykset":
         
         col1, col2 = st.columns(2)
         with col1:
-            cp_bili_str = st.radio("Bilirubiini (µmol/l)", ["< 34", "34 - 50", "> 50"], key="cp_bili")
-            cp_alb_str = st.radio("Albumiini (g/l)", ["> 35", "28 - 35", "< 28"], key="cp_alb")
-            cp_inr_str = st.radio("INR", ["< 1.7", "1.7 - 2.2", "> 2.2"], key="cp_inr")
+            cp_bili_str = st.radio("Bilirubiini (µmol/l)", _CP_BILI_OPTS, key="cp_bili")
+            cp_alb_str = st.radio("Albumiini (g/l)", _CP_ALB_OPTS, key="cp_alb")
+            cp_inr_str = st.radio("INR", _CP_INR_OPTS, key="cp_inr")
         with col2:
-            cp_ascites_str = st.radio("Askites", ["Ei", "Lievä / lääkityksellä hallinnassa", "Keskivaikea tai vaikea / huonosti reagoiva"], key="cp_ascites")
-            cp_enk_str = st.radio("Enkefalopatia", ["Ei", "Aste I-II (Lievä / lääkityksellä hallinnassa)", "Aste III-IV (Vaikea / kooma)"], key="cp_enk")
+            cp_ascites_str = st.radio("Askites", _CP_ASCITES_OPTS, key="cp_ascites")
+            cp_enk_str = st.radio("Enkefalopatia", _CP_ENK_OPTS, key="cp_enk")
             
-        bili_p = ["< 34", "34 - 50", "> 50"].index(cp_bili_str) + 1
-        alb_p = ["> 35", "28 - 35", "< 28"].index(cp_alb_str) + 1
-        inr_p = ["< 1.7", "1.7 - 2.2", "> 2.2"].index(cp_inr_str) + 1
-        ascites_p = ["Ei", "Lievä / lääkityksellä hallinnassa", "Keskivaikea tai vaikea / huonosti reagoiva"].index(cp_ascites_str) + 1
-        enk_p = ["Ei", "Aste I-II (Lievä / lääkityksellä hallinnassa)", "Aste III-IV (Vaikea / kooma)"].index(cp_enk_str) + 1
+        bili_p = _CP_BILI_OPTS.index(cp_bili_str) + 1
+        alb_p = _CP_ALB_OPTS.index(cp_alb_str) + 1
+        inr_p = _CP_INR_OPTS.index(cp_inr_str) + 1
+        ascites_p = _CP_ASCITES_OPTS.index(cp_ascites_str) + 1
+        enk_p = _CP_ENK_OPTS.index(cp_enk_str) + 1
             
         pisteet = laske_child_pugh_pisteet(bili_p, alb_p, inr_p, ascites_p, enk_p)
         luokka = hae_child_pugh_luokka(pisteet)
