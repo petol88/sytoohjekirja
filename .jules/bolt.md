@@ -14,3 +14,6 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+## 2024-05-18 - [Optimize UI Data Transformation]
+**Learning:** In Streamlit, inline loops over medium-sized dicts (e.g., protocol options extraction) inside the main render function can add significant millisecond overhead per script rerun.
+**Action:** Pre-calculate these derived UI states (like selectbox options and filtering mappings) directly inside `@st.cache_data` and return them alongside the main data dictionary to achieve highly optimized O(1) rendering lookups.
