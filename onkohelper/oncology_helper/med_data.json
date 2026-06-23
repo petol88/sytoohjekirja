@@ -842,17 +842,18 @@
         "esilääkitys": "Ei tarvetta rutiininomaisesti."
     },
     "Pembrolitsumabi (monoterapia)": {
-        "sykli": "21 vrk (200 mg) tai 42 vrk (400 mg)",
+        "sykli": "21 vrk (2 mg/kg) tai 42 vrk (4 mg/kg)",
         "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Uroteelikarsinooma", "Suolistosyöpä"],
         "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
         "lääkkeet": [
             {
                 "nimi": "Pembrolitsumabi",
                 "reitti": "IV",
-                "annos": 200,
-                "yksikkö": "mg (kiinteä)",
+                "annos": 2,
+                "yksikkö": "mg/kg",
+                "max_mg": 200,
                 "päivät": [1],
-                "lisätieto": "Vaihtoehto: 400 mg q6vk. Infuusio 30 min."
+                "lisätieto": "Vaihtoehto: 4 mg/kg q6vk (max 400 mg). Infuusio 30 min."
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
