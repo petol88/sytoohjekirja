@@ -840,5 +840,107 @@
             {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 200, "yksikkö": "mg (kiinteä)", "päivät": [1]}
         ],
         "esilääkitys": "Ei tarvetta rutiininomaisesti."
+    },
+    "Nivolumabi + Ipilimumabi": {
+        "sykli": "Nivolumabi q2vk / Ipilimumabi q6vk (jatkuva)",
+        "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Munuaissyöpä"],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 3,
+                "yksikkö": "mg/kg",
+                "max_mg": 360,
+                "päivät": [1],
+                "lisätieto": "q2vk. Infuusio 30 min. Melanoomassa induktio: 1 mg/kg q3vk x4 yhdessä ipilimumabin kanssa."
+            },
+            {
+                "nimi": "Ipilimumabi",
+                "reitti": "IV",
+                "annos": 1,
+                "yksikkö": "mg/kg",
+                "max_mg": 100,
+                "päivät": [1],
+                "lisätieto": "q6vk. Infuusio 30 min. Melanoomassa induktio: 3 mg/kg q3vk x4."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Pembrolitsumabi (monoterapia)": {
+        "sykli": "21 vrk (2 mg/kg) tai 42 vrk (4 mg/kg)",
+        "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Uroteelikarsinooma", "Suolistosyöpä"],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Pembrolitsumabi",
+                "reitti": "IV",
+                "annos": 2,
+                "yksikkö": "mg/kg",
+                "max_mg": 200,
+                "päivät": [1],
+                "lisätieto": "Vaihtoehto: 4 mg/kg q6vk (max 400 mg). Infuusio 30 min."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Dabrafenibi + Trametinibi": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Melanooma"],
+        "kontrollit": "TVK, ALAT, BIL, Na, K: 2 vk välein x2, sitten kuukausittain. EKG (QTc): 1 kk kohdalla, sitten 3 kk välein.",
+        "lääkkeet": [
+            {
+                "nimi": "Dabrafenibi",
+                "reitti": "PO",
+                "annos": 150,
+                "yksikkö": "mg x2",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["75 mg"],
+                "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
+            },
+            {
+                "nimi": "Trametinibi",
+                "reitti": "PO",
+                "annos": 2,
+                "yksikkö": "mg x1",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["2 mg", "0.5 mg"],
+                "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Nivolumabi (monoterapia)": {
+        "sykli": "14 vrk (240 mg) tai 28 vrk (480 mg)",
+        "syöpätyypit": ["Melanooma"],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 3,
+                "yksikkö": "mg/kg",
+                "max_mg": 240,
+                "päivät": [1],
+                "lisätieto": "q2vk (max 240 mg). Vaihtoehto: 480 mg q4vk. Infuusio 30 min."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Trastutsumabi emtansiini / T-DM1 (Kadcyla)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": ["Rintasyöpä"],
+        "kontrollit": "PVK, Krea, ALAT, ASAT, Bilirubiini. Seuraa trombosyyttejä (trombosytopeniariski).",
+        "lääkkeet": [
+            {
+                "nimi": "Trastutsumabi emtansiini (T-DM1)",
+                "reitti": "IV",
+                "annos": 3.6,
+                "yksikkö": "mg/kg",
+                "päivät": [1],
+                "lisätieto": "Ensimmäinen infuusio 90 min. Jos hyvin siedetty, seuraavat 30 min."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä. Tarvittaessa parasetamoli ja antihistamiini infuusioreaktioon."
     }
 }
