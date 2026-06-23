@@ -887,7 +887,7 @@
     "Dabrafenibi + Trametinibi": {
         "sykli": "Jatkuva hoito",
         "syöpätyypit": ["Melanooma"],
-        "kontrollit": "ALAT, ASAT, Bilirubiini, PVK ennen aloitusta ja 1 kk välein. Ihotarkastus 3 kk välein (pienisoluisen karsinooman riski). Silmätarkastus tarvittaessa. Kuumetta seurattava (yleinen haitta).",
+        "kontrollit": "TVK, ALAT, BIL, Na, K: 2 vk välein x2, sitten kuukausittain. EKG (QTc): 1 kk kohdalla, sitten 3 kk välein.",
         "lääkkeet": [
             {
                 "nimi": "Dabrafenibi",
