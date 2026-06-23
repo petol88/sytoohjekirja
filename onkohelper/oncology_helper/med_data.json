@@ -841,6 +841,32 @@
         ],
         "esilääkitys": "Ei tarvetta rutiininomaisesti."
     },
+    "Nivolumabi + Ipilimumabi": {
+        "sykli": "Nivolumabi q2vk / Ipilimumabi q6vk (jatkuva)",
+        "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Munuaissyöpä"],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 3,
+                "yksikkö": "mg/kg",
+                "max_mg": 360,
+                "päivät": [1],
+                "lisätieto": "q2vk. Infuusio 30 min. Melanoomassa induktio: 1 mg/kg q3vk x4 yhdessä ipilimumabin kanssa."
+            },
+            {
+                "nimi": "Ipilimumabi",
+                "reitti": "IV",
+                "annos": 1,
+                "yksikkö": "mg/kg",
+                "max_mg": 100,
+                "päivät": [1],
+                "lisätieto": "q6vk. Infuusio 30 min. Melanoomassa induktio: 3 mg/kg q3vk x4."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
     "Pembrolitsumabi (monoterapia)": {
         "sykli": "21 vrk (2 mg/kg) tai 42 vrk (4 mg/kg)",
         "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Uroteelikarsinooma", "Suolistosyöpä"],
