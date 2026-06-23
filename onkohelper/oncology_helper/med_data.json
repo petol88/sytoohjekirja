@@ -884,6 +884,49 @@
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
     },
+    "Dabrafenibi + Trametinibi": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": ["Melanooma"],
+        "kontrollit": "ALAT, ASAT, Bilirubiini, PVK ennen aloitusta ja 1 kk välein. Ihotarkastus 3 kk välein (pienisoluisen karsinooman riski). Silmätarkastus tarvittaessa. Kuumetta seurattava (yleinen haitta).",
+        "lääkkeet": [
+            {
+                "nimi": "Dabrafenibi",
+                "reitti": "PO",
+                "annos": 150,
+                "yksikkö": "mg x2",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["75 mg"],
+                "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
+            },
+            {
+                "nimi": "Trametinibi",
+                "reitti": "PO",
+                "annos": 2,
+                "yksikkö": "mg x1",
+                "päivät": ["Jatkuva"],
+                "tablettikoot": ["2 mg", "0.5 mg"],
+                "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Nivolumabi (monoterapia)": {
+        "sykli": "14 vrk (240 mg) tai 28 vrk (480 mg)",
+        "syöpätyypit": ["Melanooma"],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 3,
+                "yksikkö": "mg/kg",
+                "max_mg": 240,
+                "päivät": [1],
+                "lisätieto": "q2vk (max 240 mg). Vaihtoehto: 480 mg q4vk. Infuusio 30 min."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
     "Trastutsumabi emtansiini / T-DM1 (Kadcyla)": {
         "sykli": "21 vuorokautta",
         "syöpätyypit": ["Rintasyöpä"],
