@@ -27,7 +27,7 @@ except Exception:
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Onkologian Työpöytä v2.3")
+        self.title("Onkologian Työpöytä v2.4")
         self.geometry("1050x900")
         
         # Load Data

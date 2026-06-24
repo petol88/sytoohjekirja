@@ -3,6 +3,11 @@ from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
 from oncology_helper.calculators import safe_float, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos, Potilas
 
+BSA_CAP_DEFAULT = 2.2
+MAX_HEIGHT_CM = 220
+MAX_WEIGHT_KG = 200
+GFR_LOW_THRESHOLD = 60
+
 class LaskuriView(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -211,15 +216,15 @@ class LaskuriView(ttk.Frame):
         p = safe_float(self.e_len.get())
         w = safe_float(self.e_wei.get())
         
-        if p > 220.0:
-            p = 220.0
+        if p > MAX_HEIGHT_CM:
+            p = MAX_HEIGHT_CM
             self.e_len.delete(0, tk.END)
-            self.e_len.insert(0, "220")
-            
-        if w > 200.0:
-            w = 200.0
+            self.e_len.insert(0, str(MAX_HEIGHT_CM))
+
+        if w > MAX_WEIGHT_KG:
+            w = MAX_WEIGHT_KG
             self.e_wei.delete(0, tk.END)
-            self.e_wei.insert(0, "200")
+            self.e_wei.insert(0, str(MAX_WEIGHT_KG))
 
         potilas = Potilas(
             pituus_cm=p,
@@ -229,7 +234,7 @@ class LaskuriView(ttk.Frame):
             sukupuoli=Sukupuoli(self.v_sex.get())
         )
 
-        cap = 2.2 if self.v_cap_bsa.get() else None
+        cap = BSA_CAP_DEFAULT if self.v_cap_bsa.get() else None
         bsa = potilas.bsa(cap)
         self.current_bsa = bsa
         self.l_bsa.config(text=f"BSA: {bsa:.2f}")
@@ -264,10 +269,9 @@ class LaskuriView(ttk.Frame):
                 ts = r['vt'].get()
                 if ts and ts != "None":
                     try:
-                        # Extract strength from string like "40 mg"
                         strength = float(ts.split()[0])
                         fin = pyorista_tabletit(mg, strength)
-                    except:
+                    except (ValueError, IndexError):
                         pass
 
                 # This triggers the trace, so paivita_raportti is called automatically
@@ -295,11 +299,11 @@ class LaskuriView(ttk.Frame):
         out.append(f"Labrat: {self.e_labs.get()}")
         out.append("-" * 40)
         
-        if self.current_gfr > 0 and self.current_gfr < 60:
+        if self.current_gfr > 0 and self.current_gfr < GFR_LOW_THRESHOLD:
             out.append(f"⚠️ YLEISVAROITUS: GFR on alentunut ({self.current_gfr:.0f} ml/min).")
             out.append(f"  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
             
-        if self.v_cap_bsa.get() and self.current_bsa == 2.2:
+        if self.v_cap_bsa.get() and self.current_bsa == BSA_CAP_DEFAULT:
             out.append(f"HUOM: BSA on rajoitettu maksimiarvoon 2.2 m².\n")
         
         for r in self.rows:
@@ -338,10 +342,10 @@ class LaskuriView(ttk.Frame):
             
             ts = r['vt'].get()
             if ts and ts != "None" and fin > 0:
-                try: 
+                try:
                     strength = float(ts.split()[0])
                     out.append(f"    -> {fin/strength:.1f} kpl{kpl_lisamaare} ({ts})")
-                except: 
+                except (ValueError, IndexError):
                     pass
                     
             min_gfr = r['d'].get('min_gfr')
