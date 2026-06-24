@@ -90,29 +90,6 @@ TNM_DATA: Dict[str, Dict[str, Any]] = {
     }
 }
 
-def luo_esimerkkidata(kohdepolku: Path) -> None:
-    """Creates med_data.json with example data if it is missing."""
-    esimerkkidata = {
-        "R-CHOP (NHL)": {
-            "sykli": "21 vrk",
-            "syöpätyypit": ["Lymfooma"],
-            "kontrollit": "PVK, Krea, Alat, Afos, EKG, (Pre-phase tarvittaessa)",
-            "esilääkitys": "Kortisoni iv/po, Antihistamiini, Parasetamoli. G-CSF tuki tarvittaessa.",
-            "lääkkeet": [
-                {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "reseptiohje": "hidas tiputus", "max_mg": None, "päivät": [1]},
-                {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "max_mg": None, "päivät": [1]},
-                {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "max_mg": None, "päivät": [1]},
-                {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "reseptiohje": "Max 2mg", "max_mg": 2.0, "päivät": [1]},
-                {"nimi": "Prednisolon", "reitti": "PO", "annos": 40, "yksikkö": "mg/m2", "tablettikoot": ["40 mg", "20 mg"], "reseptiohje": "aamuisin", "max_mg": None, "päivät": [1, 2, 3, 4, 5]}
-            ]
-        }
-    }
-    try:
-        # Tallennetaan data nimenomaan annettuun polkuun
-        kohdepolku.write_text(json.dumps(esimerkkidata, indent=4, ensure_ascii=False), encoding="utf-8")
-    except Exception as e:
-        print(f"Varoitus: Ei voitu luoda esimerkkidataa: {e}")
-
 class Tietokanta:
     """Handles loading and accessing protocol data."""
     data: Dict[str, Any] = {}
@@ -124,8 +101,9 @@ class Tietokanta:
         filepath = base_dir / "med_data.json"
 
         if not filepath.exists():
-            # Jos tiedostoa ei ole missään, yritetään luoda esimerkkidata suoraan oikeaan kansioon
-            luo_esimerkkidata(filepath)
+            print(f"Varoitus: Tietokantaa ei löydy: {filepath}")
+            cls.data = {}
+            return
 
         try:
             cls.data = json.loads(filepath.read_text(encoding="utf-8"))
