@@ -1,41 +1,70 @@
-{ 
-    "Osimertinibi (Tagrisso)": { 
-        "sykli": "Jatkuva hoito", 
-        "syöpätyypit": ["Keuhkosyöpä"],
-        "kontrollit": "Rutlab + EKG (QTc). 1kk kohdalla ja sitten 3kk välein", 
-        "lääkkeet": [ 
-            { 
-                "nimi": "Osimertinibi",  
+{
+    "Osimertinibi (Tagrisso)": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": [
+            "Keuhkosyöpä"
+        ],
+        "kontrollit": "Rutlab + EKG (QTc). 1kk kohdalla ja sitten 3kk välein",
+        "lääkkeet": [
+            {
+                "nimi": "Osimertinibi",
                 "reitti": "PO",
-                "annos": 80,  
-                "yksikkö": "mg (kiinteä)",  
-                "päivät": ["Jatkuva"], 
-                "tablettikoot": ["80 mg", "40 mg"],  
-                "lisätieto": "Kerran päivässä samaan aikaan." 
-            } 
-        ], 
-        "esilääkitys": "Tarvittaessa loperamidi." 
-    }, 
-    "Kapesitabiini (Xeloda)": { 
-        "sykli": "21 vrk (14 vrk lääkettä, 7 vrk tauko)", 
-        "syöpätyypit": ["Rintasyöpä", "Suolistosyöpä"],
-        "kontrollit": "PVK + Neutr, Krea, ALAT.", 
-        "lääkkeet": [ 
-            { 
-                "nimi": "Kapesitabiini",  
+                "annos": 80,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "80 mg",
+                    "40 mg"
+                ],
+                "lisätieto": "Kerran päivässä samaan aikaan."
+            }
+        ],
+        "esilääkitys": "Tarvittaessa loperamidi."
+    },
+    "Kapesitabiini (Xeloda)": {
+        "sykli": "21 vrk (14 vrk lääkettä, 7 vrk tauko)",
+        "syöpätyypit": [
+            "Rintasyöpä",
+            "Suolistosyöpä"
+        ],
+        "kontrollit": "PVK + Neutr, Krea, ALAT.",
+        "lääkkeet": [
+            {
+                "nimi": "Kapesitabiini",
                 "reitti": "PO",
-                "annos": 1250,  
-                "yksikkö": "mg/m2 x2",  
-                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 
-                "tablettikoot": ["500 mg"],  
-                "lisätieto": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21." 
-            } 
-        ], 
-        "esilääkitys": "Tarvittaessa metoklopramidi." 
-    }, 
-     "XELOX (21 vrk)": {
+                "annos": 1250,
+                "yksikkö": "mg/m2 x2",
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ],
+                "tablettikoot": [
+                    "500 mg"
+                ],
+                "lisätieto": "Aamu ja ilta, ruoan jälkeen. Tauko D15-21."
+            }
+        ],
+        "esilääkitys": "Tarvittaessa metoklopramidi."
+    },
+    "XELOX (21 vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "kontrollit": "PVK, Krea, Alat, Afos. Huomioi kylmäherkkyys (oksaliplatiini).",
         "lääkkeet": [
             {
@@ -43,302 +72,921 @@
                 "reitti": "IV",
                 "annos": 130,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Kapesitabiini",
                 "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg/m2 x2",
-                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-                "tablettikoot": ["500 mg", "150 mg"],
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ],
+                "tablettikoot": [
+                    "500 mg",
+                    "150 mg"
+                ],
                 "lisätieto": "Aamuin illoin, ruoan jälkeen. Tauko päivinä 15-21."
             }
         ],
         "esilääkitys": "Ennen oksaliplatiiniä: Ondansetroni 8mg, Deksametasoni 8mg."
     },
-    "R-CHOP (21 vrk)": { 
-        "sykli": "21 vrk", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Neutr, Krea, Alat, Afos.", 
-        "lääkkeet": [ 
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0, "lisätieto": "Max 2 mg"}, 
-            { 
-                "nimi": "Prednisoloni",  
+    "R-CHOP (21 vrk)": {
+        "sykli": "21 vrk",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Neutr, Krea, Alat, Afos.",
+        "lääkkeet": [
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Syklofosfamidi",
+                "reitti": "IV",
+                "annos": 750,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Doksorubisiini",
+                "reitti": "IV",
+                "annos": 50,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Vinkristiini",
+                "reitti": "IV",
+                "annos": 1.4,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ],
+                "max_mg": 2.0,
+                "lisätieto": "Max 2 mg"
+            },
+            {
+                "nimi": "Prednisoloni",
                 "reitti": "PO",
-                "annos": 100,  
-                "yksikkö": "mg (kiinteä)",  
-                "päivät": [1, 2, 3, 4, 5], 
-                "tablettikoot": ["40 mg", "20 mg", "5 mg"], 
-                "lisätieto": "Aamuisin." 
-            } 
-        ], 
-        "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg." 
-    }, 
-    "R-CHOEP (21 vrk)": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Neutr, Krea, Alat.", 
-        "lääkkeet": [ 
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Vinkristiini", "reitti": "IV", "annos": 1.4, "yksikkö": "mg/m2", "päivät": [1], "max_mg": 2.0, "lisätieto": "Max 2 mg"}, 
-            {"nimi": "Etoposidi", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
-            { 
-                "nimi": "Prednisoloni",  
+                "annos": 100,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "tablettikoot": [
+                    "40 mg",
+                    "20 mg",
+                    "5 mg"
+                ],
+                "lisätieto": "Aamuisin."
+            }
+        ],
+        "esilääkitys": "PO: Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg."
+    },
+    "R-CHOEP (21 vrk)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Neutr, Krea, Alat.",
+        "lääkkeet": [
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Syklofosfamidi",
+                "reitti": "IV",
+                "annos": 750,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Doksorubisiini",
+                "reitti": "IV",
+                "annos": 50,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Vinkristiini",
+                "reitti": "IV",
+                "annos": 1.4,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ],
+                "max_mg": 2.0,
+                "lisätieto": "Max 2 mg"
+            },
+            {
+                "nimi": "Etoposidi",
+                "reitti": "IV",
+                "annos": 100,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "nimi": "Prednisoloni",
                 "reitti": "PO",
-                "annos": 100,  
-                "yksikkö": "mg (kiinteä)",  
-                "päivät": [1, 2, 3, 4, 5], 
-                "tablettikoot": ["40 mg", "20 mg", "5 mg"] 
-            } 
-        ], 
-        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
-    }, 
-    "R-Bendamustiini (28 vrk)": { 
-        "sykli": "28 vuorokautta", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Krea, Alat.", 
-        "lääkkeet": [ 
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Bendamustiini", "reitti": "IV", "annos": 90, "yksikkö": "mg/m2", "päivät": [1, 2]} 
-        ], 
-        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO." 
-       },  
+                "annos": 100,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "tablettikoot": [
+                    "40 mg",
+                    "20 mg",
+                    "5 mg"
+                ]
+            }
+        ],
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
+    },
+    "R-Bendamustiini (28 vrk)": {
+        "sykli": "28 vuorokautta",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Krea, Alat.",
+        "lääkkeet": [
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Bendamustiini",
+                "reitti": "IV",
+                "annos": 90,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            }
+        ],
+        "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO."
+    },
     "Rituksimabi-Bendamustiini-Akalabrutinibi (28 vrk)": {
         "sykli": "28 vuorokautta",
-        "syöpätyypit": ["Lymfooma"],
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
         "kontrollit": "TVK, Krea, Alat.",
         "lääkkeet": [
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]},
-            {"nimi": "Bendamustiini", "reitti": "IV", "annos": 90, "yksikkö": "mg/m2", "päivät": [1, 2]},
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Bendamustiini",
+                "reitti": "IV",
+                "annos": 90,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
             {
                 "nimi": "Akalabrutinibi",
                 "reitti": "PO",
                 "annos": 100,
                 "yksikkö": "mg x2",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["100 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "100 mg"
+                ],
                 "lisätieto": "1 tabletti 2 kertaa vuorokaudessa (aamuin illoin)."
             }
         ],
         "esilääkitys": "Parasetamoli 1g, Setiritsiini 10mg, Ondansetroni 8mg. Deksametasoni 8mg PO."
     },
-    "Abraxane-Karboplatiini (7vrk)": { 
-        "sykli": "7 vuorokautta", 
-        "syöpätyypit": ["Keuhkosyöpä", "Rintasyöpä"],
-        "kontrollit": "PVK, Krea, Alat.", 
-        "lääkkeet": [ 
-            {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 1.5, "yksikkö": "AUC", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO." 
-    }, 
-    "R-GemOx (14 vrk)": { 
-        "sykli": "14 vuorokautta", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Krea, Alat.", 
-        "lääkkeet": [ 
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 4 mg, Ondansetroni 8mg, Parasetamoli 1 g, Setiritsiini 10 mg." 
-    }, 
-    "GDP (Gemsitabiini-Sisplatiini)": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Krea, Mg, K, Na.", 
-        "lääkkeet": [ 
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [8]} 
-        ], 
-        "esilääkitys": "D1: Deksametasoni 4 mg, Filgrastiimi, Furosemidi.\nD8: Ondansetroni 8mg." 
-    }, 
-    "Pembrolitsumabi-Paklitakseli-Karboplatiini": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Keuhkosyöpä"],
-        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
-        "lääkkeet": [ 
-            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
-            {"nimi": "Paklitakseli", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 20mg, Akynzeo 1tbl, Pantopratsoli 1tbl, Setiritsiini 1tbl." 
-    }, 
-    "Pembrolitsumabi-Karboplatiini-Pemetreksedi": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Keuhkosyöpä"],
-        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.", 
-        "lääkkeet": [ 
-            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 2, "yksikkö": "mg/kg", "päivät": [1], "max_mg": 200}, 
-            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}, 
-            {"nimi": "Pemetreksedi", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 4mg+4mg+4mg, Ondansetroni 8mg. (Muista foolihapon aloitus 1vk ennen ja B12-vitamiini-injektio joka kolmas infuusio)." 
-    }, 
-    "Irinotekaani-Fluorourasiili-Kalsiumfolinaatti-Panitumumabi": { 
-        "sykli": "14 vuorokautta", 
-        "syöpätyypit": ["Suolistosyöpä"],
-        "kontrollit": "Rutlab, mg.", 
-        "lääkkeet": [ 
-            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 160, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
-            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
-            {"nimi": "Panitumumabi", "reitti": "IV", "annos": 6, "yksikkö": "mg/kg", "päivät": [1]} 
-        ], 
-        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
-    }, 
-    "Syklofosfamidi-Epirubisiini (EC75)": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Rintasyöpä"],
-        "kontrollit": "PVK, Krea.", 
-        "lääkkeet": [ 
-            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 600, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Epirubisiini", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 4mg, Akynzeo 1 tbl." 
-    }, 
-    "mFOLFIRINOX / FOLFOXIRI": { 
-        "sykli": "14 vuorokautta", 
-        "syöpätyypit": ["Suolistosyöpä", "Haimasyöpä"],
-        "kontrollit": "PVK, Krea, Alat, Afos.", 
-        "lääkkeet": [ 
-            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 150, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 400, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 85, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 2400, "yksikkö": "mg/m2", "päivät": [1], "lisätieto": "46h infuusio"} 
-        ], 
-        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Akynzeo 1 tbl, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
-    }, 
-    "ABVD": { 
-        "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)", 
-        "syöpätyypit": ["Lymfooma"],
-        "kontrollit": "PVK, Krea.", 
-        "lääkkeet": [ 
-            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 25, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Bleomysiini", "reitti": "IV", "annos": 10, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Vinblastiini", "reitti": "IV", "annos": 6, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Dakarbatsiini", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg, Netupitantti." 
-    }, 
-    "Trastutsumabi-derukstekaani (Enhertu)": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Rintasyöpä"],
-        "kontrollit": "PVK, Krea.", 
-        "lääkkeet": [ 
-            {"nimi": "Trastutsumabi-derukstekaani", "reitti": "IV", "annos": 5.4, "yksikkö": "mg/kg", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
-    }, 
-    "Abraxane (nab-Paklitakseli)": { 
-        "sykli": "Viikoittainen", 
-        "syöpätyypit": ["Rintasyöpä", "Haimasyöpä"],
-        "kontrollit": "PVK, Neutr.", 
-        "lääkkeet": [ 
-            {"nimi": "Nab-paklitakseli", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Ondansetroni 8 mg." 
-    }, 
-    "Dosetakseli": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Rintasyöpä", "Eturauhassyöpä"],
-        "kontrollit": "PVK + Neutr.", 
-        "lääkkeet": [ 
-            {"nimi": "Dosetakseli", "reitti": "IV", "annos": 75, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg+8mg+8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
-    }, 
-    "Doksorubisiini (Monoterapia)": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Rintasyöpä", "Sarkooma"],
-        "kontrollit": "PVK, Krea.", 
-        "lääkkeet": [ 
-            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 70, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl." 
-    }, 
-    "BEP": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Kivesyöpä"],
-        "kontrollit": "Rutlab.", 
-        "lääkkeet": [ 
-            {"nimi": "Etoposidi", "reitti": "IV", "annos": 120, "yksikkö": "mg/m2", "päivät": [1, 2, 3]}, 
-            {"nimi": "Bleomysiinisulfaatti", "reitti": "IV", "annos": 30, "yksikkö": "mg (kiinteä)", "päivät": [1, 5, 15]},  
-            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 20, "yksikkö": "mg/m2", "päivät": [1, 2, 3, 4, 5]} 
-        ], 
-        "esilääkitys": "Deksametasoni 10mg+8mg+8mg+8mg+8mg, Akynzeo pv1, parasetamoli 1g pv 1 ja pv 5." 
-    }, 
-    "FLOT (Modifioitu)": { 
-        "sykli": "14 vuorokautta", 
-        "syöpätyypit": ["Mahasyöpä"],
-        "kontrollit": "PVK + Neutr, Krea, Alat, Afos.", 
-        "lääkkeet": [ 
-            {"nimi": "Oksaliplatiini", "reitti": "IV", "annos": 85, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
-            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
-            {"nimi": "Dosetakseli", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
-    }, 
-    "KARE": { 
-        "sykli": "28 vuorokautta", 
-        "syöpätyypit": ["Keuhkosyöpä"],
-        "kontrollit": "PVK, Krea (GFR).", 
-        "lääkkeet": [ 
-            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}, 
-            {"nimi": "Etoposidi", "reitti": "IV", "annos": 100, "yksikkö": "mg/m2", "päivät": [1]}, 
-            { 
-                "nimi": "Etoposidi",  
+    "Abraxane-Karboplatiini (7vrk)": {
+        "sykli": "7 vuorokautta",
+        "syöpätyypit": [
+            "Keuhkosyöpä",
+            "Rintasyöpä"
+        ],
+        "kontrollit": "PVK, Krea, Alat.",
+        "lääkkeet": [
+            {
+                "nimi": "Abraxane",
+                "reitti": "IV",
+                "annos": 125,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Karboplatiini",
+                "reitti": "IV",
+                "annos": 1.5,
+                "yksikkö": "AUC",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO."
+    },
+    "R-GemOx (14 vrk)": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Krea, Alat.",
+        "lääkkeet": [
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 100,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 4 mg, Ondansetroni 8mg, Parasetamoli 1 g, Setiritsiini 10 mg."
+    },
+    "GDP (Gemsitabiini-Sisplatiini)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Krea, Mg, K, Na.",
+        "lääkkeet": [
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Sisplatiini",
+                "reitti": "IV",
+                "annos": 75,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    8
+                ]
+            }
+        ],
+        "esilääkitys": "D1: Deksametasoni 4 mg, Filgrastiimi, Furosemidi.\nD8: Ondansetroni 8mg."
+    },
+    "Pembrolitsumabi-Paklitakseli-Karboplatiini": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Keuhkosyöpä"
+        ],
+        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.",
+        "lääkkeet": [
+            {
+                "nimi": "Pembrolitsumabi",
+                "reitti": "IV",
+                "annos": 2,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ],
+                "max_mg": 200
+            },
+            {
+                "nimi": "Paklitakseli",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Karboplatiini",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "AUC",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 20mg, Akynzeo 1tbl, Pantopratsoli 1tbl, Setiritsiini 1tbl."
+    },
+    "Pembrolitsumabi-Karboplatiini-Pemetreksedi": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Keuhkosyöpä"
+        ],
+        "kontrollit": "PVK, Krea (GFR), Kilpirauhasarvot.",
+        "lääkkeet": [
+            {
+                "nimi": "Pembrolitsumabi",
+                "reitti": "IV",
+                "annos": 2,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ],
+                "max_mg": 200
+            },
+            {
+                "nimi": "Karboplatiini",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "AUC",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Pemetreksedi",
+                "reitti": "IV",
+                "annos": 500,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 4mg+4mg+4mg, Ondansetroni 8mg. (Muista foolihapon aloitus 1vk ennen ja B12-vitamiini-injektio joka kolmas infuusio)."
+    },
+    "Irinotekaani-Fluorourasiili-Kalsiumfolinaatti-Panitumumabi": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
+        "kontrollit": "Rutlab, mg.",
+        "lääkkeet": [
+            {
+                "nimi": "Irinotekaani",
+                "reitti": "IV",
+                "annos": 160,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 500,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "nimi": "Panitumumabi",
+                "reitti": "IV",
+                "annos": 6,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg."
+    },
+    "Syklofosfamidi-Epirubisiini (EC75)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
+        "kontrollit": "PVK, Krea.",
+        "lääkkeet": [
+            {
+                "nimi": "Syklofosfamidi",
+                "reitti": "IV",
+                "annos": 600,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Epirubisiini",
+                "reitti": "IV",
+                "annos": 75,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 4mg, Akynzeo 1 tbl."
+    },
+    "mFOLFIRINOX / FOLFOXIRI": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Suolistosyöpä",
+            "Haimasyöpä"
+        ],
+        "kontrollit": "PVK, Krea, Alat, Afos.",
+        "lääkkeet": [
+            {
+                "nimi": "Irinotekaani",
+                "reitti": "IV",
+                "annos": 150,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 400,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 85,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 2400,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ],
+                "lisätieto": "46h infuusio"
+            }
+        ],
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Akynzeo 1 tbl, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
+    },
+    "ABVD": {
+        "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)",
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
+        "kontrollit": "PVK, Krea.",
+        "lääkkeet": [
+            {
+                "nimi": "Doksorubisiini",
+                "reitti": "IV",
+                "annos": 25,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Bleomysiini",
+                "reitti": "IV",
+                "annos": 10,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Vinblastiini",
+                "reitti": "IV",
+                "annos": 6,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Dakarbatsiini",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Netupitantti."
+    },
+    "Trastutsumabi-derukstekaani (Enhertu)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
+        "kontrollit": "PVK, Krea.",
+        "lääkkeet": [
+            {
+                "nimi": "Trastutsumabi-derukstekaani",
+                "reitti": "IV",
+                "annos": 5.4,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl."
+    },
+    "Abraxane (nab-Paklitakseli)": {
+        "sykli": "Viikoittainen",
+        "syöpätyypit": [
+            "Rintasyöpä",
+            "Haimasyöpä"
+        ],
+        "kontrollit": "PVK, Neutr.",
+        "lääkkeet": [
+            {
+                "nimi": "Nab-paklitakseli",
+                "reitti": "IV",
+                "annos": 125,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Ondansetroni 8 mg."
+    },
+    "Dosetakseli": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä",
+            "Eturauhassyöpä"
+        ],
+        "kontrollit": "PVK + Neutr.",
+        "lääkkeet": [
+            {
+                "nimi": "Dosetakseli",
+                "reitti": "IV",
+                "annos": 75,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg+8mg+8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
+    },
+    "Doksorubisiini (Monoterapia)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä",
+            "Sarkooma"
+        ],
+        "kontrollit": "PVK, Krea.",
+        "lääkkeet": [
+            {
+                "nimi": "Doksorubisiini",
+                "reitti": "IV",
+                "annos": 70,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Akynzeo 1 tbl."
+    },
+    "BEP": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Kivesyöpä"
+        ],
+        "kontrollit": "Rutlab.",
+        "lääkkeet": [
+            {
+                "nimi": "Etoposidi",
+                "reitti": "IV",
+                "annos": 120,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "nimi": "Bleomysiinisulfaatti",
+                "reitti": "IV",
+                "annos": 30,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    1,
+                    5,
+                    15
+                ]
+            },
+            {
+                "nimi": "Sisplatiini",
+                "reitti": "IV",
+                "annos": 20,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 10mg+8mg+8mg+8mg+8mg, Akynzeo pv1, parasetamoli 1g pv 1 ja pv 5."
+    },
+    "FLOT (Modifioitu)": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Mahasyöpä"
+        ],
+        "kontrollit": "PVK + Neutr, Krea, Alat, Afos.",
+        "lääkkeet": [
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 85,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 500,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "nimi": "Dosetakseli",
+                "reitti": "IV",
+                "annos": 50,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
+    },
+    "KARE": {
+        "sykli": "28 vuorokautta",
+        "syöpätyypit": [
+            "Keuhkosyöpä"
+        ],
+        "kontrollit": "PVK, Krea (GFR).",
+        "lääkkeet": [
+            {
+                "nimi": "Karboplatiini",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "AUC",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Etoposidi",
+                "reitti": "IV",
+                "annos": 100,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Etoposidi",
                 "reitti": "PO Kapseli",
-                "annos": 200,  
-                "yksikkö": "mg/m2",  
-                "päivät": [2, 3], 
-                "tablettikoot": ["50 mg"] 
-            } 
-        ], 
-        "esilääkitys": "Deksametasoni 8mg, Ondansetroni 8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen." 
-    }, 
-    "Bevasitsumabi + FOLFIRI": { 
-        "sykli": "14 vuorokautta", 
-        "syöpätyypit": ["Suolistosyöpä"],
-        "kontrollit": "PVK, Krea, U-Prot.", 
-        "lääkkeet": [ 
-            {"nimi": "Bevasitsumabi", "reitti": "IV", "annos": 5, "yksikkö": "mg/kg", "päivät": [1]}, 
-            {"nimi": "Irinotekaani", "reitti": "IV", "annos": 160, "yksikkö": "mg/m2", "päivät": [1]}, 
-            {"nimi": "Fluorourasiili", "reitti": "IV", "annos": 500, "yksikkö": "mg/m2", "päivät": [1, 2]}, 
-            {"nimi": "Kalsiumfolinaatti", "reitti": "IV", "annos": 200, "yksikkö": "mg/m2", "päivät": [1, 2]} 
-        ], 
-        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg." 
-    }, 
-    "Eribuliini": { 
-        "sykli": "21 vuorokautta", 
-        "syöpätyypit": ["Rintasyöpä"],
-        "kontrollit": "PVK, Neutr.", 
-        "lääkkeet": [ 
-            {"nimi": "Eribuliini", "reitti": "IV", "annos": 1.23, "yksikkö": "mg/m2", "päivät": [1]} 
-        ], 
-        "esilääkitys": "Deksametasoni 4mg, Ondansetroni 8mg." 
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    2,
+                    3
+                ],
+                "tablettikoot": [
+                    "50 mg"
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Ondansetroni 8mg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
+    },
+    "Bevasitsumabi + FOLFIRI": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
+        "kontrollit": "PVK, Krea, U-Prot.",
+        "lääkkeet": [
+            {
+                "nimi": "Bevasitsumabi",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Irinotekaani",
+                "reitti": "IV",
+                "annos": 160,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 500,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    2
+                ]
+            }
+        ],
+        "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Ondansetroni 8mg."
+    },
+    "Eribuliini": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
+        "kontrollit": "PVK, Neutr.",
+        "lääkkeet": [
+            {
+                "nimi": "Eribuliini",
+                "reitti": "IV",
+                "annos": 1.23,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 4mg, Ondansetroni 8mg."
     },
     "Gemsitabiini-Abraxane (21vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Haimasyöpä"],
+        "syöpätyypit": [
+            "Haimasyöpä"
+        ],
         "kontrollit": "PVK, Krea, Alat.",
         "lääkkeet": [
-            {"nimi": "Abraxane", "reitti": "IV", "annos": 125, "yksikkö": "mg/m2", "päivät": [1, 8, 15]},
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8, 15]}
+            {
+                "nimi": "Abraxane",
+                "reitti": "IV",
+                "annos": 125,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    8,
+                    15
+                ]
+            },
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    8,
+                    15
+                ]
+            }
         ],
         "esilääkitys": "Ondansetroni 8mg. Deksametasoni 8mg+tarvittaessa 4mg pv 2 ja 3 PO."
     },
     "Alektinibi": {
         "sykli": "Jatkuva hoito",
-        "syöpätyypit": ["Keuhkosyöpä"],
+        "syöpätyypit": [
+            "Keuhkosyöpä"
+        ],
         "kontrollit": "ALAT, ASAT, Bilirubiini, Krea ja PVK 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen 3 kk välein",
         "lääkkeet": [
             {
@@ -346,15 +994,21 @@
                 "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg x2",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["150 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "150 mg"
+                ],
                 "lisätieto": "Otettava ruuan kanssa."
             }
         ]
     },
     "Abemasiklibi": {
         "sykli": "Jatkuva hoito",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "kontrollit": "PVK+T, ALAT, AFOS, BIL, KREA 2 viikon välein ensimmäiset 2 kuukautta, sen jälkeen kuukausittain seuraavat 2 kuukautta",
         "lääkkeet": [
             {
@@ -362,8 +1016,14 @@
                 "reitti": "PO",
                 "annos": 150,
                 "yksikkö": "mg x2",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["150 mg", "100 mg", "50 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "150 mg",
+                    "100 mg",
+                    "50 mg"
+                ],
                 "lisätieto": "Yhdistelmähoitona endokriinisen hoidon kanssa."
             }
         ],
@@ -371,7 +1031,9 @@
     },
     "Ribosiklibi": {
         "sykli": "28 vrk (21 vrk lääkettä, 7 vrk tauko)",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "kontrollit": "PVK+T, ALAT, AFOS, BIL 2 viikon välein ensimmäiset 2 sykliä, sen jälkeen joka 4. syklin alussa. EKG (QTc-aika) ennen aloitusta, 2 viikon kohdalla (sykli 1) ja ennen toisen syklin alkua.",
         "lääkkeet": [
             {
@@ -379,14 +1041,18 @@
                 "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg (2 x 200 mg tablettia)",
-                "päivät": ["Jatkuva"],
+                "päivät": [
+                    "Jatkuva"
+                ],
                 "lisätieto": "Otettava samaan aikaan joka päivä."
             }
         ]
     },
     "Abirateroni": {
         "sykli": "Jatkuva hoito",
-        "syöpätyypit": ["Eturauhassyöpä"],
+        "syöpätyypit": [
+            "Eturauhassyöpä"
+        ],
         "kontrollit": "ALAT, AFOS, K 2 viikon välein ensimmäiset 3 kuukautta, sen jälkeen 3 kuukauden välein",
         "lääkkeet": [
             {
@@ -394,21 +1060,27 @@
                 "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg",
-                "päivät": ["Jatkuva"]
+                "päivät": [
+                    "Jatkuva"
+                ]
             },
             {
                 "nimi": "Prednisoloni",
                 "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
-                "päivät": ["Jatkuva"],
+                "päivät": [
+                    "Jatkuva"
+                ],
                 "lisätieto": "Otettava aamulla."
             }
         ]
     },
     "Doce x6 + Nubeqa": {
         "sykli": "21 vuorokautta (Dosetakseli), Nubeqa jatkuva",
-        "syöpätyypit": ["Eturauhassyöpä"],
+        "syöpätyypit": [
+            "Eturauhassyöpä"
+        ],
         "kontrollit": "PVK + Neutr, Krea, ALAT, AFOS, PSA.",
         "lääkkeet": [
             {
@@ -416,15 +1088,21 @@
                 "reitti": "IV",
                 "annos": 75,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Darolutamidi (Nubeqa)",
                 "reitti": "PO",
                 "annos": 600,
                 "yksikkö": "mg x2",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["300 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "300 mg"
+                ],
                 "lisätieto": "Otetaan ruokailun yhteydessä."
             }
         ],
@@ -432,7 +1110,9 @@
     },
     "Kabatsitakseli + Prednison": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Eturauhassyöpä"],
+        "syöpätyypit": [
+            "Eturauhassyöpä"
+        ],
         "kontrollit": "PVK + Neutr, Krea, ALAT, PSA.",
         "lääkkeet": [
             {
@@ -440,22 +1120,31 @@
                 "reitti": "IV",
                 "annos": 25,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Prednisolon",
                 "reitti": "PO",
                 "annos": 10,
                 "yksikkö": "mg",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["5 mg", "10 mg"]
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "5 mg",
+                    "10 mg"
+                ]
             }
         ],
         "esilääkitys": "Antihistamiini IV, Deksametasoni 8mg IV, H2-salpaaja IV, Ondansetroni 8mg. G-CSF tuki tarvittaessa."
     },
     "Entsalutamidi (Xtandi)": {
         "sykli": "Jatkuva hoito",
-        "syöpätyypit": ["Eturauhassyöpä"],
+        "syöpätyypit": [
+            "Eturauhassyöpä"
+        ],
         "kontrollit": "PVK, Krea, ALAT, PSA, verenpaine 4 viikon välein ensimmäiset 3 kk, sitten harvemmin.",
         "lääkkeet": [
             {
@@ -463,15 +1152,22 @@
                 "reitti": "PO",
                 "annos": 160,
                 "yksikkö": "mg",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["40 mg"]
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "40 mg"
+                ]
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
     },
     "FOLFIRINOX pv1-2": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä", "Haimasyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä",
+            "Haimasyöpä"
+        ],
         "kontrollit": "PVK, Krea, Alat.",
         "lääkkeet": [
             {
@@ -479,234 +1175,342 @@
                 "reitti": "IV",
                 "annos": 85,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Irinotekaani",
                 "reitti": "IV",
                 "annos": 150,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili",
                 "reitti": "IV",
                 "annos": 400,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 200,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             }
         ],
         "esilääkitys": "Atropiini 0.25 mg SC pv 1 ennen irinotekaania. Palonosetroni 250 mikrog IV pv 1. Deksametasoni 20 mg PO pv 1, 8 mg PO pv 2-4."
     },
     "Sasitutsumabigovitekaani": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Sasitutsumabigovitekaani",
                 "reitti": "IV",
                 "annos": 10,
                 "yksikkö": "mg/kg",
-                "päivät": [1, 8]
+                "päivät": [
+                    1,
+                    8
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni 8 mg PO pv 1. Akynzeo 300/0,5 mg 1x1 PO pv 1. Parasetamoli 1 g PO pv 1. Pegfilgrastiimi 6 mg SC pv 9."
     },
     "Setuksimabi-enkorafenibi pv 1/14": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Setuksimabi",
                 "reitti": "IV",
                 "annos": 500,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Enkorafenibi",
                 "reitti": "PO",
                 "annos": 300,
                 "yksikkö": "mg",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["75 mg", "50 mg"]
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "75 mg",
+                    "50 mg"
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni 4 mg PO 1h ennen infuusiota. Setiritsiini 10 mg PO 1h ennen infuusiota."
     },
     "Bevasitsumabi-XELOX": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Bevasitsumabi",
                 "reitti": "IV",
                 "annos": 7.5,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Oksaliplatiini",
                 "reitti": "IV",
                 "annos": 130,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Kapesitabiini",
                 "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg/m2 x 2",
-                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-                "tablettikoot": ["500 mg", "150 mg"]
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ],
+                "tablettikoot": [
+                    "500 mg",
+                    "150 mg"
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1."
     },
     "XELOX-trastutsumabi": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Mahasyöpä","Ruokatorvisyöpä"],
+        "syöpätyypit": [
+            "Mahasyöpä",
+            "Ruokatorvisyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Trastutsumabi",
                 "reitti": "IV",
                 "annos": 6,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Oksaliplatiini",
                 "reitti": "IV",
                 "annos": 130,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Kapesitabiini",
                 "reitti": "PO",
                 "annos": 1000,
                 "yksikkö": "mg/m2 x 2",
-                "päivät": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-                "tablettikoot": ["500 mg"]
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ],
+                "tablettikoot": [
+                    "500 mg"
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1."
     },
     "FOLFOX-panitumumabi pv1-2": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Oksaliplatiini",
                 "reitti": "IV",
                 "annos": 85,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili",
                 "reitti": "IV",
                 "annos": 500,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 200,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             },
             {
                 "nimi": "Panitumumabi",
                 "reitti": "IV",
                 "annos": 6,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1-2."
     },
     "Aflibersepti-FOLFIRI pv 1-2": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Aflibersepti",
                 "reitti": "IV",
                 "annos": 4,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Irinotekaani",
                 "reitti": "IV",
                 "annos": 160,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili",
                 "reitti": "IV",
                 "annos": 500,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 200,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             }
         ],
         "esilääkitys": "(Atropiini 0.25 mg SC pv 1 ennen irinotekaania). Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1-2."
     },
     "Panitumumabi + FOLFIRI pitkä infuusio": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Panitumumabi",
                 "reitti": "IV",
                 "annos": 6,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Irinotekaani",
                 "reitti": "IV",
                 "annos": 180,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 400,
                 "yksikkö": "mg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili (bolus)",
                 "reitti": "IV",
                 "annos": 400,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili (infuusio)",
                 "reitti": "IV",
                 "annos": 2400,
                 "yksikkö": "mg/m2",
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "kesto": "46 h"
             }
         ],
@@ -714,42 +1518,56 @@
     },
     "Bevasitsumabi-irinotekaani-fluorourasiili-kalsiumfolinaatti pv 1-2": {
         "sykli": "14 vuorokautta",
-        "syöpätyypit": ["Suolistosyöpä"],
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Bevasitsumabi",
                 "reitti": "IV",
                 "annos": 5,
                 "yksikkö": "mg/kg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Irinotekaani",
                 "reitti": "IV",
                 "annos": 160,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Fluorourasiili",
                 "reitti": "IV",
                 "annos": 500,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             },
             {
                 "nimi": "Kalsiumfolinaatti",
                 "reitti": "IV",
                 "annos": 200,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 2]
+                "päivät": [
+                    1,
+                    2
+                ]
             }
         ],
         "esilääkitys": "(Atropiini 0.25 mg SC pv 1 ennen irinotekaania). Deksametasoni pv 1: 8mg, pv 2-3: 4-8mg PO. Ondansetroni 8mg PO pv 1."
     },
     "Dosetakseli-Phesgo(s.c)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "kontrollit": "PVK + Neutr, Krea, Alat.",
         "lääkkeet": [
             {
@@ -757,55 +1575,111 @@
                 "reitti": "SC",
                 "annos": 600,
                 "yksikkö": "mg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Dosetakseli",
                 "reitti": "IV",
                 "annos": 75,
                 "yksikkö": "mg/m2",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             }
         ],
         "esilääkitys": "Deksametasoni 8 mg po hoitoa edeltävänä iltana ja 8 mg po 1h ennen hoitoa. Pegfilgrastiimi 6 mg SC 24h hoidon jälkeen."
     },
     "Abraxane(viikkoannos)-Phesgo": {
         "sykli": "Viikoittainen (Abraxane) / 21 vrk (Phesgo)",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "lääkkeet": [
             {
                 "nimi": "Phesgo (Pertutsumabi-trastutsumabi)",
                 "reitti": "SC",
                 "annos": 600,
                 "yksikkö": "mg",
-                "päivät": [1]
+                "päivät": [
+                    1
+                ]
             },
             {
                 "nimi": "Abraxane",
                 "reitti": "IV",
                 "annos": 125,
                 "yksikkö": "mg/m2",
-                "päivät": [1, 8, 15]
+                "päivät": [
+                    1,
+                    8,
+                    15
+                ]
             }
         ],
         "esilääkitys": "Ondansetroni 8 mg PO pv 1."
     },
     "R-pola-CHP (21 vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Lymfooma"],
+        "syöpätyypit": [
+            "Lymfooma"
+        ],
         "kontrollit": "PVK, Neutr, Krea, Alat, Afos. (Huomioi neuropatiariski).",
         "lääkkeet": [
-            {"nimi": "Rituksimabi", "reitti": "IV", "annos": 375, "yksikkö": "mg/m2", "päivät": [1]},
-            {"nimi": "Polatutsumabivedotiini", "reitti": "IV", "annos": 1.8, "yksikkö": "mg/kg", "päivät": [1]},
-            {"nimi": "Syklofosfamidi", "reitti": "IV", "annos": 750, "yksikkö": "mg/m2", "päivät": [1]},
-            {"nimi": "Doksorubisiini", "reitti": "IV", "annos": 50, "yksikkö": "mg/m2", "päivät": [1]},
+            {
+                "nimi": "Rituksimabi",
+                "reitti": "IV",
+                "annos": 375,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Polatutsumabivedotiini",
+                "reitti": "IV",
+                "annos": 1.8,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Syklofosfamidi",
+                "reitti": "IV",
+                "annos": 750,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Doksorubisiini",
+                "reitti": "IV",
+                "annos": 50,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
             {
                 "nimi": "Prednisoloni",
                 "reitti": "PO",
                 "annos": 100,
                 "yksikkö": "mg (kiinteä)",
-                "päivät": [1, 2, 3, 4, 5],
-                "tablettikoot": ["40 mg", "20 mg", "5 mg"],
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "tablettikoot": [
+                    "40 mg",
+                    "20 mg",
+                    "5 mg"
+                ],
                 "lisätieto": "Aamuisin."
             }
         ],
@@ -813,37 +1687,98 @@
     },
     "Karboplatiini-Gemsitabiini (21 vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Uroteelikarsinooma"],
+        "syöpätyypit": [
+            "Uroteelikarsinooma"
+        ],
         "kontrollit": "PVK, Krea (GFR), Alat.",
         "lääkkeet": [
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8]},
-            {"nimi": "Karboplatiini", "reitti": "IV", "annos": 5, "yksikkö": "AUC", "päivät": [1]}
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "nimi": "Karboplatiini",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "AUC",
+                "päivät": [
+                    1
+                ]
+            }
         ],
         "esilääkitys": "Ondansetroni 8 mg IV pv 1 ja pv 8. Deksametasoni 8 mg IV pv 1."
     },
     "Sisplatiini-Gemsitabiini (21 vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Uroteelikarsinooma"],
+        "syöpätyypit": [
+            "Uroteelikarsinooma"
+        ],
         "kontrollit": "PVK, Krea (GFR), Mg, K, Na.",
         "lääkkeet": [
-            {"nimi": "Gemsitabiini", "reitti": "IV", "annos": 1000, "yksikkö": "mg/m2", "päivät": [1, 8]},
-            {"nimi": "Sisplatiini", "reitti": "IV", "annos": 70, "yksikkö": "mg/m2", "päivät": [1]}
+            {
+                "nimi": "Gemsitabiini",
+                "reitti": "IV",
+                "annos": 1000,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "nimi": "Sisplatiini",
+                "reitti": "IV",
+                "annos": 70,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
         ],
         "esilääkitys": "Ondansetroni 8 mg IV pv 1 ja pv 8. Deksametasoni 8 mg IV pv 1. Muista nesteytys ennen ja jälkeen sisplatiinin."
     },
     "Enfortumabi vedotiini + Pembrolitsumabi (21 vrk)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Uroteelikarsinooma"],
+        "syöpätyypit": [
+            "Uroteelikarsinooma"
+        ],
         "kontrollit": "PVK, Krea, Alat, Verensokeriseuranta. Huomioi ihoreaktiot ja neuropatia.",
         "lääkkeet": [
-            {"nimi": "Enfortumabi vedotiini (Padcev)", "reitti": "IV", "annos": 1.25, "yksikkö": "mg/kg", "päivät": [1, 8]},
-            {"nimi": "Pembrolitsumabi", "reitti": "IV", "annos": 200, "yksikkö": "mg (kiinteä)", "päivät": [1]}
+            {
+                "nimi": "Enfortumabi vedotiini (Padcev)",
+                "reitti": "IV",
+                "annos": 1.25,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "nimi": "Pembrolitsumabi",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    1
+                ]
+            }
         ],
         "esilääkitys": "Ei tarvetta rutiininomaisesti."
     },
     "Nivolumabi + Ipilimumabi": {
         "sykli": "Nivolumabi q2vk / Ipilimumabi q6vk (jatkuva)",
-        "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Munuaissyöpä"],
+        "syöpätyypit": [
+            "Keuhkosyöpä",
+            "Melanooma",
+            "Munuaissyöpä"
+        ],
         "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
         "lääkkeet": [
             {
@@ -852,7 +1787,9 @@
                 "annos": 3,
                 "yksikkö": "mg/kg",
                 "max_mg": 360,
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "lisätieto": "q2vk. Infuusio 30 min. Melanoomassa induktio: 1 mg/kg q3vk x4 yhdessä ipilimumabin kanssa."
             },
             {
@@ -861,7 +1798,9 @@
                 "annos": 1,
                 "yksikkö": "mg/kg",
                 "max_mg": 100,
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "lisätieto": "q6vk. Infuusio 30 min. Melanoomassa induktio: 3 mg/kg q3vk x4."
             }
         ],
@@ -869,7 +1808,12 @@
     },
     "Pembrolitsumabi (monoterapia)": {
         "sykli": "21 vrk (2 mg/kg) tai 42 vrk (4 mg/kg)",
-        "syöpätyypit": ["Keuhkosyöpä", "Melanooma", "Uroteelikarsinooma", "Suolistosyöpä"],
+        "syöpätyypit": [
+            "Keuhkosyöpä",
+            "Melanooma",
+            "Uroteelikarsinooma",
+            "Suolistosyöpä"
+        ],
         "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
         "lääkkeet": [
             {
@@ -878,7 +1822,9 @@
                 "annos": 2,
                 "yksikkö": "mg/kg",
                 "max_mg": 200,
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "lisätieto": "Vaihtoehto: 4 mg/kg q6vk (max 400 mg). Infuusio 30 min."
             }
         ],
@@ -886,7 +1832,9 @@
     },
     "Dabrafenibi + Trametinibi": {
         "sykli": "Jatkuva hoito",
-        "syöpätyypit": ["Melanooma"],
+        "syöpätyypit": [
+            "Melanooma"
+        ],
         "kontrollit": "TVK, ALAT, BIL, Na, K: 2 vk välein x2, sitten kuukausittain. EKG (QTc): 1 kk kohdalla, sitten 3 kk välein.",
         "lääkkeet": [
             {
@@ -894,8 +1842,12 @@
                 "reitti": "PO",
                 "annos": 150,
                 "yksikkö": "mg x2",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["75 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "75 mg"
+                ],
                 "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
             },
             {
@@ -903,8 +1855,13 @@
                 "reitti": "PO",
                 "annos": 2,
                 "yksikkö": "mg x1",
-                "päivät": ["Jatkuva"],
-                "tablettikoot": ["2 mg", "0.5 mg"],
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "2 mg",
+                    "0.5 mg"
+                ],
                 "lisätieto": "Otettava tyhjään mahaan (1h ennen tai 2h jälkeen aterian)."
             }
         ],
@@ -912,7 +1869,9 @@
     },
     "Nivolumabi (monoterapia)": {
         "sykli": "14 vrk (240 mg) tai 28 vrk (480 mg)",
-        "syöpätyypit": ["Melanooma"],
+        "syöpätyypit": [
+            "Melanooma"
+        ],
         "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
         "lääkkeet": [
             {
@@ -921,7 +1880,9 @@
                 "annos": 3,
                 "yksikkö": "mg/kg",
                 "max_mg": 240,
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "lisätieto": "q2vk (max 240 mg). Vaihtoehto: 480 mg q4vk. Infuusio 30 min."
             }
         ],
@@ -929,7 +1890,9 @@
     },
     "Trastutsumabi emtansiini / T-DM1 (Kadcyla)": {
         "sykli": "21 vuorokautta",
-        "syöpätyypit": ["Rintasyöpä"],
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
         "kontrollit": "PVK, Krea, ALAT, ASAT, Bilirubiini. Seuraa trombosyyttejä (trombosytopeniariski).",
         "lääkkeet": [
             {
@@ -937,10 +1900,64 @@
                 "reitti": "IV",
                 "annos": 3.6,
                 "yksikkö": "mg/kg",
-                "päivät": [1],
+                "päivät": [
+                    1
+                ],
                 "lisätieto": "Ensimmäinen infuusio 90 min. Jos hyvin siedetty, seuraavat 30 min."
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä. Tarvittaessa parasetamoli ja antihistamiini infuusioreaktioon."
+    },
+    "TC (Dosetakseli-Syklofosfamidi)": {
+        "sykli": "21 vuorokautta",
+        "syöpätyypit": [
+            "Rintasyöpä"
+        ],
+        "kontrollit": "TVK, ALAT, BIL ennen jokaista sykliä.",
+        "lääkkeet": [
+            {
+                "nimi": "Dosetakseli",
+                "reitti": "IV",
+                "annos": 75,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Syklofosfamidi",
+                "reitti": "IV",
+                "annos": 600,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8 mg x2 edellisenä päivänä, hoitopäivänä ja seuraavana päivänä. Akynzeo 1 tbl."
+    },
+    "Ibrutinibi": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": [
+            "Lymfooma",
+            "CLL"
+        ],
+        "kontrollit": "TVK, ALAT, BIL, KREA: ennen hoitoa, sitten 2 vk välein ensimmäiset 3 kk, sitten 3 kk välein. Verenpaine seuranta säännöllisesti. EKG jos eteisvärinäoireita.",
+        "lääkkeet": [
+            {
+                "nimi": "Ibrutinibi (CLL/SLL)",
+                "reitti": "PO",
+                "annos": 420,
+                "yksikkö": "mg x1",
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "140 mg"
+                ],
+                "lisätieto": "CLL/SLL: 420 mg/vrk (3 kaps). MCL: 560 mg/vrk (4 kaps). WM: 420 mg/vrk. Otetaan samaan aikaan päivittäin. Ei greippiä."
+            }
+        ],
+        "esilääkitys": "Ei tarvita."
     }
 }
