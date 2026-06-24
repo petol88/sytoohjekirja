@@ -1959,5 +1959,40 @@
             }
         ],
         "esilääkitys": "Ei tarvita."
+    },
+    "Nivolumabi + Kabosantinibi": {
+        "sykli": "Nivolumabi q2vk, Kabosantinibi jatkuva (CheckMate 9ER)",
+        "syöpätyypit": [
+            "Munuaissyöpä"
+        ],
+        "kontrollit": "TVK, ALAT, ASAT, BIL, KREA, TSH/T4v: ennen aloitusta, 3 vk, 6 vk, sitten 6-8 vk välein. Verenpaine jokaisen käynnin yhteydessä. Virtsan proteiini tarvittaessa.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 240,
+                "yksikkö": "mg (kiinteä)",
+                "päivät": [
+                    1
+                ],
+                "lisätieto": "q2vk. Infuusio 30 min. Vaihtoehto: 480 mg q4vk."
+            },
+            {
+                "nimi": "Kabosantinibi",
+                "reitti": "PO",
+                "annos": 40,
+                "yksikkö": "mg x1",
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "20 mg",
+                    "40 mg",
+                    "60 mg"
+                ],
+                "lisätieto": "40 mg/vrk jatkuvana. Otetaan tyhjään mahaan (ei ruokaa 2h ennen/1h jälkeen). Ei greippiä."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
     }
 }
