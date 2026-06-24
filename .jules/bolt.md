@@ -14,3 +14,7 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+
+## 2024-05-25 - [Pre-calculate derived UI mappings in load_data]
+**Learning:** In Streamlit, inline O(N) filtering operations (like extracting `indikaatiot` and `protokollat` from a dataset) run on every user interaction, causing a performance overhead.
+**Action:** Moved the mapping generation into the `@st.cache_data` load function and used dict lookups in the UI to minimize calculation overhead per rerun.
