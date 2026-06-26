@@ -205,3 +205,7 @@ IO_HAITTAVAIKUTUKSET = {
         "Gradus 4 (Hengenvaarallinen, kardiogeeninen sokki tai vaikea rytmihäiriö)": "Lopeta IO-hoito pysyvästi. Teho-osasto. Iv-steroidipulssi (Metyyliprednisoloni 500-1000 mg/vrk). Jos ei vastetta 24h kuluessa, muu immunosuppressio (esim. abatasepti, mykofenolaattimofetiili tai ATG. HUOM: Infliksimabi on vasta-aiheinen sydämen vajaatoiminnassa!)."
     }
 }
+# Precomputed tuples for UI rendering performance
+_HAITTAVAIKUTUKSET_LAAKKEET = tuple(sorted(HAITTAVAIKUTUKSET.keys()))
+_IO_HAITTAVAIKUTUKSET_OIREET = tuple(sorted(IO_HAITTAVAIKUTUKSET.keys()))
+_HAITAT_PER_LAAKE = {k: tuple(sorted(v.keys())) for k, v in HAITTAVAIKUTUKSET.items()}
