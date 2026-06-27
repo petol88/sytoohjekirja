@@ -64,18 +64,16 @@ ANNOSTASOT = {
         "2. annoslasku (60 mg aloitus)": "20 mg x 1",
         "3. annoslasku (60 mg aloitus)": "Lopeta hoito"
     },
-    "Dabrafenibi (Tafinlar)": {
-        "Aloitusannos": "150 mg x 2",
-        "1. annoslasku": "100 mg x 2",
-        "2. annoslasku": "75 mg x 2",
-        "3. annoslasku": "50 mg x 2",
-        "4. annoslasku": "Lopeta hoito (alle 50 mg x 2 annosta ei suositella)"
-    },
-    "Trametinibi (Mekinist)": {
-        "Aloitusannos": "2 mg x 1",
-        "1. annoslasku": "1.5 mg x 1",
-        "2. annoslasku": "1 mg x 1",
-        "3. annoslasku": "Lopeta hoito (alle 1 mg annosta ei suositella)"
+    "Dabrafenibi + Trametinibi (Tafinlar + Mekinist)": {
+        "Dabrafenibi - Aloitusannos": "150 mg x 2",
+        "Dabrafenibi - 1. annoslasku": "100 mg x 2",
+        "Dabrafenibi - 2. annoslasku": "75 mg x 2",
+        "Dabrafenibi - 3. annoslasku": "50 mg x 2",
+        "Dabrafenibi - 4. annoslasku": "Lopeta hoito (alle 50 mg x 2 annosta ei suositella)",
+        "Trametinibi - Aloitusannos": "2 mg x 1",
+        "Trametinibi - 1. annoslasku": "1.5 mg x 1",
+        "Trametinibi - 2. annoslasku": "1 mg x 1",
+        "Trametinibi - 3. annoslasku": "Lopeta hoito (alle 1 mg annosta ei suositella)"
     },
     "Alektinibi (Alecensa)": {
         "Aloitusannos": "600 mg x 2",
