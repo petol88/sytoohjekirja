@@ -63,6 +63,25 @@ ANNOSTASOT = {
         "1. annoslasku (60 mg aloitus)": "40 mg x 1",
         "2. annoslasku (60 mg aloitus)": "20 mg x 1",
         "3. annoslasku (60 mg aloitus)": "Lopeta hoito"
+    },
+    "Dabrafenibi (Tafinlar)": {
+        "Aloitusannos": "150 mg x 2",
+        "1. annoslasku": "100 mg x 2",
+        "2. annoslasku": "75 mg x 2",
+        "3. annoslasku": "50 mg x 2",
+        "4. annoslasku": "Lopeta hoito (alle 50 mg x 2 annosta ei suositella)"
+    },
+    "Trametinibi (Mekinist)": {
+        "Aloitusannos": "2 mg x 1",
+        "1. annoslasku": "1.5 mg x 1",
+        "2. annoslasku": "1 mg x 1",
+        "3. annoslasku": "Lopeta hoito (alle 1 mg annosta ei suositella)"
+    },
+    "Alektinibi (Alecensa)": {
+        "Aloitusannos": "600 mg x 2",
+        "1. annoslasku": "450 mg x 2",
+        "2. annoslasku": "300 mg x 2",
+        "3. annoslasku": "Lopeta hoito (alle 300 mg x 2 annosta ei suositella)"
     }
 }
 
@@ -199,6 +218,54 @@ HAITTAVAIKUTUKSET = {
         "Ripuli": {
             "Gradus 2": "Oireenmukainen hoito (loperamidi). Tauota tarvittaessa, kunnes ≤ Gradus 1. Jatka samalla annoksella.",
             "Gradus 3-4": "Tauota kabosantinibi. Jatka toipumisen jälkeen alennetulla annoksella."
+        }
+    },
+    "Dabrafenibi + Trametinibi (Tafinlar + Mekinist)": {
+        "Kuume (pyreksia)": {
+            "Diagnostiikka ja huomioitavaa": "Kuume on yhdistelmähoidon yleisin ja tyypillisin haitta. Sulje aina ensin pois infektio. Vakavassa muodossa voi liittyä vilunväristyksiä, hypotensiota, kuivumista ja munuaisten vajaatoimintaa.",
+            "Gradus 1 (38.0-39.0 °C)": "Jatka molempia lääkkeitä. Antipyreetti (parasetamoli, tarvittaessa NSAID). Huolehdi nesteytyksestä.",
+            "Gradus 2 (39.0-40.0 °C tai toistuva)": "Tauota DABRAFENIBI (trametinibia voi jatkaa). Kun kuumeeton ≥ 24 h, jatka samalla tai alennetulla annoksella. Antipyreetti.",
+            "Gradus 3-4 (> 40.0 °C tai vakavat seuraukset, esim. hypotensio/munuaisten vajaatoiminta)": "Tauota molemmat lääkkeet. Nesteytys, antipyreetti. Vakavassa/toistuvassa tapauksessa harkitse kortikosteroidia (esim. prednisoloni 10 mg/vrk). Jatka alennetulla annoksella oireiden korjaannuttua."
+        },
+        "Vasemman kammion toiminnan (LVEF) lasku": {
+            "Gradus 1 (oireeton, LVEF lasku < 10 % lähtötasosta ja LVEF ≥ alaraja)": "Jatka hoitoa. Seuraa LVEF:ää (ECHO) tihennetysti.",
+            "Gradus 2 (oireeton LVEF lasku ≥ 10 % lähtötasosta JA alle viiterajan)": "Tauota TRAMETINIBI (dabrafenibia voi jatkaa). Kontrolloi LVEF 2-4 vk. Kun palautuu, jatka trametinibi alennetulla annoksella.",
+            "Gradus 3-4 (oireinen sydämen vajaatoiminta)": "Tauota molemmat. Kardiologin konsultaatio. Lopeta trametinibi pysyvästi, jos ei korjaannu."
+        },
+        "QTc-ajan pidentyminen": {
+            "Gradus 3 (QTc > 500 ms)": "Tauota dabrafenibi. Korjaa elektrolyytit (K, Mg). Kun QTc ≤ 500 ms, jatka alennetulla annoksella.",
+            "Gradus 4 (QTc > 500 ms ja > 60 ms lähtötasosta tai Torsades)": "Lopeta dabrafenibi pysyvästi."
+        },
+        "Ihottuma": {
+            "Gradus 1-2 (< 30 % BSA)": "Jatka hoitoa. Paikalliset kortikosteroidit, antihistamiini. Tarvittaessa lyhyt tauko.",
+            "Gradus 3 (> 30 % BSA tai vaikea)": "Tauota molemmat enintään 3 vk, kunnes ≤ Gradus 1. Jatka alennetulla annoksella. Systeeminen kortikosteroidi tarvittaessa."
+        },
+        "Maksaentsyymien (ALAT/BIL) nousu": {
+            "Gradus 1-2 (ALAT ≤ 5 x ULN)": "Jatka hoitoa. Seuraa maksa-arvoja.",
+            "Gradus 3 (ALAT > 5 - 20 x ULN)": "Tauota, kunnes ≤ Gradus 1. Jatka alennetulla annoksella.",
+            "Gradus 4 (ALAT > 20 x ULN)": "Lopeta hoito pysyvästi."
+        }
+    },
+    "Alektinibi (Alecensa)": {
+        "Maksatoksisuus (ALAT/ASAT/BIL nousu)": {
+            "Gradus 2 (ALAT/ASAT > 3 - 5 x ULN tai BIL > 1.5 - 3 x ULN)": "Jos ALAT/ASAT > 5 x ULN, tauota. Kun palautuu tasolle ≤ Gradus 1 (tai lähtötasolle), jatka samalla tai alennetulla annoksella.",
+            "Gradus 3-4 (ALAT/ASAT > 5 x ULN tai BIL > 3 x ULN)": "Tauota, kunnes palautuu ≤ Gradus 1. Jatka alennetulla annoksella. ALAT/ASAT > 3 x ULN JA BIL > 2 x ULN (ilman kolestaasia) -> lopeta hoito pysyvästi."
+        },
+        "Lihasoireet / CK-nousu (myalgia)": {
+            "Gradus 1-2 (CK koholla, lihaskipu)": "Jatka hoitoa. Seuraa CK-arvoa ja oireita. Sulje pois rabdomyolyysi.",
+            "Gradus 3-4 (CK > 5 x ULN oireineen)": "Tauota alektinibi, kunnes palautuu lähtötasolle tai ≤ Gradus 1. Jatka samalla tai alennetulla annoksella."
+        },
+        "Bradykardia": {
+            "Oireeton bradykardia": "Jatka hoitoa. Seuraa syketasoa ja EKG:tä. Arvioi muut sykettä hidastavat lääkkeet (esim. beetasalpaajat).",
+            "Oireinen bradykardia (Gradus 2-3)": "Tauota alektinibi. Arvioi ja muokkaa muuta bradykardiaa aiheuttavaa lääkitystä. Kun oireeton tai syke ≥ 60/min, jatka samalla tai alennetulla annoksella.",
+            "Hengenvaarallinen bradykardia (Gradus 4)": "Lopeta hoito pysyvästi, jos selvää vaihtoehtoista syytä ei löydy. Jos lääkesyy korjattavissa, jatka alennetulla annoksella tiiviissä seurannassa."
+        },
+        "Interstitiaalinen keuhkosairaus (ILD) / Pneumoniitti": {
+            "Mikä tahansa gradus (uusi/paheneva hengenahdistus, yskä, kuume)": "Tauota alektinibi välittömästi epäiltäessä ILD:tä. Sulje pois infektio ja taudin progressio. Jos ILD vahvistetaan, lopeta hoito pysyvästi."
+        },
+        "Valoyliherkkyys (fotosensitiviteetti)": {
+            "Gradus 1-2": "Jatka hoitoa. Vältä auringonvaloa, käytä suojaavaa vaatetusta ja aurinkosuojaa (SPF ≥ 50).",
+            "Gradus 3-4": "Tauota alektinibi, kunnes ≤ Gradus 1. Jatka samalla tai alennetulla annoksella."
         }
     }
 }
