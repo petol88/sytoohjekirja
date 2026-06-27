@@ -80,6 +80,18 @@ ANNOSTASOT = {
         "1. annoslasku": "450 mg x 2",
         "2. annoslasku": "300 mg x 2",
         "3. annoslasku": "Lopeta hoito (alle 300 mg x 2 annosta ei suositella)"
+    },
+    "Entsalutamidi (Xtandi)": {
+        "Aloitusannos": "160 mg x 1",
+        "1. annoslasku": "120 mg x 1",
+        "2. annoslasku": "80 mg x 1",
+        "Tauotus haitan yhteydessä": "Tauota viikoksi tai kunnes oireet ≤ Gradus 1, jatka samalla tai alennetulla annoksella."
+    },
+    "Abirateroni (Zytiga)": {
+        "Aloitusannos": "1000 mg x 1 (tyhjään mahaan) + prednisoloni/prednisoni 5 mg x 2 (mCRPC) tai 5 mg x 1 (mHSPC)",
+        "1. annoslasku": "750 mg x 1",
+        "2. annoslasku": "500 mg x 1",
+        "Maksatoksisuus (ALAT/ASAT > 5 x ULN)": "Tauota hoito. Kun palautuu ≤ Gradus 1 tai lähtötasolle, jatka 750 mg. Uusiutuessa jatka 500 mg. Toistuvassa vaikeassa maksatoksisuudessa lopeta pysyvästi."
     }
 }
 
@@ -264,6 +276,49 @@ HAITTAVAIKUTUKSET = {
         "Valoyliherkkyys (fotosensitiviteetti)": {
             "Gradus 1-2": "Jatka hoitoa. Vältä auringonvaloa, käytä suojaavaa vaatetusta ja aurinkosuojaa (SPF ≥ 50).",
             "Gradus 3-4": "Tauota alektinibi, kunnes ≤ Gradus 1. Jatka samalla tai alennetulla annoksella."
+        }
+    },
+    "Entsalutamidi (Xtandi)": {
+        "Epileptinen kohtaus": {
+            "Diagnostiikka ja huomioitavaa": "Entsalutamidi alentaa kouristuskynnystä. Arvioi riskitekijät ennen aloitusta (aiemmat kouristukset, aivometastaasit, kouristuskynnystä alentavat lääkkeet). Sulje pois muut syyt (aivometastaasit, hyponatremia).",
+            "Kohtaus hoidon aikana": "Lopeta entsalutamidi pysyvästi. Neurologin arvio."
+        },
+        "PRES (posteriorinen reversiibeli enkefalopatiaoireyhtymä)": {
+            "Oireet (päänsärky, sekavuus, näköhäiriö, kohtaus)": "Harvinainen. Lopeta entsalutamidi. Aivojen MRI diagnoosin varmistamiseksi. Verenpaineen hoito."
+        },
+        "Väsymys": {
+            "Gradus 1-2": "Jatka hoitoa. Arvioi muut syyt (anemia, kilpirauhanen, masennus). Liikunta ja energiansäästö.",
+            "Gradus 3 (estää päivittäiset toimet)": "Tauota viikoksi tai kunnes ≤ Gradus 1. Jatka samalla tai alennetulla annoksella (120 mg)."
+        },
+        "Kaatumiset ja murtumat": {
+            "Kaatumisriski / kaatuilu": "Arvioi kaatumisriski säännöllisesti. Huomioi luuston tukihoito (kalsium, D-vitamiini, tarvittaessa luustolääke). Fysioterapia ja kotiympäristön turvallisuus.",
+            "Murtuma": "Hoida murtuma. Arvioi luustolääkityksen (bisfosfonaatti/denosumabi) tarve."
+        },
+        "Hypertensio": {
+            "Gradus 2-3 (verenpaine ≥ 140/90 mmHg)": "Aloita tai tehosta verenpainelääkitystä. Jatka entsalutamidia. Jos hallitsematon, tauota kunnes hallinnassa.",
+            "Gradus 4 (hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        }
+    },
+    "Abirateroni (Zytiga)": {
+        "Diagnostiikka ja huomioitavaa": {
+            "Mineralokortikoidiylimäärä": "Abirateroni estää CYP17:ää, mikä johtaa mineralokortikoidien ylimäärään: nesteretentio, hypokalemia ja hypertensio. Tämä hallitaan SAMANAIKAISELLA kortikosteroidilla (prednisoloni/prednisoni). Seuraa: verenpaine, S-Kalium ja nesteretentio väh. kerran kuukaudessa. Seuraa myös maksa-arvoja (ALAT/ASAT/BIL) 2 vk välein ensimmäiset 3 kk, sitten kuukausittain."
+        },
+        "Hypokalemia": {
+            "Gradus 1-2 (K 3.0 - < 3.5 mmol/l)": "Kaliumkorvaus (po). Varmista että kortikosteroidi (prednisoloni) on käytössä. Seuraa kaliumia tihennetysti.",
+            "Gradus 3-4 (K < 3.0 mmol/l tai oireinen)": "Tauota abirateroni. Korjaa kalium (tarvittaessa iv, EKG-monitorointi). Harkitse eplerenonia (HUOM: ei spironolaktonia, joka aktivoi androgeenireseptoria). Jatka, kun kalium normalisoitunut."
+        },
+        "Nesteretentio / turvotus": {
+            "Gradus 1-2 (perifeerinen turvotus)": "Jatka hoitoa. Varmista kortikosteroidiannos. Suolan rajoitus. Harkitse diureettia.",
+            "Gradus 3 (vaikea turvotus / sydämen vajaatoiminta)": "Tauota abirateroni. Diureettihoito ja kardiologinen arvio. Jatka tilanteen vakauduttua."
+        },
+        "Hypertensio": {
+            "Gradus 2-3 (verenpaine ≥ 140/90 mmHg)": "Aloita tai tehosta verenpainelääkitystä. Varmista kortikosteroidiannos ja kaliumtasapaino. Jatka abirateronia.",
+            "Gradus 4 (hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        },
+        "Maksatoksisuus (ALAT/ASAT/BIL nousu)": {
+            "Gradus 1-2 (ALAT/ASAT ≤ 5 x ULN)": "Jatka hoitoa. Seuraa maksa-arvoja tihennetysti.",
+            "Gradus 3 (ALAT/ASAT > 5 x ULN)": "Tauota abirateroni. Kun palautuu ≤ Gradus 1 tai lähtötasolle, jatka alennetulla annoksella (750 mg, uusiutuessa 500 mg).",
+            "ALAT/ASAT > 20 x ULN tai toistuva vaikea maksatoksisuus": "Lopeta hoito pysyvästi."
         }
     }
 }
