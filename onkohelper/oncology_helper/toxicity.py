@@ -46,6 +46,23 @@ ANNOSTASOT = {
         "Esim. 24 mg aloitus": "24 mg -> 20 mg -> 14 mg -> 10 mg",
         "Esim. 20 mg aloitus": "20 mg -> 14 mg -> 10 mg -> 8 mg",
         "Esim. 18 mg aloitus": "18 mg -> 14 mg -> 10 mg -> 8 mg"
+    },
+    "Ibrutinibi (Imbruvica)": {
+        "Aloitusannos (CLL/SLL/WM)": "420 mg x 1 (3 kaps á 140 mg)",
+        "Aloitusannos (MCL)": "560 mg x 1 (4 kaps á 140 mg)",
+        "1. annoslasku (CLL/SLL/WM)": "280 mg x 1",
+        "2. annoslasku (CLL/SLL/WM)": "140 mg x 1",
+        "1. annoslasku (MCL)": "420 mg x 1",
+        "2. annoslasku (MCL)": "280 mg x 1",
+        "3. annoslasku": "Lopeta hoito"
+    },
+    "Kabosantinibi (Cabometyx)": {
+        "Aloitusannos": "40 mg x 1 (RCC-yhdistelmä nivo+cabo) tai 60 mg x 1 (monoterapia)",
+        "1. annoslasku (40 mg aloitus)": "20 mg x 1",
+        "2. annoslasku (40 mg aloitus)": "Lopeta hoito",
+        "1. annoslasku (60 mg aloitus)": "40 mg x 1",
+        "2. annoslasku (60 mg aloitus)": "20 mg x 1",
+        "3. annoslasku (60 mg aloitus)": "Lopeta hoito"
     }
 }
 
@@ -136,6 +153,52 @@ HAITTAVAIKUTUKSET = {
             "Gradus 1-2 (Proteinuria < 2 g/24 h tai 1-2+ liuskalla)": "Tarkista vuorokausivirtsan proteiini. Jos proteinuria < 2 g/24 h, jatka samalla annoksella.",
             "Gradus 3 (Proteinuria ≥ 2 g/24 h)": "Tauota lenvatinibi, kunnes proteinuria on < 2 g/24 h. Jatka alennetulla annoksella.",
             "Gradus 4 (Nefroottinen oireyhtymä)": "Lopeta hoito pysyvästi."
+        }
+    },
+    "Ibrutinibi (Imbruvica)": {
+        "Eteisvärinä (AFib)": {
+            "Uusi eteisvärinä tai flutter": "Tauota ibrutinibi. Arvioi antikoagulaatiotarve (huomioi verenvuotoriski). Kun sinusrytmi palautettu tai rytmihäiriö hallinnassa, jatka ibrutinibiä samalla tai alennetulla annoksella. Jos eteisvärinä toistuu tai on hallitsematon, lopeta hoito.",
+            "Gradus 3-4 (oireinen, vaatii sairaalahoitoa)": "Lopeta ibrutinibi. Kardiologin konsultaatio. Antikoagulaatio harkittava yksilöllisesti."
+        },
+        "Verenvuoto": {
+            "Lievä (Gradus 1-2, esim. mustelmataipumus, nenäverenvuoto)": "Jatka ibrutinibia. Seuraa tilannetta. Tarkista mahdolliset yhteisvaikutukset (varfariini, ASA, NSAIDit, kalaöljy). Tauota 3-7 vrk ennen leikkausta.",
+            "Vakava (Gradus 3-4, sisäinen verenvuoto tai hengenvaarallinen)": "Lopeta ibrutinibi pysyvästi. Sairaalahoito ja verenvuodon hoito."
+        },
+        "Neutropenia": {
+            "Gradus 3 (ANC 0.5 - < 1.0 E9/l)": "Tauota ibrutinibi, kunnes ANC ≥ 1.0. Jatka 1. kerralla samalla annoksella, uusiutuessa alennetulla annoksella.",
+            "Gradus 4 (ANC < 0.5 E9/l)": "Tauota ibrutinibi, kunnes ANC ≥ 1.0. Jatka alennetulla annoksella."
+        },
+        "Hypertensio": {
+            "Gradus 2-3 (verenpaine ≥ 140/90 mmHg)": "Aloita tai tehosta verenpainelääkitystä. Jatka ibrutinibia. Jos verenpaine pysyy hallitsemattomana, tauota ja jatka alennetulla annoksella.",
+            "Gradus 4 (hypertensiivinen kriisi)": "Lopeta ibrutinibi pysyvästi."
+        },
+        "Ripuli": {
+            "Gradus 1-2": "Oireenmukainen hoito (loperamidi, nesteytys). Jatka ibrutinibia. Tauota tarvittaessa, kunnes oireet ≤ Gradus 1.",
+            "Gradus 3-4": "Tauota ibrutinibi. Jatka alennetulla annoksella toipumisen jälkeen."
+        }
+    },
+    "Kabosantinibi (Cabometyx)": {
+        "Hypertensio": {
+            "Gradus 2-3 (verenpaine ≥ 140/90 mmHg)": "Aloita tai tehosta verenpainelääkitystä. Jos verenpaine pysyy hallitsemattomana (≥ 160/100 mmHg) lääkityksestä huolimatta, tauota kabosantinibi. Jatka alennetulla annoksella hallinnan jälkeen.",
+            "Gradus 4 (hypertensiivinen kriisi)": "Lopeta hoito pysyvästi."
+        },
+        "Käsi-jalka-oireyhtymä (HFSR)": {
+            "Gradus 1 (lievä turvotus/punoitus, ei kipua)": "Jatka kabosantinibia. Perusvoiteet, pehmentävät voiteet, mukavat kengät.",
+            "Gradus 2 (kivulias eryteema, turvotus, rakkulat, häiritsee toimintakykyä)": "Tauota kabosantinibi enintään 7 vrk, kunnes ≤ Gradus 1. Jatka 1. kerralla samalla annoksella, uusiutuessa alennetulla annoksella.",
+            "Gradus 3 (kosteat haavaumat, kova kipu, estää toimintakykyä)": "Tauota kabosantinibi, kunnes ≤ Gradus 1. Jatka alennetulla annoksella."
+        },
+        "Proteinuria": {
+            "Gradus 1-2 (< 3.5 g/24 h)": "Jatka kabosantinibia. Seuraa vuorokausivirtsan proteiinia.",
+            "Gradus 3 (≥ 3.5 g/24 h tai nefroottinen oireyhtymä)": "Tauota kabosantinibi, kunnes proteinuria < 2 g/24 h. Jatka alennetulla annoksella."
+        },
+        "Maksaentsyymien (ALAT/ASAT) nousu": {
+            "Gradus 1-2 (ALAT/ASAT ≤ 5 x ULN)": "Jatka hoitoa. Seuraa maksa-arvoja tihennetysti.",
+            "Gradus 3 (ALAT/ASAT > 5 - 20 x ULN)": "Tauota kabosantinibi, kunnes ≤ Gradus 1. Jatka alennetulla annoksella.",
+            "Gradus 4 (ALAT/ASAT > 20 x ULN)": "Lopeta hoito pysyvästi."
+        },
+        "Ripuli": {
+            "Gradus 2": "Oireenmukainen hoito (loperamidi). Tauota tarvittaessa, kunnes ≤ Gradus 1. Jatka samalla annoksella.",
+            "Gradus 3-4": "Tauota kabosantinibi. Jatka toipumisen jälkeen alennetulla annoksella."
         }
     }
 }
