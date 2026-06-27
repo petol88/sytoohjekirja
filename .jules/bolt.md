@@ -14,3 +14,7 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+
+## 2024-05-26 - [Streamlit Caching for O(N) UI State]
+**Learning:** Calculating derived UI state (like dropdown options and their mappings) inside the Streamlit render loop causes redundant O(N) operations on every single user interaction.
+**Action:** Pre-calculate and return derived UI mappings (like `SYOPATYYPPI_OPTS` and `PROTOKOLLA_MAP`) inside the `@st.cache_data` decorated data loading function to reduce interaction latency from O(N) to O(1).
