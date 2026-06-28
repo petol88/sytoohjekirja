@@ -14,3 +14,7 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+
+## 2024-06-28 - Cache derived UI state mapping in Streamlit
+**Learning:** Pre-calculating derived UI mappings (like protocol lists grouped by cancer type) inside a `@st.cache_data` function and returning them alongside the raw data prevents `O(N)` loop calculations on every script rerun. Using tuple lookup rather than inline calculations improves rendering time in loops dramatically.
+**Action:** When filtering options dynamically based on raw data, move the pre-calculation of UI options/mappings to the caching layer to take advantage of Streamlit's rerunning behavior effectively.
