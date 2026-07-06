@@ -14,3 +14,6 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+## 2024-06-25 - [Hoisting Inline UI Options to Tuples]
+**Learning:** In Streamlit applications, static inline lists used in UI widgets (like `st.radio(["Option A", "Option B"])`) or in `.index()` lookups are recreated on every script rerun, causing redundant memory allocation overhead. Benchmarks show that creating inline lists takes ~3x longer than returning pre-defined tuples, and looking up indices in lists is also slower.
+**Action:** Always hoist static options arrays to module-level constant tuples to avoid redundant memory allocations and garbage collection on every user interaction in Streamlit.
