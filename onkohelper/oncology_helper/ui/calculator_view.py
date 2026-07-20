@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 from oncology_helper.data import Tietokanta
 from oncology_helper.calculators import safe_float, pyorista_tabletit, Sukupuoli, laske_yksiloity_annos, Potilas
 
-BSA_CAP_DEFAULT = 2.2
+BSA_CAP_DEFAULT = 2.0
 MAX_HEIGHT_CM = 220
 MAX_WEIGHT_KG = 200
 GFR_LOW_THRESHOLD = 60
@@ -103,7 +103,7 @@ class LaskuriView(ttk.Frame):
         self.l_gfr.grid(row=2, column=4, padx=15)
         
         self.v_cap_bsa = tk.BooleanVar(value=False)
-        cb_cap = ttk.Checkbutton(f1, text="Max 2.2 m²", variable=self.v_cap_bsa, command=self.laske)
+        cb_cap = ttk.Checkbutton(f1, text="Max 2.0 m²", variable=self.v_cap_bsa, command=self.laske)
         cb_cap.grid(row=0, column=5, padx=5)
 
         f_prot = ttk.Frame(p)
@@ -304,7 +304,7 @@ class LaskuriView(ttk.Frame):
             out.append(f"  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
             
         if self.v_cap_bsa.get() and self.current_bsa == BSA_CAP_DEFAULT:
-            out.append(f"HUOM: BSA on rajoitettu maksimiarvoon 2.2 m².\n")
+            out.append(f"HUOM: BSA on rajoitettu maksimiarvoon 2.0 m².\n")
         
         for r in self.rows:
             # Read from StringVar to capture manual edits
