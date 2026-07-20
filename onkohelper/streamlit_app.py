@@ -112,7 +112,7 @@ if view == "Sytostaattilaskuri":
             ika = st.number_input("Ikä", min_value=0, step=1, key="ika")
             krea = st.number_input("Krea", min_value=0.0, step=1.0, format="%.1f", key="krea")
             sukupuoli_str = st.selectbox("Sukupuoli", ["Mies", "Nainen"], key="sukupuoli")
-            cap_bsa = st.checkbox("Max 2.2 m²", value=False, help="Rajoita BSA arvoon 2.2 m²", key="cap_bsa")
+            cap_bsa = st.checkbox("Max 2.0 m²", value=False, help="Rajoita BSA arvoon 2.0 m²", key="cap_bsa")
 
             if pituus < 140.0 or pituus > 200.0:
                 st.warning("⚠️ Poikkeuksellinen pituus, tarkista syöte.")
@@ -133,7 +133,7 @@ if view == "Sytostaattilaskuri":
                 sukupuoli=sukupuoli_enum
             )
 
-            cap = 2.2 if cap_bsa else None
+            cap = 2.0 if cap_bsa else None
             bsa = potilas.bsa(cap)
             gfr = potilas.gfr()
 
@@ -262,8 +262,8 @@ if view == "Sytostaattilaskuri":
                 report_lines.append(f"⚠️ YLEISVAROITUS: GFR on alentunut ({gfr:.0f} ml/min).")
                 report_lines.append("  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
                 
-            if cap_bsa and bsa == 2.2:
-                report_lines.append("HUOM: BSA on rajoitettu maksimiarvoon 2.2 m².\n")
+            if cap_bsa and bsa == 2.0:
+                report_lines.append("HUOM: BSA on rajoitettu maksimiarvoon 2.0 m².\n")
 
             for item in laske_tulokset:
                 med = item['med']
