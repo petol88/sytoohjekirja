@@ -80,6 +80,20 @@ ANNOSTASOT = {
         "1. annoslasku": "450 mg x 2",
         "2. annoslasku": "300 mg x 2",
         "3. annoslasku": "Lopeta hoito (alle 300 mg x 2 annosta ei suositella)"
+    },
+    "Akalabrutinibi (Calquence)": {
+        "Aloitusannos": "100 mg x 2",
+        "1. annoslasku": "100 mg x 1",
+        "2. annoslasku": "Lopeta hoito",
+        "Huomio": "Annosta EI pienennetä alle 100 mg x 1; toistuvassa/vaikeassa haitassa hoito lopetetaan. Protonipumpun estäjät (PPI) ovat vasta-aiheisia (imeytyminen heikkenee)."
+    },
+    "Enkorafenibi (Braftovi)": {
+        "Aloitusannos (setuksimabi-yhdistelmä, mCRC)": "300 mg x 1",
+        "Aloitusannos (binimetinibi-yhdistelmä, melanooma)": "450 mg x 1",
+        "1. annoslasku": "300 mg x 1",
+        "2. annoslasku": "200 mg x 1",
+        "3. annoslasku": "100 mg x 1",
+        "Huomio": "Jos 100 mg x 1 ei siedetä, lopeta hoito. Annostaso riippuu yhdistelmästä ja indikaatiosta."
     }
 }
 
@@ -264,6 +278,48 @@ HAITTAVAIKUTUKSET = {
         "Valoyliherkkyys (fotosensitiviteetti)": {
             "Gradus 1-2": "Jatka hoitoa. Vältä auringonvaloa, käytä suojaavaa vaatetusta ja aurinkosuojaa (SPF ≥ 50).",
             "Gradus 3-4": "Tauota alektinibi, kunnes ≤ Gradus 1. Jatka samalla tai alennetulla annoksella."
+        }
+    },
+    "Akalabrutinibi (Calquence)": {
+        "Diagnostiikka ja huomioitavaa": {
+            "Yhteisvaikutukset ja huomiot": "BTK-estäjä (selektiivisempi kuin ibrutinibi, vähemmän eteisvärinää ja hypertensiota). PROTONIPUMPUN ESTÄJÄT (PPI) ovat vasta-aiheisia; H2-salpaajat ja antasidit porrastettava eri aikaan. Tauota 3-7 vrk ennen leikkausta verenvuotoriskin vuoksi. Päänsärky on hyvin yleinen alkuhoidossa ja yleensä ohimenevä."
+        },
+        "Päänsärky": {
+            "Gradus 1-2": "Jatka hoitoa. Parasetamoli ja tarvittaessa kofeiini. Yleensä lievittyy muutamassa viikossa.",
+            "Gradus 3": "Tauota, kunnes ≤ Gradus 1. Jatka samalla annoksella."
+        },
+        "Verenvuoto": {
+            "Lievä (Gradus 1-2, mustelmat, nenäverenvuoto)": "Jatka hoitoa. Tarkista samanaikaiset antikoagulantit/verihiutale-estäjät. Tauota 3-7 vrk ennen leikkausta.",
+            "Vakava (Gradus 3-4)": "Tauota akalabrutinibi. Hoida verenvuoto. Jatka toipumisen jälkeen; toistuvassa vakavassa lopeta."
+        },
+        "Eteisvärinä (AFib)": {
+            "Uusi eteisvärinä": "Jatka akalabrutinibia, jos kliinisesti mahdollista. Arvioi antikoagulaation tarve (huomioi verenvuotoriski). Kardiologin konsultaatio.",
+            "Gradus 3-4 (oireinen)": "Tauota, kunnes hallinnassa. Jatka harkiten tai lopeta toistuvassa tapauksessa."
+        },
+        "Neutropenia": {
+            "Gradus 3 (ANC 0.5 - < 1.0 E9/l) kuumeen kera TAI Gradus 4": "Tauota akalabrutinibi, kunnes palautuu ≤ Gradus 1 tai lähtötasolle. Jatka samalla annoksella, uusiutuessa alennetulla annoksella (100 mg x 1)."
+        }
+    },
+    "Enkorafenibi (Braftovi)": {
+        "Diagnostiikka ja huomioitavaa": {
+            "Yhdistelmät": "BRAF-estäjä. Melanoomassa yhdistelmänä binimetinibin (MEK-estäjä) kanssa, mCRC:ssä setuksimabin kanssa. Osa haitoista liittyy parilääkkeeseen (esim. setuksimabin aknetyyppinen ihottuma, binimetinibin silmä-/LVEF-haitat). Ennen aloitusta ja hoidon aikana: EKG (QTc), maksa-arvot ja ihotarkastukset."
+        },
+        "Ihomuutokset ja uudet ihosyövät": {
+            "Diagnostiikka": "BRAF-estäjät voivat aiheuttaa okasolusyöpää (cuSCC), keratoakantoomia ja uusia primaarimelanoomia (paradoksaalinen MAPK-aktivaatio). Riski on pienempi BRAF+MEK-yhdistelmässä kuin BRAF-monoterapiassa.",
+            "Uusi ihomuutos / cuSCC": "Ei vaadi enkorafenibin tauotusta: poista ihomuutos kirurgisesti ja jatka hoitoa. Säännölliset ihotarkastukset hoidon aikana ja 6 kk sen jälkeen.",
+            "Vaikea ihottuma (Gradus 3)": "Tauota, kunnes ≤ Gradus 1. Jatka alennetulla annoksella."
+        },
+        "QTc-ajan pidentyminen": {
+            "Gradus 3 (QTc > 500 ms)": "Tauota enkorafenibi. Korjaa elektrolyytit (K, Mg). Kun QTc ≤ 500 ms, jatka alennetulla annoksella.",
+            "Gradus 4 (QTc > 500 ms ja > 60 ms lähtötasosta tai Torsades)": "Lopeta hoito pysyvästi."
+        },
+        "Maksatoksisuus (ALAT/ASAT/BIL nousu)": {
+            "Gradus 2 (ALAT/ASAT > 3 - 5 x ULN)": "Jatka hoitoa ja seuraa arvoja. Jos ei parane, tauota kunnes ≤ Gradus 1.",
+            "Gradus 3-4 (ALAT/ASAT > 5 x ULN)": "Tauota, kunnes ≤ Gradus 1. Jatka alennetulla annoksella. Toistuvassa vaikeassa lopeta."
+        },
+        "Nivelkipu ja väsymys": {
+            "Gradus 1-2": "Jatka hoitoa. Oireenmukainen hoito (parasetamoli/NSAID, lepo).",
+            "Gradus 3": "Tauota, kunnes ≤ Gradus 1. Jatka alennetulla annoksella."
         }
     }
 }
