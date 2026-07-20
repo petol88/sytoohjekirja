@@ -1772,11 +1772,39 @@
         ],
         "esilääkitys": "Ei tarvetta rutiininomaisesti."
     },
-    "Nivolumabi + Ipilimumabi": {
-        "sykli": "Nivolumabi q2vk / Ipilimumabi q6vk (jatkuva)",
+    "Nivolumabi + Ipilimumabi (Melanooma)": {
+        "sykli": "Induktio: q3vk x4, sitten nivolumabi-ylläpito q2vk/q4vk",
         "syöpätyypit": [
-            "Keuhkosyöpä",
-            "Melanooma",
+            "Melanooma"
+        ],
+        "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
+        "lääkkeet": [
+            {
+                "nimi": "Nivolumabi",
+                "reitti": "IV",
+                "annos": 1,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ],
+                "lisätieto": "Induktio: 1 mg/kg q3vk x4 yhdessä ipilimumabin kanssa. Sitten ylläpito monoterapiana: 240 mg q2vk tai 480 mg q4vk. Infuusio 30 min."
+            },
+            {
+                "nimi": "Ipilimumabi",
+                "reitti": "IV",
+                "annos": 3,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1
+                ],
+                "lisätieto": "Induktio: 3 mg/kg q3vk x4 (vain induktiovaiheessa, ei ylläpidossa). Infuusio 30 min. (CheckMate 067)"
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Nivolumabi + Ipilimumabi (Munuaissyöpä)": {
+        "sykli": "Induktio: q3vk x4, sitten nivolumabi-ylläpito q2vk/q4vk",
+        "syöpätyypit": [
             "Munuaissyöpä"
         ],
         "kontrollit": "TSH, T4v ennen aloitusta ja 3 kk välein. ALAT, ASAT, Krea, PVK säännöllisesti. Huomioi IO-haittavaikutukset.",
@@ -1786,22 +1814,22 @@
                 "reitti": "IV",
                 "annos": 3,
                 "yksikkö": "mg/kg",
-                "max_mg": 360,
+                "max_mg": 240,
                 "päivät": [
                     1
                 ],
-                "lisätieto": "q2vk. Infuusio 30 min. Melanoomassa induktio: 1 mg/kg q3vk x4 yhdessä ipilimumabin kanssa."
+                "lisätieto": "Induktio: 3 mg/kg q3vk x4 yhdessä ipilimumabin kanssa. Sitten ylläpito monoterapiana: 240 mg q2vk tai 480 mg q4vk. Infuusio 30 min."
             },
             {
                 "nimi": "Ipilimumabi",
                 "reitti": "IV",
                 "annos": 1,
                 "yksikkö": "mg/kg",
-                "max_mg": 100,
+                "max_mg": 80,
                 "päivät": [
                     1
                 ],
-                "lisätieto": "q6vk. Infuusio 30 min. Melanoomassa induktio: 3 mg/kg q3vk x4."
+                "lisätieto": "Induktio: 1 mg/kg q3vk x4 (vain induktiovaiheessa, ei ylläpidossa). Infuusio 30 min. (CheckMate 214)"
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
