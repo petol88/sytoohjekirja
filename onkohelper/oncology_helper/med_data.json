@@ -842,6 +842,53 @@
         ],
         "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
     },
+    "mFLOT (pumppu)": {
+        "sykli": "14 vuorokautta",
+        "syöpätyypit": [
+            "Mahasyöpä"
+        ],
+        "kontrollit": "PVK + Neutr, Krea, Alat, Afos.",
+        "lääkkeet": [
+            {
+                "nimi": "Dosetakseli",
+                "reitti": "IV",
+                "annos": 50,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Oksaliplatiini",
+                "reitti": "IV",
+                "annos": 85,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Kalsiumfolinaatti",
+                "reitti": "IV",
+                "annos": 200,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ]
+            },
+            {
+                "nimi": "Fluorourasiili",
+                "reitti": "IV",
+                "annos": 2600,
+                "yksikkö": "mg/m2",
+                "päivät": [
+                    1
+                ],
+                "lisätieto": "24 h jatkuva infuusio pumpulla (päivä 1)."
+            }
+        ],
+        "esilääkitys": "Deksametasoni 8mg, Palonosetroni 250 microg, Pegfilgrastiimi 6mg 24-48h sytostaattihoidon jälkeen."
+    },
     "KARE": {
         "sykli": "28 vuorokautta",
         "syöpätyypit": [
