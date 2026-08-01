@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
+from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT, LAAKKEET_OPTS, HAITAT_OPTS_MAP
 
 class ToxicityView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -23,7 +23,7 @@ class ToxicityView(ttk.Frame):
         
         ttk.Label(sel_frame, text="Valitse lääkeaine:").pack(side="left")
         self.laake_var = tk.StringVar()
-        self.laake_cb = ttk.Combobox(sel_frame, textvariable=self.laake_var, state="readonly", values=sorted(list(HAITTAVAIKUTUKSET.keys())), width=25)
+        self.laake_cb = ttk.Combobox(sel_frame, textvariable=self.laake_var, state="readonly", values=LAAKKEET_OPTS, width=25)
         self.laake_cb.pack(side="left", padx=(5, 20))
         self.laake_cb.bind("<<ComboboxSelected>>", self.on_laake_select)
         
@@ -40,7 +40,7 @@ class ToxicityView(ttk.Frame):
     def on_laake_select(self, event=None):
         laake = self.laake_var.get()
         if laake:
-            haitat = sorted(list(HAITTAVAIKUTUKSET[laake].keys()))
+            haitat = HAITAT_OPTS_MAP[laake]
             self.haitta_cb.config(values=haitat)
             self.haitta_var.set("")
             self.text_widget.delete("1.0", tk.END)
