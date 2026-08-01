@@ -407,3 +407,7 @@ IO_HAITTAVAIKUTUKSET = {
         "Gradus 3-4 (Vaikea heikkous, estää toimintakyvyn / hengitys- tai nielemisvaikeus)": "Lopeta IO-hoito pysyvästi. Sairaalahoito (vaikeassa tapauksessa teho-/valvontaosasto). Aloita korkea-annoksinen kortikosteroidi (Metyyliprednisoloni iv 1-2 mg/kg/vrk, hengenvaarallisessa tilanteessa pulssihoito 500-1000 mg/vrk). Jos ei vastetta tai päällekkäisyysoireyhtymä (myokardiitti/MG), aloita nopeasti IVIG ja/tai plasmafereesi. Neurologin ja kardiologin konsultaatio."
     }
 }
+# Precomputed tuples for UI rendering performance
+_HAITTAVAIKUTUKSET_LAAKKEET = tuple(sorted(HAITTAVAIKUTUKSET.keys()))
+_IO_HAITTAVAIKUTUKSET_OIREET = tuple(sorted(IO_HAITTAVAIKUTUKSET.keys()))
+_HAITAT_PER_LAAKE = {k: tuple(sorted(v.keys())) for k, v in HAITTAVAIKUTUKSET.items()}
