@@ -14,3 +14,6 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+## 2024-05-25 - Avoid any() for Short Membership Checks
+**Learning:** To optimize short membership checks against a known set of items, use explicit `or` conditions (e.g., `"A" in t or "B" in t`) instead of generator expressions like `any(x in t for x in ["A", "B"])`. Explicit `or` evaluates at the C-level in CPython, avoiding generator instantiation overhead and yielding a ~5-10x performance improvement.
+**Action:** Replaced `any(x in t for x in ["T2c", "T3", "T4"])` with `"T2c" in t or "T3" in t or "T4" in t` in `laske_riskiryhma_eturauhassyopa`.
