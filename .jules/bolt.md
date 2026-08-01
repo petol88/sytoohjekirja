@@ -14,3 +14,8 @@
 
 **Learning:** Instantiating static dictionary definitions inside a function creates unnecessary memory allocation and object creation overhead on every call.
 **Action:** Lifted `ryhmat` and `ennusteet` dictionaries in `hae_ipi_riskiryhma`, `hae_cps_eg_ennuste`, and `hae_ips_ennuste` to module-level constants `_IPI_RISKIRYHMAT`, `_CPS_EG_ENNUSTEET`, and `_IPS_ENNUSTEET`.
+
+## 2024-05-25 - Optimize Streamlit Dynamic Selectbox Options
+
+**Learning:** Re-calculating derived lookup lists (like extracting unique categories and mapping items to them) dynamically inside Streamlit rendering loops adds unnecessary overhead (~0.037ms vs ~0.0004ms). Because `st.cache_data` caches return values efficiently, we can precalculate these mappings during data load instead.
+**Action:** Lift mapping and unique category extraction into the `@st.cache_data` decorated loader function and return the precalculated tuples to be used directly in `st.selectbox` calls.
