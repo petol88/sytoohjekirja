@@ -864,11 +864,12 @@ elif view == "Pisteytykset":
                 koko = st.checkbox("Kasvaimen koko > 4 cm", key="kives_koko")
                 rete = st.checkbox("Rete testis -invaasio", key="kives_rete")
                 r = arvioi_kivessyopa_st1_seminooma(koko, rete)
-                st.success(f"**{r['riskiryhma']}** ({r['riskitekijat']} riskitekijää) — uusiutumisriski seurannassa **{r['seuranta_relapsi']}**.")
+                otsikko = f"{r['riskiryhma']} ({r['riskitekijat']} riskitekijää)"
             else:
                 lvi = st.checkbox("Lymfovaskulaari-invaasio (LVI)", key="kives_lvi")
                 r = arvioi_kivessyopa_st1_nonseminooma(lvi)
-                st.success(f"**{r['riskiryhma']}** — uusiutumisriski seurannassa **{r['seuranta_relapsi']}**.")
+                otsikko = r['riskiryhma']
+            st.success(f"**{otsikko}** — uusiutumisriski: seurannassa **{r['seuranta_relapsi']}** → adjuvanttihoidon jälkeen n. **{r['adjuvantti_relapsi']}**.")
             st.info(f"{r['adjuvantti_teksti']}\n\n**Suositus:** {r['suositus']}")
         else:
             npvm = st.checkbox("Ei-keuhkoviskeraaliset etäpesäkkeet (esim. maksa, luusto, KNS)", key="kives_npvm")

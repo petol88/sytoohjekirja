@@ -461,6 +461,7 @@ def arvioi_kivessyopa_st1_seminooma(koko_yli_4cm: bool, rete_testis_invaasio: bo
         "riskitekijat": n,
         "riskiryhma": riski,
         "seuranta_relapsi": seuranta,
+        "adjuvantti_relapsi": "2-4 %",
         "adjuvantti_teksti": (
             "Adjuvantti karboplatiini (AUC 7) x1 pienentää uusiutumisriskin "
             "n. 2-4 %:iin (riippumatta riskitekijöistä)."
@@ -492,6 +493,7 @@ def arvioi_kivessyopa_st1_nonseminooma(lymfovaskulaari_invaasio: bool) -> dict:
     return {
         "riskiryhma": riski,
         "seuranta_relapsi": seuranta,
+        "adjuvantti_relapsi": "2-3 %",
         "adjuvantti_teksti": "Adjuvantti BEP x1 pienentää uusiutumisriskin n. 2-3 %:iin.",
         "suositus": suositus,
     }

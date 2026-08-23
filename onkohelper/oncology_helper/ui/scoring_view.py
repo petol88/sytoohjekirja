@@ -854,10 +854,13 @@ class PisteytyksetView(ttk.Frame):
         if stage == "Stage I (paikallinen)":
             if hist == "Seminooma":
                 r = arvioi_kivessyopa_st1_seminooma(self.kives_koko_var.get(), self.kives_rete_var.get())
-                self.kives_result_label.config(text=f"{r['riskiryhma']} ({r['riskitekijat']} riskitekijää) - uusiutumisriski seurannassa {r['seuranta_relapsi']}.")
+                otsikko = f"{r['riskiryhma']} ({r['riskitekijat']} riskitekijää)"
             else:
                 r = arvioi_kivessyopa_st1_nonseminooma(self.kives_lvi_var.get())
-                self.kives_result_label.config(text=f"{r['riskiryhma']} - uusiutumisriski seurannassa {r['seuranta_relapsi']}.")
+                otsikko = r['riskiryhma']
+            self.kives_result_label.config(
+                text=f"{otsikko}\nUusiutumisriski: seurannassa {r['seuranta_relapsi']}  →  adjuvanttihoidon jälkeen n. {r['adjuvantti_relapsi']}."
+            )
             self.kives_detail_label.config(text=f"{r['adjuvantti_teksti']}\n\nSuositus: {r['suositus']}")
         else:
             npvm = self.kives_npvm_var.get()
