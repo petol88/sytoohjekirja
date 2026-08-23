@@ -22,7 +22,9 @@ from oncology_helper.calculators import (
     laske_psadt, hae_psadt_tulkinta,
     laske_mascc_pisteet, hae_mascc_suositus,
     laske_qtc, hae_qtc_suositus,
-    laske_antrasykliini_kertyma, laske_bsa, safe_float
+    laske_antrasykliini_kertyma, laske_bsa, safe_float,
+    arvioi_kivessyopa_st1_seminooma, arvioi_kivessyopa_st1_nonseminooma,
+    maarita_s_luokka, maarita_igcccg_ryhma
 )
 
 # Dataohjattu konfiguraatio pelkille checkbox-laskureille.
@@ -146,6 +148,7 @@ _LASKURI_JARJESTYS = [
     "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)",
     "Child-Pugh -luokitus (Maksan vajaatoiminta)",
     "PSA:n kahdentumisaika (PSADT)",
+    "Kivessyöpä - riski ja liitännäishoito (EAU/IGCCCG)",
 ]
 
 
@@ -215,6 +218,8 @@ class PisteytyksetView(ttk.Frame):
             self.build_child_pugh_view()
         elif valittu == "PSA:n kahdentumisaika (PSADT)":
             self.build_psadt_view()
+        elif valittu == "Kivessyöpä - riski ja liitännäishoito (EAU/IGCCCG)":
+            self.build_kivessyopa_view()
 
     # --- Geneerinen checkbox-laskuri ---
 
@@ -761,3 +766,110 @@ class PisteytyksetView(ttk.Frame):
         except ValueError:
             self.psadt_result_label.config(text="Virhe: Tarkista päivämäärät (pp.kk.vvvv) ja PSA-arvot.")
             self.psadt_risk_label.config(text="")
+
+    # --- Kivessyöpä (EAU / IGCCCG 2021) ---
+
+    def build_kivessyopa_view(self):
+        ttk.Label(self.content_frame, text="Kivessyöpä - riski ja liitännäishoito", font=("Segoe UI", 14, "bold")).pack(anchor="w", pady=(0, 5))
+        ttk.Label(self.content_frame, text="1) Valitse histologia ja levinneisyys, 2) syötä riskitekijät.\nStage I: uusiutumisriski seurannassa ja liitännäishoidon vaikutus. Levinnyt: IGCCCG-riskiryhmä ja ennuste.", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 15))
+
+        valinta_frame = ttk.Frame(self.content_frame)
+        valinta_frame.pack(anchor="w", fill="x")
+
+        self.kives_histologia_var = tk.StringVar(value="Seminooma")
+        self.kives_stage_var = tk.StringVar(value="Stage I (paikallinen)")
+
+        hist_frame = ttk.LabelFrame(valinta_frame, text="Histologia", padding=8)
+        hist_frame.grid(row=0, column=0, sticky="nw", padx=(0, 20))
+        for teksti in ("Seminooma", "Ei-seminooma"):
+            ttk.Radiobutton(hist_frame, text=teksti, variable=self.kives_histologia_var, value=teksti, command=self._rebuild_kivessyopa_inputs).pack(anchor="w")
+
+        stage_frame = ttk.LabelFrame(valinta_frame, text="Levinneisyys", padding=8)
+        stage_frame.grid(row=0, column=1, sticky="nw")
+        for teksti in ("Stage I (paikallinen)", "Levinnyt (II-III)"):
+            ttk.Radiobutton(stage_frame, text=teksti, variable=self.kives_stage_var, value=teksti, command=self._rebuild_kivessyopa_inputs).pack(anchor="w")
+
+        self.kives_input_frame = ttk.LabelFrame(self.content_frame, text="Riskitekijät", padding=10)
+        self.kives_input_frame.pack(anchor="w", fill="x", pady=(15, 0))
+
+        self.kives_result_frame = ttk.Frame(self.content_frame)
+        self.kives_result_frame.pack(anchor="w", fill="x", pady=(15, 0))
+        self.kives_result_label = ttk.Label(self.kives_result_frame, text="", font=("Segoe UI", 12, "bold"), wraplength=650, justify="left")
+        self.kives_result_label.pack(anchor="w")
+        self.kives_detail_label = ttk.Label(self.kives_result_frame, text="", font=("Segoe UI", 11), wraplength=650, justify="left")
+        self.kives_detail_label.pack(anchor="w", pady=(8, 0))
+
+        ttk.Label(self.content_frame, text="Lähde: EAU Guidelines on Testicular Cancer; levinnyt tauti IGCCCG 2021 -päivitys.", font=("Segoe UI", 9, "italic"), foreground="gray").pack(anchor="w", pady=(20, 0))
+
+        self._rebuild_kivessyopa_inputs()
+
+    def _rebuild_kivessyopa_inputs(self):
+        for w in self.kives_input_frame.winfo_children():
+            w.destroy()
+
+        hist = self.kives_histologia_var.get()
+        stage = self.kives_stage_var.get()
+        cmd = self.laske_kivessyopa
+
+        if stage == "Stage I (paikallinen)":
+            if hist == "Seminooma":
+                self.kives_koko_var = tk.BooleanVar(value=False)
+                self.kives_rete_var = tk.BooleanVar(value=False)
+                ttk.Checkbutton(self.kives_input_frame, text="Kasvaimen koko > 4 cm", variable=self.kives_koko_var, command=cmd).pack(anchor="w", pady=3)
+                ttk.Checkbutton(self.kives_input_frame, text="Rete testis -invaasio", variable=self.kives_rete_var, command=cmd).pack(anchor="w", pady=3)
+            else:
+                self.kives_lvi_var = tk.BooleanVar(value=False)
+                ttk.Checkbutton(self.kives_input_frame, text="Lymfovaskulaari-invaasio (LVI)", variable=self.kives_lvi_var, command=cmd).pack(anchor="w", pady=3)
+        else:
+            # Levinnyt tauti
+            self.kives_npvm_var = tk.BooleanVar(value=False)
+            ttk.Checkbutton(self.kives_input_frame, text="Ei-keuhkoviskeraaliset etäpesäkkeet (esim. maksa, luusto, KNS)", variable=self.kives_npvm_var, command=cmd).pack(anchor="w", pady=3)
+            if hist == "Ei-seminooma":
+                self.kives_mediast_var = tk.BooleanVar(value=False)
+                ttk.Checkbutton(self.kives_input_frame, text="Mediastinaalinen primaarikasvain", variable=self.kives_mediast_var, command=cmd).pack(anchor="w", pady=3)
+
+                ttk.Label(self.kives_input_frame, text="Seerumin merkkiaineet (S-luokka):", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(10, 2))
+                mk = ttk.Frame(self.kives_input_frame)
+                mk.pack(anchor="w")
+                ttk.Label(mk, text="LDH (x viitealueen yläraja):").grid(row=0, column=0, sticky="w", pady=2)
+                self.kives_ldh_var = tk.StringVar(value="1.0")
+                e1 = ttk.Entry(mk, textvariable=self.kives_ldh_var, width=10); e1.grid(row=0, column=1, padx=8)
+                ttk.Label(mk, text="S-hCG (IU/l):").grid(row=1, column=0, sticky="w", pady=2)
+                self.kives_hcg_var = tk.StringVar(value="0")
+                e2 = ttk.Entry(mk, textvariable=self.kives_hcg_var, width=10); e2.grid(row=1, column=1, padx=8)
+                ttk.Label(mk, text="S-AFP (µg/l):").grid(row=2, column=0, sticky="w", pady=2)
+                self.kives_afp_var = tk.StringVar(value="0")
+                e3 = ttk.Entry(mk, textvariable=self.kives_afp_var, width=10); e3.grid(row=2, column=1, padx=8)
+                for e in (e1, e2, e3):
+                    e.bind("<KeyRelease>", lambda ev: cmd())
+            else:
+                ttk.Label(self.kives_input_frame, text="Huom: seminoomassa AFP on normaali eivätkä merkkiaineet nosta riskiryhmää.", font=("Segoe UI", 10, "italic")).pack(anchor="w", pady=(8, 0))
+
+        self.laske_kivessyopa()
+
+    def laske_kivessyopa(self):
+        hist = self.kives_histologia_var.get()
+        stage = self.kives_stage_var.get()
+
+        if stage == "Stage I (paikallinen)":
+            if hist == "Seminooma":
+                r = arvioi_kivessyopa_st1_seminooma(self.kives_koko_var.get(), self.kives_rete_var.get())
+                self.kives_result_label.config(text=f"{r['riskiryhma']} ({r['riskitekijat']} riskitekijää) - uusiutumisriski seurannassa {r['seuranta_relapsi']}.")
+            else:
+                r = arvioi_kivessyopa_st1_nonseminooma(self.kives_lvi_var.get())
+                self.kives_result_label.config(text=f"{r['riskiryhma']} - uusiutumisriski seurannassa {r['seuranta_relapsi']}.")
+            self.kives_detail_label.config(text=f"{r['adjuvantti_teksti']}\n\nSuositus: {r['suositus']}")
+        else:
+            npvm = self.kives_npvm_var.get()
+            if hist == "Ei-seminooma":
+                s_luokka = maarita_s_luokka(
+                    safe_float(self.kives_ldh_var.get()),
+                    safe_float(self.kives_hcg_var.get()),
+                    safe_float(self.kives_afp_var.get()),
+                )
+                r = maarita_igcccg_ryhma(False, self.kives_mediast_var.get(), npvm, s_luokka)
+                self.kives_result_label.config(text=f"IGCCCG: {r['ryhma']}  (S-luokka S{s_luokka})")
+            else:
+                r = maarita_igcccg_ryhma(True, False, npvm, 1)
+                self.kives_result_label.config(text=f"IGCCCG: {r['ryhma']}")
+            self.kives_detail_label.config(text=f"Ennuste: {r['ennuste']}\n\nHoito: {r['hoito']}")

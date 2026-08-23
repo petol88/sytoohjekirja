@@ -424,3 +424,114 @@ def laske_antrasykliini_kertyma(doxo: float, epi: float, ida: float, mito: float
         suositus = "Kertyvä annos on toistaiseksi turvallisella tasolla."
         
     return equiv, remaining, suositus
+
+
+# ============================================================
+# Kivessyövän riskilaskuri (EAU-ohjeet; levinnyt tauti IGCCCG 2021)
+# ============================================================
+
+def maarita_s_luokka(ldh_kerroin: float, hcg: float, afp: float) -> int:
+    """Määrittää seerumin merkkiaineiden S-luokan (S1-S3) huonoimman arvon mukaan.
+
+    Args:
+        ldh_kerroin: LDH suhteessa viitealueen ylärajaan (esim. 2.0 = 2x ULN).
+        hcg: S-hCG (IU/l).
+        afp: S-AFP (µg/l eli ng/ml).
+    """
+    if ldh_kerroin > 10 or hcg > 50000 or afp > 10000:
+        return 3
+    if ldh_kerroin >= 1.5 or hcg >= 5000 or afp >= 1000:
+        return 2
+    return 1
+
+
+def arvioi_kivessyopa_st1_seminooma(koko_yli_4cm: bool, rete_testis_invaasio: bool) -> dict:
+    """Stage I seminooman uusiutumisriski seurannassa ja liitännäishoidon vaikutus (EAU)."""
+    n = int(koko_yli_4cm) + int(rete_testis_invaasio)
+    if n == 0:
+        seuranta = "n. 6 %"
+        riski = "Matala riski"
+    elif n == 1:
+        seuranta = "n. 12 %"
+        riski = "Kohonnut riski"
+    else:
+        seuranta = "n. 20-30 %"
+        riski = "Korkea riski"
+    return {
+        "riskitekijat": n,
+        "riskiryhma": riski,
+        "seuranta_relapsi": seuranta,
+        "adjuvantti_teksti": (
+            "Adjuvantti karboplatiini (AUC 7) x1 pienentää uusiutumisriskin "
+            "n. 2-4 %:iin (riippumatta riskitekijöistä)."
+        ),
+        "suositus": (
+            "Aktiiviseuranta on ensisijainen erityisesti ilman riskitekijöitä. "
+            "Riskitekijöiden yhteydessä voidaan harkita adjuvanttia karboplatiinia (AUC 7 x1). "
+            "Sädehoitoa ei enää suositella (sekundaarimalignisuusriski)."
+        ),
+    }
+
+
+def arvioi_kivessyopa_st1_nonseminooma(lymfovaskulaari_invaasio: bool) -> dict:
+    """Stage I ei-seminooman uusiutumisriski seurannassa ja liitännäishoidon vaikutus (EAU)."""
+    if lymfovaskulaari_invaasio:
+        seuranta = "n. 50 %"
+        riski = "Korkea riski (LVI+)"
+        suositus = (
+            "Korkean riskin taudissa (LVI+) suositellaan adjuvanttia BEP x1 -hoitoa "
+            "(vaihtoehtona aktiiviseuranta tai hermoja säästävä RPLND)."
+        )
+    else:
+        seuranta = "n. 15-20 %"
+        riski = "Matala riski (LVI-)"
+        suositus = (
+            "Matalan riskin taudissa (LVI-) aktiiviseuranta on ensisijainen. "
+            "Adjuvantti BEP x1 on vaihtoehto valikoiduilla potilailla."
+        )
+    return {
+        "riskiryhma": riski,
+        "seuranta_relapsi": seuranta,
+        "adjuvantti_teksti": "Adjuvantti BEP x1 pienentää uusiutumisriskin n. 2-3 %:iin.",
+        "suositus": suositus,
+    }
+
+
+def maarita_igcccg_ryhma(
+    seminooma: bool,
+    mediastinaalinen_primaari: bool,
+    ei_keuhko_viskeraaliset_etapesakkeet: bool,
+    s_luokka: int,
+) -> dict:
+    """Levinneen kivessyövän IGCCCG-riskiryhmä ja ennuste (IGCCCG 2021 -päivitys)."""
+    if seminooma:
+        # Seminoomassa AFP on normaali, eivätkä merkkiaineet määritä ryhmää.
+        if ei_keuhko_viskeraaliset_etapesakkeet:
+            return {
+                "ryhma": "Keskihyvä ennuste (intermediate)",
+                "ennuste": "5v OS n. 88 %, PFS n. 79 %",
+                "hoito": "BEP x4 (tai VIP x4).",
+            }
+        return {
+            "ryhma": "Hyvä ennuste (good)",
+            "ennuste": "5v OS n. 95 %, PFS n. 89 %",
+            "hoito": "BEP x3 tai EP x4.",
+        }
+    # Ei-seminooma
+    if mediastinaalinen_primaari or ei_keuhko_viskeraaliset_etapesakkeet or s_luokka == 3:
+        return {
+            "ryhma": "Huono ennuste (poor)",
+            "ennuste": "5v OS n. 67 %, PFS n. 54 %",
+            "hoito": "BEP x4 (tai VIP x4). Keskitä hoito kokeneeseen yksikköön.",
+        }
+    if s_luokka == 2:
+        return {
+            "ryhma": "Keskihyvä ennuste (intermediate)",
+            "ennuste": "5v OS n. 89 %, PFS n. 78 %",
+            "hoito": "BEP x4.",
+        }
+    return {
+        "ryhma": "Hyvä ennuste (good)",
+        "ennuste": "5v OS n. 96 %, PFS n. 90 %",
+        "hoito": "BEP x3 tai EP x4.",
+    }

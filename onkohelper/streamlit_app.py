@@ -51,7 +51,11 @@ from oncology_helper.calculators import (
     hae_mascc_suositus,
     laske_qtc,
     hae_qtc_suositus,
-    laske_antrasykliini_kertyma
+    laske_antrasykliini_kertyma,
+    arvioi_kivessyopa_st1_seminooma,
+    arvioi_kivessyopa_st1_nonseminooma,
+    maarita_s_luokka,
+    maarita_igcccg_ryhma
 )
 from oncology_helper.staging import (
     laske_stage_rintasyopa, 
@@ -465,7 +469,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)", "Kivessyöpä - riski ja liitännäishoito (EAU/IGCCCG)"], key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -842,6 +846,52 @@ elif view == "Pisteytykset":
             st.warning("Jälkimmäisen päivämäärän on oltava ensimmäisen jälkeen.")
         elif psa2 <= psa1 and psa2 != 0:
             st.warning("Jälkimmäisen PSA-arvon on oltava suurempi kuin ensimmäisen, jotta kahdentumisaika voidaan laskea.")
+
+    elif laskuri_valinta == "Kivessyöpä - riski ja liitännäishoito (EAU/IGCCCG)":
+        st.subheader("Kivessyöpä - riski ja liitännäishoito")
+        st.write("Valitse histologia ja levinneisyys, syötä riskitekijät. Stage I: uusiutumisriski seurannassa ja liitännäishoidon vaikutus. Levinnyt: IGCCCG-riskiryhmä ja ennuste.")
+
+        col_h, col_s = st.columns(2)
+        with col_h:
+            kives_hist = st.radio("Histologia", ["Seminooma", "Ei-seminooma"], key="kives_hist")
+        with col_s:
+            kives_stage = st.radio("Levinneisyys", ["Stage I (paikallinen)", "Levinnyt (II-III)"], key="kives_stage")
+
+        st.markdown("---")
+
+        if kives_stage == "Stage I (paikallinen)":
+            if kives_hist == "Seminooma":
+                koko = st.checkbox("Kasvaimen koko > 4 cm", key="kives_koko")
+                rete = st.checkbox("Rete testis -invaasio", key="kives_rete")
+                r = arvioi_kivessyopa_st1_seminooma(koko, rete)
+                st.success(f"**{r['riskiryhma']}** ({r['riskitekijat']} riskitekijää) — uusiutumisriski seurannassa **{r['seuranta_relapsi']}**.")
+            else:
+                lvi = st.checkbox("Lymfovaskulaari-invaasio (LVI)", key="kives_lvi")
+                r = arvioi_kivessyopa_st1_nonseminooma(lvi)
+                st.success(f"**{r['riskiryhma']}** — uusiutumisriski seurannassa **{r['seuranta_relapsi']}**.")
+            st.info(f"{r['adjuvantti_teksti']}\n\n**Suositus:** {r['suositus']}")
+        else:
+            npvm = st.checkbox("Ei-keuhkoviskeraaliset etäpesäkkeet (esim. maksa, luusto, KNS)", key="kives_npvm")
+            if kives_hist == "Ei-seminooma":
+                mediast = st.checkbox("Mediastinaalinen primaarikasvain", key="kives_mediast")
+                st.markdown("**Seerumin merkkiaineet (S-luokka):**")
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    ldh = st.number_input("LDH (x viitealueen yläraja)", min_value=0.0, value=1.0, step=0.1, key="kives_ldh")
+                with c2:
+                    hcg = st.number_input("S-hCG (IU/l)", min_value=0.0, value=0.0, step=100.0, key="kives_hcg")
+                with c3:
+                    afp = st.number_input("S-AFP (µg/l)", min_value=0.0, value=0.0, step=100.0, key="kives_afp")
+                s_luokka = maarita_s_luokka(ldh, hcg, afp)
+                r = maarita_igcccg_ryhma(False, mediast, npvm, s_luokka)
+                st.success(f"**IGCCCG: {r['ryhma']}** (S-luokka S{s_luokka})")
+            else:
+                st.caption("Huom: seminoomassa AFP on normaali eivätkä merkkiaineet nosta riskiryhmää.")
+                r = maarita_igcccg_ryhma(True, False, npvm, 1)
+                st.success(f"**IGCCCG: {r['ryhma']}**")
+            st.info(f"**Ennuste:** {r['ennuste']}\n\n**Hoito:** {r['hoito']}")
+
+        st.caption("Lähde: EAU Guidelines on Testicular Cancer; levinnyt tauti IGCCCG 2021 -päivitys.")
 
 elif view == "Ohjeet":
     st.header("Ohjeet ja Protokollat")
