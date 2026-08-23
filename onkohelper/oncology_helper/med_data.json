@@ -625,7 +625,7 @@
         "esilääkitys": "(Atropiini 0.25mg), Deksametasoni 8mg, Akynzeo 1 tbl, Pegfilgrastiimi 6mg 24-48h sythoidon jälkeen."
     },
     "ABVD": {
-        "sykli": "28 vuorokautta (hoitopäivät D1 ja D14)",
+        "sykli": "28 vuorokautta (hoitopäivät D1 ja D15)",
         "syöpätyypit": [
             "Lymfooma"
         ],
@@ -774,7 +774,7 @@
                 "yksikkö": "mg (kiinteä)",
                 "päivät": [
                     1,
-                    5,
+                    8,
                     15
                 ]
             },
