@@ -2022,5 +2022,45 @@
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Lonsurf (trifluridiini/tipirasiili) + Bevasitsumabi": {
+        "sykli": "28 vuorokautta",
+        "syöpätyypit": [
+            "Suolistosyöpä"
+        ],
+        "kontrollit": "PVK + Neutr ennen jokaista sykliä ja päivänä 15. Verenpaine seuranta (bevasitsumabi). Virtsan proteiini tarvittaessa.",
+        "lääkkeet": [
+            {
+                "nimi": "Trifluridiini/tipirasiili (Lonsurf)",
+                "reitti": "PO",
+                "annos": 35,
+                "yksikkö": "mg/m2 x2",
+                "päivät": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
+                ],
+                "lisätieto": "35 mg/m2 x2 (max 80 mg/annos) päivinä 1-5 ja 8-12. Otetaan aterian yhteydessä. Annos trifluridiinin mukaan."
+            },
+            {
+                "nimi": "Bevasitsumabi",
+                "reitti": "IV",
+                "annos": 5,
+                "yksikkö": "mg/kg",
+                "päivät": [
+                    1,
+                    15
+                ],
+                "lisätieto": "5 mg/kg q2vk (päivät 1 ja 15)."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä. Tarvittaessa pahoinvointilääkitys."
     }
 }
