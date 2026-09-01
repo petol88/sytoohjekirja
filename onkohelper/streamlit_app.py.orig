@@ -59,9 +59,9 @@ _LASKURI_OPTS = (
 # 2. TUONNIT ONCOLOGY_HELPERISTÄ (Korvaa omat apufunktiot näillä)
 from oncology_helper.data import Tietokanta, TNM_DATA
 from oncology_helper.calculators import (
-    laske_bsa, 
-    laske_cockcroft_gault, 
-    pyorista_tabletit, 
+    laske_bsa,
+    laske_cockcroft_gault,
+    pyorista_tabletit,
     laske_calvert,
     Sukupuoli,
     Potilas,
@@ -95,7 +95,7 @@ from oncology_helper.calculators import (
     laske_antrasykliini_kertyma
 )
 from oncology_helper.staging import (
-    laske_stage_rintasyopa, 
+    laske_stage_rintasyopa,
     maarita_hoitosuunnitelma_rintasyopa,
     laske_stage_suolistosyopa,
     maarita_hoitosuunnitelma_suolistosyopa,
@@ -116,9 +116,6 @@ from oncology_helper.staging import (
     PsaTaso
 )
 from oncology_helper.guidelines import OHJEET
-
-_ISUP_OPTS = tuple(e.value for e in IsupLuokka)
-_PSA_OPTS = tuple(e.value for e in PsaTaso)
 
 # Load Data
 @st.cache_data
@@ -183,13 +180,13 @@ if view == "Sytostaattilaskuri":
 
             st.metric("BSA", f"{bsa:.2f} m²")
             st.metric("GFR", f"{gfr:.0f} ml/min")
-            
+
             if 0 < gfr < 20.0:
                 st.warning("⚠️ Erittäin matala GFR (< 20), huomioi munuaistoksisuus ja annossäädöt.")
 
     with col2:
         st.subheader("Hoito")
-        
+
         indikaatiot = set()
         for prot_data in Tietokanta.data.values():
             tyypit = prot_data.get('syöpätyypit', [])
@@ -198,22 +195,22 @@ if view == "Sytostaattilaskuri":
                     indikaatiot.add(t)
             else:
                 indikaatiot.add("Ei määritelty")
-        
+
         valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
-        
+
         if valittu_syopatyyppi == "Kaikki":
             protokollat = list(Tietokanta.data.keys())
         elif valittu_syopatyyppi == "Ei määritelty":
             protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
+                nimi for nimi, data in Tietokanta.data.items()
                 if not data.get('syöpätyypit')
             ]
         else:
             protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
+                nimi for nimi, data in Tietokanta.data.items()
                 if valittu_syopatyyppi in data.get('syöpätyypit', [])
             ]
-            
+
         valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
 
         labrat_default = ""
@@ -301,11 +298,11 @@ if view == "Sytostaattilaskuri":
                 report_lines.append(f"Sykli: {protokolla_data['sykli']}")
             report_lines.append(f"Labrat: {labrat}")
             report_lines.append("-" * 40)
-            
+
             if 0 < gfr < 60:
                 report_lines.append(f"⚠️ YLEISVAROITUS: GFR on alentunut ({gfr:.0f} ml/min).")
                 report_lines.append("  Harkitse annospudotusta munuaisteitse erittyville lääkkeille!\n")
-                
+
             if cap_bsa and bsa == 2.0:
                 report_lines.append("HUOM: BSA on rajoitettu maksimiarvoon 2.0 m².\n")
 
@@ -325,12 +322,12 @@ if view == "Sytostaattilaskuri":
                 lisamaare = ""
                 if yksikko_raw and " " in yksikko_raw:
                     lisamaare = " " + yksikko_raw.split(" ", 1)[1]
-                    
+
                 kpl_lisamaare = lisamaare if "x" in lisamaare.lower() else ""
 
                 reitti = med.get('reitti', '')
                 reitti_str = f" {reitti}" if reitti else ""
-                
+
                 kesto = med.get('kesto', '')
                 lisatieto = med.get('lisätieto', '')
                 extra_info = []
@@ -348,7 +345,7 @@ if view == "Sytostaattilaskuri":
                         report_lines.append(f"    -> {count:.1f} kpl{kpl_lisamaare} ({ts})")
                     except ZeroDivisionError:
                         pass
-                        
+
                 min_gfr = med.get('min_gfr')
                 if min_gfr and 0 < gfr < min_gfr:
                     report_lines.append(f"    ⚠️ VAROITUS: Potilaan GFR ({gfr:.0f}) on lääkkeen ({med['nimi']}) suositusrajan ({min_gfr}) alapuolella!")
@@ -434,7 +431,7 @@ elif view == "Levinneisyys":
                     er_enum = ReseptoriTila.POSITIIVINEN if er_status == "Positiivinen" else ReseptoriTila.NEGATIIVINEN
                     her2_enum = ReseptoriTila.POSITIIVINEN if her2_status == "Positiivinen" else ReseptoriTila.NEGATIIVINEN
                     ki67_enum = Ki67Tila.MATALA if "Matala" in ki67_status else Ki67Tila.KORKEA
-                    
+
                     hoito_enum = Hoitolinja.EI_VALITTU
                     if hoitolinja == "Neoadjuvantti": hoito_enum = Hoitolinja.NEOADJUVANTTI
                     elif hoitolinja == "Adjuvantti": hoito_enum = Hoitolinja.ADJUVANTTI
@@ -508,37 +505,37 @@ elif view == "Levinneisyys":
 
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
-    
+
     laskuri_valinta = st.selectbox("Valitse laskuri", _LASKURI_OPTS, key="pisteytys_laskuri_valinta")
-    
+
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
         st.write("Arvioi potilaan toimintakykyä ja päivittäisistä toiminnoista suoriutumista.")
-        
+
         # Create a list of options formatted as "0 - Täysin aktiivinen..."
         ecog_vaihtoehdot = []
         for luokka in EcogLuokka:
             kuvaus = hae_ecog_kuvaus(luokka)
             ecog_vaihtoehdot.append(f"ECOG {luokka.value}: {kuvaus}")
-            
+
         valittu_ecog_str = st.radio("Valitse potilasta parhaiten kuvaava tila:", ecog_vaihtoehdot, key="ecog_radio_valinta")
-        
+
         # Extract just the number to show the result clearly
         if valittu_ecog_str:
             ecog_arvo = valittu_ecog_str.split(":")[0]
             st.success(f"**Tulos:** Potilaan suorituskyky on {ecog_arvo}.")
-            
+
             # Additional logic based on score (optional, but good for context)
             arvo_int = int(ecog_arvo.replace("ECOG ", ""))
             if arvo_int >= 3:
                 st.warning("Huom: ECOG 3 tai huonompi on usein vasta-aihe raskaalle solunsalpaajahoidolle.")
-                
+
     elif laskuri_valinta == "Kertyvä annos (Antrasykliinit)":
         st.subheader("Kertyvän annoksen seuranta (Antrasykliinit)")
         st.write("Laskee antrasykliinien kumulatiivisen annoksen doksorubisiini-ekvivalentteina. Doksorubisiinin suositeltu elinikäinen maksimiannos on sydäntoksisuuden vuoksi 450–500 mg/m².")
-        
+
         syotto_mode = st.radio("Syötettävien annosten yksikkö:", _ANTR_MODE_OPTS, horizontal=True, key="antr_mode")
-        
+
         bsa = 1.0
         bsa_text = ""
         if syotto_mode == "Absoluuttinen (mg)":
@@ -554,7 +551,7 @@ elif view == "Pisteytykset":
             unit_label = "mg"
         else:
             unit_label = "mg/m²"
-            
+
         st.markdown(f"**Syötä potilaan aiemmin saamat kokonaisannokset ({unit_label}):**")
         col1, col2 = st.columns(2)
         with col1:
@@ -563,17 +560,17 @@ elif view == "Pisteytykset":
         with col2:
             ida_input = st.number_input(f"Idarubisiini ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_ida")
             mito_input = st.number_input(f"Mitoksantroni ({unit_label})", min_value=0.0, step=10.0, value=0.0, key="antr_mito")
-            
+
         doxo_mg = doxo_input / bsa if syotto_mode == "Absoluuttinen (mg)" else doxo_input
         epi_mg = epi_input / bsa if syotto_mode == "Absoluuttinen (mg)" else epi_input
         ida_mg = ida_input / bsa if syotto_mode == "Absoluuttinen (mg)" else ida_input
         mito_mg = mito_input / bsa if syotto_mode == "Absoluuttinen (mg)" else mito_input
-        
+
         equiv, remaining, suositus = laske_antrasykliini_kertyma(doxo_mg, epi_mg, ida_mg, mito_mg)
-        
+
         st.markdown("---")
         st.success(f"**Tulos{bsa_text}:** Doksorubisiini-ekvivalentti kertyvä annos: **{equiv:.0f} mg/m²**")
-        
+
         rem_str = ""
         if remaining > 0:
             rem_str = "\n\n**Jäljellä oleva annos maksimirajaan (450 mg/m²) eri lääkkeinä:**\n"
@@ -587,31 +584,31 @@ elif view == "Pisteytykset":
                 rem_str += f"- Epirubisiini: {remaining / 0.5:.0f} mg/m²\n"
                 rem_str += f"- Idarubisiini: {remaining / 3.0:.0f} mg/m²\n"
                 rem_str += f"- Mitoksantroni: {remaining / 3.0:.0f} mg/m²"
-                
+
         if equiv >= 500 or equiv >= 450:
             st.error(f"**Tulkinta:** ⚠️ {suositus}")
         elif equiv >= 300:
             st.warning(f"**Tulkinta:** {suositus}{rem_str}")
         else:
             st.info(f"**Tulkinta:** {suositus}{rem_str}")
-                
+
     elif laskuri_valinta == "QTc-ajan korjauslaskuri (Bazett & Fridericia)":
         st.subheader("QTc-ajan korjauslaskuri")
         st.write("Laskee sykekorjatun QT-ajan (QTc) Bazettin ja Friderician kaavoilla. Syöpähoidoissa (esim. TK-estäjät) suositellaan usein Friderician kaavaa.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             qt_ms = st.number_input("Sähkökardiogrammin QT-aika (ms)", min_value=0.0, max_value=1000.0, value=400.0, step=1.0, key="qtc_qt")
         with col2:
             hr_bpm = st.number_input("Syke (bpm)", min_value=0.0, max_value=300.0, value=60.0, step=1.0, key="qtc_hr")
-            
+
         if qt_ms > 0 and hr_bpm > 0:
             qtc_b, qtc_f = laske_qtc(qt_ms, hr_bpm)
             suositus = hae_qtc_suositus(qtc_f)
-            
+
             st.markdown("---")
             st.success(f"**Tulos:** Bazett (QTcB): {qtc_b:.0f} ms  |  Fridericia (QTcF): {qtc_f:.0f} ms")
-            
+
             if qtc_f > 500:
                 st.error(f"**Tulkinta (Fridericia):** {suositus}")
             elif qtc_f > 480:
@@ -622,14 +619,14 @@ elif view == "Pisteytykset":
     elif laskuri_valinta == "MASCC-pisteytys (Kuumeinen neutropenia)":
         st.subheader("MASCC (Multinational Association for Supportive Care in Cancer)")
         st.write("Arvioi komplikaatioriskiä potilaalla, jolla on kuumeinen neutropenia.")
-        
+
         st.markdown("**Oireiden vaikeusaste (valitse yksi):**")
         mascc_oire_str = st.radio("Oireet", _MASCC_OIRE_OPTS, key="mascc_oire")
-        
+
         if "Lievät" in mascc_oire_str: mascc_oire_val = 5
         elif "Kohtalaiset" in mascc_oire_str: mascc_oire_val = 3
         else: mascc_oire_val = 0
-        
+
         st.markdown("**Muut kriteerit:**")
         mascc_hypo = st.checkbox("Ei hypotensiota (RR systolinen > 90 mmHg) (5 p)", key="mascc_hypo")
         mascc_copd = st.checkbox("Ei aktiivista COPD:tä (keuhkoahtaumatautia) (4 p)", key="mascc_copd")
@@ -637,10 +634,10 @@ elif view == "Pisteytykset":
         mascc_dehydr = st.checkbox("Ei suonensisäisen nestehoidon tarvetta kuivumisen vuoksi (3 p)", key="mascc_dehydr")
         mascc_outpat = st.checkbox("Potilas on ollut avohoidossa kuumeen alkaessa (3 p)", key="mascc_outpat")
         mascc_age = st.checkbox("Ikä alle 60 vuotta (2 p)", key="mascc_age")
-        
+
         pisteet = laske_mascc_pisteet(mascc_oire_val, mascc_hypo, mascc_copd, mascc_tumor, mascc_dehydr, mascc_outpat, mascc_age)
         suositus = hae_mascc_suositus(pisteet)
-        
+
         st.markdown("---")
         if pisteet >= 21:
             st.success(f"**Tulos:** MASCC-pisteet: {pisteet} / 26\n\n**Suositus:** {suositus}")
@@ -650,7 +647,7 @@ elif view == "Pisteytykset":
     elif laskuri_valinta == "IPI (International Prognostic Index)":
         st.subheader("IPI (International Prognostic Index)")
         st.write("Arvioi diffuusin suurisoluisen B-solulymfooman (DLBCL) ennustetta.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             ipi_ika = st.checkbox("Ikä > 60 vuotta", key="ipi_ika")
@@ -659,18 +656,18 @@ elif view == "Pisteytykset":
         with col2:
             ipi_stage = st.checkbox("Ann Arbor Stage III tai IV", key="ipi_stage")
             ipi_en = st.checkbox("Yli 1 ekstranodaalinen pesäke", key="ipi_en")
-            
+
         pisteet = laske_ipi_pisteet(ipi_ika, ipi_ldh, ipi_ecog, ipi_stage, ipi_en)
         riskiryhma = hae_ipi_riskiryhma(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** IPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
-        
+
     elif laskuri_valinta == "IPS (International Prognostic Score - Hodgkin lymfooma)":
         st.subheader("IPS (International Prognostic Score)")
         st.write("Arvioi levinneen (Stage IIB-IV) Hodgkinin lymfooman ennustetta.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             ips_alb = st.checkbox("Albumiini < 40 g/l", key="ips_alb")
@@ -681,18 +678,18 @@ elif view == "Pisteytykset":
             ips_stage = st.checkbox("Stage IV -tauti", key="ips_stage")
             ips_wbc = st.checkbox("Leukosyytit (WBC) ≥ 15.0 E9/l", key="ips_wbc")
             ips_lymf = st.checkbox("Lymfosyytit < 0.6 E9/l (tai < 8% WBC)", key="ips_lymf")
-            
+
         pisteet = laske_ips_pisteet(ips_alb, ips_hb, ips_mies, ips_ika, ips_stage, ips_wbc, ips_lymf)
         ennuste = hae_ips_ennuste(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** IPS-pisteet: {pisteet} / 7")
         st.info(f"**Ennuste:** {ennuste}")
-        
+
     elif laskuri_valinta == "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät":
         st.subheader("Hodgkin lymfooma - Paikallisen taudin riskitekijät")
         st.write("Arvioi paikallisen (Stage I-II) Hodgkinin lymfooman riskiryhmää (EORTC/GHSG -kriteerit).")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             hl_med = st.checkbox("Iso mediastinumin tuumori (> 1/3 rintakehän leveydestä)", key="hl_med")
@@ -700,18 +697,18 @@ elif view == "Pisteytykset":
         with col2:
             hl_alue = st.checkbox("≥ 3 affisoitunutta imusolmukealuetta", key="hl_alue")
             hl_la = st.checkbox("La > 50 mm/t (Stage IA, IIA) TAI La > 30 mm/t (Stage IB, IIB)", key="hl_la")
-            
+
         pisteet = tarkista_hl_paikallinen_riskitekijat(hl_med, hl_eks, hl_alue, hl_la)
         ryhma = hae_hl_paikallinen_riskiryhma(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** {pisteet} riskitekijä(ä) täyttyy.")
         st.info(f"**Riskiryhmä:** {ryhma}")
-        
+
     elif laskuri_valinta == "MIPI (Mantle Cell Lymphoma International Prognostic Index)":
         st.subheader("MIPI (Mantle Cell Lymphoma International Prognostic Index)")
         st.write("Arvioi manttelisolulymfooman ennustetta (yksinkertaistettu sMIPI).")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             mipi_ika_str = st.radio("Ikä (vuotta)", _MIPI_IKA_OPTS, key="mipi_ika")
@@ -719,23 +716,23 @@ elif view == "Pisteytykset":
         with col2:
             mipi_ldh_str = st.radio("LDH / viitealueen yläraja", _MIPI_LDH_OPTS, key="mipi_ldh")
             mipi_wbc_str = st.radio("Leukosyytit (WBC, E9/l)", _MIPI_WBC_OPTS, key="mipi_wbc")
-            
+
         ika_p = _MIPI_IKA_OPTS.index(mipi_ika_str)
         ecog_p = _MIPI_ECOG_OPTS.index(mipi_ecog_str)
         ldh_p = _MIPI_LDH_OPTS.index(mipi_ldh_str)
         wbc_p = _MIPI_WBC_OPTS.index(mipi_wbc_str)
-            
+
         pisteet = laske_mipi_pisteet(ika_p, ecog_p, ldh_p, wbc_p)
         riskiryhma = hae_mipi_riskiryhma(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** sMIPI-pisteet: {pisteet}")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
-        
+
     elif laskuri_valinta == "CNS-IPI (CNS International Prognostic Index)":
         st.subheader("CNS-IPI (CNS International Prognostic Index)")
         st.write("Arvioi keskushermostorelapssin riskiä diffuusissa suurisoluisessa B-solulymfoomassa (DLBCL).")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             cns_ika = st.checkbox("Ikä > 60 vuotta", key="cns_ika")
@@ -745,18 +742,18 @@ elif view == "Pisteytykset":
             cns_stage = st.checkbox("Ann Arbor Stage III tai IV", key="cns_stage")
             cns_en = st.checkbox("Yli 1 ekstranodaalinen pesäke", key="cns_en")
             cns_kidney = st.checkbox("Munuaisten ja/tai lisämunuaisten affisio", key="cns_kidney")
-            
+
         pisteet = laske_cns_ipi_pisteet(cns_ika, cns_ldh, cns_ecog, cns_stage, cns_en, cns_kidney)
         riskiryhma = hae_cns_ipi_riskiryhma(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** CNS-IPI-pisteet: {pisteet} / 6")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
-        
+
     elif laskuri_valinta == "FLIPI (Follicular Lymphoma International Prognostic Index)":
         st.subheader("FLIPI (Follicular Lymphoma International Prognostic Index)")
         st.write("Arvioi follikulaarisen lymfooman ennustetta.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             flipi_ika = st.checkbox("Ikä > 60 vuotta", key="flipi_ika")
@@ -765,18 +762,18 @@ elif view == "Pisteytykset":
         with col2:
             flipi_nodaali = st.checkbox("Yli 4 nodaalista aluetta", key="flipi_nodaali")
             flipi_ldh = st.checkbox("LDH koholla (> viitealueen yläraja)", key="flipi_ldh")
-            
+
         pisteet = laske_flipi_pisteet(flipi_ika, flipi_stage, flipi_hb, flipi_nodaali, flipi_ldh)
         riskiryhma = hae_flipi_riskiryhma(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** FLIPI-pisteet: {pisteet} / 5")
         st.info(f"**Riskiryhmä:** {riskiryhma}")
-        
+
     elif laskuri_valinta == "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)":
         st.subheader("GELF-kriteerit (Follikulaarinen lymfooma)")
         st.write("Arvioi aktiivihoidon indikaatiota follikulaarisessa lymfoomassa (indikaatio jos vähintään 1 täyttyy).")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             gelf_bulkki = st.checkbox("Bulkki > 7 cm tai ≥3 imusolmukealuetta > 3 cm", key="gelf_bulkki")
@@ -787,28 +784,28 @@ elif view == "Pisteytykset":
             gelf_leukemia = st.checkbox("Leukeeminen tauti (lymfosyytit > 5.0 E9/l)", key="gelf_leukemia")
             gelf_syto = st.checkbox("Sytopeniat (Neut < 1.0 tai Tromb < 100)", key="gelf_syto")
             gelf_b_oireet = st.checkbox("B-oireet", key="gelf_b_oireet")
-            
+
         pisteet = tarkista_gelf_kriteerit(gelf_bulkki, gelf_perna, gelf_kompressio, gelf_ldh, gelf_leukemia, gelf_syto, gelf_b_oireet)
         suositus = hae_gelf_suositus(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** {pisteet} GELF-kriteeriä täyttyy.")
         st.info(f"**Suositus:** {suositus}")
-        
+
     elif laskuri_valinta == "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)":
         st.subheader("CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)")
         st.write("Arvioi rintasyövän ennustetta neoadjuvanttihoidon ja leikkauksen jälkeen.")
-        
+
         col1, col2 = st.columns([2, 1])
-        
+
         with col1:
             cpseg_cstage_str = st.radio("Kliininen levinneisyys (cTNM) ennen hoitoa:", _CPSEG_CSTAGE_OPTS, key="cpseg_cstage")
             cpseg_pstage_str = st.radio("Patologinen levinneisyys (ypTNM) leikkauksen jälkeen:", _CPSEG_PSTAGE_OPTS, key="cpseg_pstage")
-            
+
             st.write("**Muut tekijät:**")
             cpseg_er = st.checkbox("Estrogeenireseptori (ER) negatiivinen (1 p)", key="cpseg_er")
             cpseg_grade = st.checkbox("Gradus 3 (1 p)", key="cpseg_grade")
-            
+
         with col2:
             st.info("""**Rintasyövän Stage-muistisääntö:**
 
@@ -819,26 +816,26 @@ elif view == "Pisteytykset":
 * **Stage IIIB:** T4, mikä tahansa N
 * **Stage IIIC:** Mikä tahansa T, N3
 
-*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*  
+*(T1 ≤2cm, T2 2-5cm, T3 >5cm, T4 iho/rintakehä)*
 *(N1: 1-3 kainalo, N2: 4-9 kainalo/sis.rinta, N3: ≥10 kainalo/soliskuoppa)*""")
-                    
+
         c_p = _CPSEG_CSTAGE_OPTS.index(cpseg_cstage_str)
         p_p = _CPSEG_PSTAGE_OPTS.index(cpseg_pstage_str)
-        
+
         pisteet = laske_cps_eg_pisteet(c_p, p_p, cpseg_er, cpseg_grade)
         ennuste = hae_cps_eg_ennuste(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** CPS+EG -pisteet: {pisteet} / 6")
         st.info(f"**Ennuste:** {ennuste}")
-        
+
         if pisteet >= 3:
             st.warning("**Huom:** Jos invasiivistä jäännöstautia, niin muista olaparibi-liitännäishoidon mahdollisuus ituradan BRCA-mutaation omaavilla vuoden ajaksi.")
-            
+
     elif laskuri_valinta == "Child-Pugh -luokitus (Maksan vajaatoiminta)":
         st.subheader("Child-Pugh -luokitus")
         st.write("Arvioi kroonisen maksasairauden / kirroosin vakavuutta ja ennustetta.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             cp_bili_str = st.radio("Bilirubiini (µmol/l)", _CP_BILI_OPTS, key="cp_bili")
@@ -847,16 +844,16 @@ elif view == "Pisteytykset":
         with col2:
             cp_ascites_str = st.radio("Askites", _CP_ASCITES_OPTS, key="cp_ascites")
             cp_enk_str = st.radio("Enkefalopatia", _CP_ENK_OPTS, key="cp_enk")
-            
+
         bili_p = _CP_BILI_OPTS.index(cp_bili_str) + 1
         alb_p = _CP_ALB_OPTS.index(cp_alb_str) + 1
         inr_p = _CP_INR_OPTS.index(cp_inr_str) + 1
         ascites_p = _CP_ASCITES_OPTS.index(cp_ascites_str) + 1
         enk_p = _CP_ENK_OPTS.index(cp_enk_str) + 1
-            
+
         pisteet = laske_child_pugh_pisteet(bili_p, alb_p, inr_p, ascites_p, enk_p)
         luokka = hae_child_pugh_luokka(pisteet)
-        
+
         st.markdown("---")
         st.success(f"**Tulos:** Child-Pugh -pisteet: {pisteet} / 15")
         st.info(f"**Luokitus:** {luokka}")
@@ -864,7 +861,7 @@ elif view == "Pisteytykset":
     elif laskuri_valinta == "PSA:n kahdentumisaika (PSADT)":
         st.subheader("PSA:n kahdentumisaika (PSADT)")
         st.write("Arvioi eturauhassyövän etenemistä mittaamalla aikaa, jossa PSA-arvo kaksinkertaistuu.")
-        
+
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("**1. mittaus**")
@@ -874,11 +871,11 @@ elif view == "Pisteytykset":
             st.markdown("**2. mittaus**")
             pvm2 = st.date_input("Päivämäärä 2", value=date.today(), key="psadt_pvm2")
             psa2 = st.number_input("PSA-arvo 2", min_value=0.0, step=0.1, value=10.0, key="psadt_psa2")
-            
+
         if psa1 > 0 and psa2 > 0 and pvm2 > pvm1 and psa2 > psa1:
             psadt = laske_psadt(pvm1, psa1, pvm2, psa2)
             tulkinta = hae_psadt_tulkinta(psadt)
-            
+
             st.markdown("---")
             st.success(f"**Tulos:** PSADT = {psadt:.1f} kuukautta")
             st.info(f"**Tulkinta:** {tulkinta}")
@@ -889,9 +886,9 @@ elif view == "Pisteytykset":
 
 elif view == "Ohjeet":
     st.header("Ohjeet ja Protokollat")
-    
+
     ohje_valinta = st.selectbox("Valitse ohje", ["Valitse..."] + list(OHJEET.keys()))
-    
+
     if ohje_valinta and ohje_valinta != "Valitse...":
         st.markdown("---")
         # Näytetään Markdown-muotoiltu teksti siististi
@@ -900,45 +897,45 @@ elif view == "Ohjeet":
 elif view == "Haittavaikutukset":
     st.header("Haittavaikutusten hallinta")
     st.write("Valitse tablettilääke ja kyseisen lääkkeen tyyppihaitta nähdäksesi valmisteyhteenvedon mukaiset annosreduktio- ja tauotusohjeet.")
-    
+
     from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
-    
+
     col1, col2 = st.columns(2)
     with col1:
         laake = st.selectbox("Valitse lääkeaine", ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET.keys())))
-        
+
     with col2:
         haitat = ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET[laake].keys())) if laake and laake != "Valitse..." else ["Valitse lääke ensin"]
         haitta = st.selectbox("Valitse haittavaikutus", haitat)
-        
+
     if laake and laake != "Valitse...":
         st.markdown("---")
         if laake in ANNOSTASOT:
             st.subheader(f"Annostasot: {laake}")
             for k, v in ANNOSTASOT[laake].items():
                 st.write(f"**{k}:** {v}")
-                
+
         if haitta and haitta not in ["Valitse...", "Valitse lääke ensin"]:
             st.markdown("---")
             st.subheader(f"Toimenpideohjeet: {laake} – {haitta}")
-            
+
             ohjeet = HAITTAVAIKUTUKSET[laake][haitta]
             for gradus, ohje in ohjeet.items():
                 st.markdown(f"**{gradus}:**")
                 st.info(ohje)
-                
+
 elif view == "IO-haitat":
     st.header("Immuno-onkologisten haittojen hoito")
     st.write("Valitse immunoterapiaan (PD-1, PD-L1, CTLA-4 estäjät) liittyvä haittavaikutus nähdäksesi hoitosuositukset (esim. ESMO/SITC).")
-    
+
     from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET
-    
+
     haitta = st.selectbox("Valitse IO-haittavaikutus", ["Valitse..."] + sorted(list(IO_HAITTAVAIKUTUKSET.keys())))
-    
+
     if haitta and haitta != "Valitse...":
         st.markdown("---")
         st.subheader(f"Toimenpideohjeet: {haitta}")
-        
+
         ohjeet = IO_HAITTAVAIKUTUKSET[haitta]
         for gradus, ohje in ohjeet.items():
             st.markdown(f"**{gradus}:**")
