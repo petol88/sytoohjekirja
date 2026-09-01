@@ -18,3 +18,7 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+
+## 2024-05-18 - [Streamlit Options Reallocation Overhead]
+**Learning:** In Streamlit applications, providing inline lists directly to UI widgets like `st.radio` or `st.selectbox` (and then duplicating those lists to use `.index()`) creates a redundant memory allocation overhead. Since Streamlit reruns the script on every single user interaction, this overhead compounds significantly.
+**Action:** Always extract static UI widget options to module-level tuple constants in Streamlit apps. Tuples are faster to instantiate and check, and doing it at module scope avoids reallocation across reruns.
