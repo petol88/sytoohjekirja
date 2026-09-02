@@ -18,3 +18,7 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+
+## 2024-05-18 - [Optimization] Pre-calculate Derived UI Mappings inside Streamlit cache loader
+**Learning:** In Streamlit applications, deriving complex UI widget state mappings (like dropdown options mapped to data subsets) during the main render loop causes redundant O(N) calculations on every single UI interaction.
+**Action:** By moving the mapping calculations into the `@st.cache_data` decorated loader function and returning them as pre-sorted tuples alongside the raw data, we can turn O(N) inline list allocations into O(1) tuple lookups, dramatically accelerating the render loop.
