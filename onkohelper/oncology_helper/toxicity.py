@@ -407,3 +407,9 @@ IO_HAITTAVAIKUTUKSET = {
         "Gradus 3-4 (Vaikea heikkous, estää toimintakyvyn / hengitys- tai nielemisvaikeus)": "Lopeta IO-hoito pysyvästi. Sairaalahoito (vaikeassa tapauksessa teho-/valvontaosasto). Aloita korkea-annoksinen kortikosteroidi (Metyyliprednisoloni iv 1-2 mg/kg/vrk, hengenvaarallisessa tilanteessa pulssihoito 500-1000 mg/vrk). Jos ei vastetta tai päällekkäisyysoireyhtymä (myokardiitti/MG), aloita nopeasti IVIG ja/tai plasmafereesi. Neurologin ja kardiologin konsultaatio."
     }
 }
+
+# ⚡ Bolt Optimization: Extract static UI widget options as module-level tuple constants
+# This avoids redundant O(N log N) sorting and list allocations during frequent Streamlit reruns
+LAAKKEET_OPTS = tuple(sorted(HAITTAVAIKUTUKSET.keys()))
+HAITAT_OPTS_MAP = {k: tuple(sorted(v.keys())) for k, v in HAITTAVAIKUTUKSET.items()}
+IO_HAITAT_OPTS = tuple(sorted(IO_HAITTAVAIKUTUKSET.keys()))
