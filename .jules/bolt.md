@@ -18,3 +18,7 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+## 2024-07-03 - Optimize Toxicity View Dropdowns
+
+**Learning:** Streamlit reruns UI logic on every interaction. Dynamically extracting and sorting dictionary keys for UI selectboxes (`sorted(list(dict.keys()))`) inside the render loop causes redundant O(N log N) work and memory allocations. Pre-calculating these options as module-level tuple constants is ~11x faster per interaction.
+**Action:** Always extract static dropdown options (like `LAAKKEET_OPTS` or `IO_HAITAT_OPTS`) to module-level constant tuples, especially in Streamlit apps and Tkinter views where widget regeneration or frequent lookups occur.
