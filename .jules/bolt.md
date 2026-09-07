@@ -18,3 +18,6 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+## 2024-05-25 - Optimize Toxicity UI Options Lookups
+**Learning:** In Streamlit, inline dynamic evaluations of `sorted(list(dict.keys()))` create redundant memory allocations and O(N log N) sorting overhead on every user interaction (rerun). This can make UI components like selectboxes slower, as shown by profiling (from ~0.15ms down to ~0.005ms).
+**Action:** Lifted `LAAKKEET_OPTS`, `HAITAT_OPTS_MAP`, and `IO_HAITAT_OPTS` to module-level constants in `onkohelper/oncology_helper/toxicity.py` to pre-calculate and cache static UI options as tuples.
