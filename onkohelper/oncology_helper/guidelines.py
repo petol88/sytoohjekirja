@@ -162,3 +162,5 @@ OHJEET = {
         "* Jos ei ongelmia, 48kk alkaen kuten kantasolusiirtopotilaat\n"
     )
 }
+# Pre-calculated UI options to avoid redundant memory allocations in Streamlit reruns
+OHJEET_OPTS = tuple(OHJEET.keys())

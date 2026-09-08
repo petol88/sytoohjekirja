@@ -18,3 +18,7 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+## 2024-09-08 - Optimize Streamlit Options Inline Lists
+
+**Learning:** When generating dropdown options in Streamlit using structures like `sorted(list(DICT.keys()))` inside the main render script, it forces Python to allocate new lists and sort them on every single user interaction due to Streamlit's rerunning nature. Pre-computing these as module-level tuple constants and passing them avoids redundant O(N log N) work and allocations per render cycle.
+**Action:** Always extract static list generations, especially those built from `dict.keys()`, to module-level tuple constants outside the Streamlit execution loop.
