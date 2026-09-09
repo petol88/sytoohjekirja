@@ -18,3 +18,6 @@
 
 **Learning:** When checking if a string contains any of a small number of substrings (e.g., `any(x in t for x in ["A", "B", "C"])`), the overhead of creating a list and a generator object in Python can be significant for micro-optimizations. Expanding this to explicit `or` conditions (e.g., `"A" in t or "B" in t or "C" in t`) avoids this instantiation overhead entirely and runs purely at the C-level in CPython. This yields about a ~5x performance improvement in micro-benchmarks for this specific structure.
 **Action:** Replace `any(x in str for x in ["..."])` with direct boolean `or` evaluations when the number of checks is small and static.
+## 2024-09-09 - [Pre-calculate Derived UI Elements in Cached Functions]
+**Learning:** During Streamlit render loops, executing O(N) calculations (like looping over all 100+ protocols to collect indications and building filtered lists) inside the active render frame is highly inefficient and creates significant memory allocation overhead. Benchmarking showed inline calculation takes ~0.0269ms vs lookup taking ~0.0003ms.
+**Action:** Pre-calculate and cache derived UI elements (like sorted options tuples and filtered maps) within the `@st.cache_data` load function rather than dynamically calculating them inline during rendering.
