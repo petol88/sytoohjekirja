@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET
+from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET, IO_HAITAT_OPTS
 
 class IOToxicityView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -23,7 +23,7 @@ class IOToxicityView(ttk.Frame):
         
         ttk.Label(sel_frame, text="Valitse IO-haittavaikutus:").pack(side="left")
         self.haitta_var = tk.StringVar()
-        self.haitta_cb = ttk.Combobox(sel_frame, textvariable=self.haitta_var, state="readonly", values=sorted(list(IO_HAITTAVAIKUTUKSET.keys())), width=45)
+        self.haitta_cb = ttk.Combobox(sel_frame, textvariable=self.haitta_var, state="readonly", values=IO_HAITAT_OPTS, width=45)
         self.haitta_cb.pack(side="left", padx=10)
         self.haitta_cb.bind("<<ComboboxSelected>>", self.on_haitta_select)
         
