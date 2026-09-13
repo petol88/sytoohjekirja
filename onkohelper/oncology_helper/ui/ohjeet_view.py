@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from oncology_helper.guidelines import OHJEET
+from oncology_helper.guidelines import OHJEET, OHJEET_OPTS
 
 class OhjeetView(ttk.Frame):
     def __init__(self, parent, controller):
@@ -27,7 +27,7 @@ class OhjeetView(ttk.Frame):
         self.listbox = tk.Listbox(left_frame, font=("Segoe UI", 11), height=20, selectmode=tk.SINGLE)
         self.listbox.pack(fill="both", expand=True)
         
-        for item in OHJEET.keys():
+        for item in OHJEET_OPTS:
             self.listbox.insert(tk.END, item)
             
         self.listbox.bind('<<ListboxSelect>>', self.on_select)

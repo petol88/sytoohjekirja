@@ -162,3 +162,4 @@ OHJEET = {
         "* Jos ei ongelmia, 48kk alkaen kuten kantasolusiirtopotilaat\n"
     )
 }
+OHJEET_OPTS = tuple(OHJEET.keys())
