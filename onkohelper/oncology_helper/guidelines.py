@@ -78,7 +78,7 @@ OHJEET = {
     ),
     "Indolentti lymfooma - aktiivinen seuranta": (
         "### Indolentti lymfooma — aktiivinen seuranta\n\n"
-        "**EOT 1kk**\n"
+        "**1. vuosi**\n"
         "* LVO\n"
         "* Vartalon ja kaulan TT 3–6kk, 12kk tautitaakan ja kliinisen kuvan mukaan\n"
         "* Lymfooma lab\n\n"
