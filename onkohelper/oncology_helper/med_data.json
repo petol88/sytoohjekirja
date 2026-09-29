@@ -2068,7 +2068,7 @@
         "syöpätyypit": [
             "Kilpirauhassyöpä"
         ],
-        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). Virtsan proteiini, TVK, ALAT, ASAT, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
+        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). U-AlbKre 1 kk ja 3 kk kohdalla, TVK, ALAT, ASAT, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
         "lääkkeet": [
             {
                 "nimi": "Lenvatinibi",
@@ -2092,7 +2092,7 @@
         "syöpätyypit": [
             "Maksasyöpä"
         ],
-        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). Virtsan proteiini, TVK, ALAT, ASAT, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
+        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). U-AlbKre 1 kk ja 3 kk kohdalla, TVK, ALAT, ASAT, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
         "lääkkeet": [
             {
                 "nimi": "Lenvatinibi",
