@@ -2062,5 +2062,53 @@
             }
         ],
         "esilääkitys": "Ei rutiininomaista esilääkitystä. Tarvittaessa pahoinvointilääkitys."
+    },
+    "Lenvatinibi (kilpirauhassyöpä)": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": [
+            "Kilpirauhassyöpä"
+        ],
+        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). Aloituksen jälkeen 2 vk kohdalla: TVK, ALAT, AFOS, BIL, KREA. U-AlbKre 1 kk ja 3 kk kohdalla, TVK, ALAT, AFOS, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
+        "lääkkeet": [
+            {
+                "nimi": "Lenvatinibi",
+                "reitti": "PO",
+                "annos": 24,
+                "yksikkö": "mg x1",
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "10 mg",
+                    "4 mg"
+                ],
+                "lisätieto": "24 mg/vrk (radiojodirefraktaari erilaistunut kilpirauhassyöpä). Otetaan samaan aikaan päivittäin. Annosreduktiot: 20 -> 14 -> 10 mg."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
+    },
+    "Lenvatinibi (maksasyöpä / HCC)": {
+        "sykli": "Jatkuva hoito",
+        "syöpätyypit": [
+            "Maksasyöpä"
+        ],
+        "kontrollit": "Verenpaine seuranta säännöllisesti (aloita/tehosta VP-lääkitystä tarvittaessa). Aloituksen jälkeen 2 vk kohdalla: TVK, ALAT, AFOS, BIL, KREA. U-AlbKre 1 kk ja 3 kk kohdalla, TVK, ALAT, AFOS, BIL, KREA, elektrolyytit. TSH 4 vk välein (hypotyreoosi yleinen). EKG (QTc) tarvittaessa.",
+        "lääkkeet": [
+            {
+                "nimi": "Lenvatinibi",
+                "reitti": "PO",
+                "annos": 12,
+                "yksikkö": "mg x1",
+                "päivät": [
+                    "Jatkuva"
+                ],
+                "tablettikoot": [
+                    "10 mg",
+                    "4 mg"
+                ],
+                "lisätieto": "Painonmukainen aloitus (hepatosellulaarinen karsinooma): paino ≥ 60 kg -> 12 mg/vrk, paino < 60 kg -> 8 mg/vrk. Annosreduktiot: 8 -> 4 -> 4 mg joka toinen päivä."
+            }
+        ],
+        "esilääkitys": "Ei rutiininomaista esilääkitystä."
     }
 }
