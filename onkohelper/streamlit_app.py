@@ -74,7 +74,7 @@ from oncology_helper.staging import (
     IsupLuokka,
     PsaTaso
 )
-from oncology_helper.guidelines import OHJEET
+from oncology_helper.guidelines import OHJEET, OHJEET_OPTS
 
 # Load Data
 @st.cache_data
@@ -846,7 +846,7 @@ elif view == "Pisteytykset":
 elif view == "Ohjeet":
     st.header("Ohjeet ja Protokollat")
     
-    ohje_valinta = st.selectbox("Valitse ohje", ["Valitse..."] + list(OHJEET.keys()))
+    ohje_valinta = st.selectbox("Valitse ohje", ("Valitse...",) + OHJEET_OPTS)
     
     if ohje_valinta and ohje_valinta != "Valitse...":
         st.markdown("---")
