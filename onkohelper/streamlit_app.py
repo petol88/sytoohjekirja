@@ -80,12 +80,29 @@ from oncology_helper.guidelines import OHJEET, OHJEET_OPTS
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+    data = Tietokanta.data
+    indikaatiot = {t for prot_data in data.values() for t in prot_data.get('syöpätyypit', [])}
+    if any(not prot_data.get('syöpätyypit') for prot_data in data.values()):
+        indikaatiot.add("Ei määritelty")
+
+    syopatyyppi_opts = ("Kaikki",) + tuple(sorted(indikaatiot))
+
+    protokolla_map = {}
+    protokolla_map["Kaikki"] = tuple(sorted(data.keys()))
+    protokolla_map["Ei määritelty"] = tuple(sorted(nimi for nimi, prot_data in data.items() if not prot_data.get('syöpätyypit')))
+
+    for syopatyyppi in indikaatiot:
+        if syopatyyppi != "Ei määritelty":
+            protokolla_map[syopatyyppi] = tuple(sorted(nimi for nimi, prot_data in data.items() if syopatyyppi in prot_data.get('syöpätyypit', [])))
+
+    return data, syopatyyppi_opts, protokolla_map
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
 try:
-    Tietokanta.data = load_data()
+    _data, SYOPATYYPPI_OPTS, PROTOKOLLA_MAP = (), (), {}
+    _data, SYOPATYYPPI_OPTS, PROTOKOLLA_MAP = load_data()
+    Tietokanta.data = _data
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
 
@@ -146,31 +163,11 @@ if view == "Sytostaattilaskuri":
     with col2:
         st.subheader("Hoito")
         
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", SYOPATYYPPI_OPTS)
         
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
-        
-        if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
-        else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+        protokollat = PROTOKOLLA_MAP.get(valittu_syopatyyppi, ())
             
-        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
+        valittu_protokolla = st.selectbox("Protokolla", ("",) + protokollat)
 
         labrat_default = ""
         protokolla_data = None
