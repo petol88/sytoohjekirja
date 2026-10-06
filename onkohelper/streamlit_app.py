@@ -80,12 +80,37 @@ from oncology_helper.guidelines import OHJEET, OHJEET_OPTS
 @st.cache_data
 def load_data():
     Tietokanta.lataa()
-    return Tietokanta.data
+
+    # BOLT OPTIMIZATION: Extract UI state derived calculations from the active Streamlit render loop.
+    # Pre-calculating these options inside `@st.cache_data` avoids redundant O(N) allocation overhead per rerun.
+    indikaatiot = set()
+    protokolla_map = {}
+
+    for nimi, d in Tietokanta.data.items():
+        tyypit = d.get('syöpätyypit', [])
+        if tyypit:
+            for t in tyypit:
+                indikaatiot.add(t)
+                protokolla_map.setdefault(t, []).append(nimi)
+        else:
+            indikaatiot.add("Ei määritelty")
+            protokolla_map.setdefault("Ei määritelty", []).append(nimi)
+
+    for k in protokolla_map:
+        protokolla_map[k] = tuple(sorted(protokolla_map[k]))
+
+    syopatyyppi_opts = tuple(sorted(indikaatiot))
+    all_protokollat = tuple(sorted(Tietokanta.data.keys()))
+
+    return Tietokanta.data, syopatyyppi_opts, protokolla_map, all_protokollat
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
+_data, SYOPATYYPPI_OPTS, PROTOKOLLA_MAP, ALL_PROTOKOLLAT = {}, (), {}, ()
+
 try:
-    Tietokanta.data = load_data()
+    _data, SYOPATYYPPI_OPTS, PROTOKOLLA_MAP, ALL_PROTOKOLLAT = load_data()
+    Tietokanta.data = _data
 except Exception as e:
     st.error(f"Virhe ladattaessa tietokantaa: {e}")
 
@@ -146,31 +171,14 @@ if view == "Sytostaattilaskuri":
     with col2:
         st.subheader("Hoito")
         
-        indikaatiot = set()
-        for prot_data in Tietokanta.data.values():
-            tyypit = prot_data.get('syöpätyypit', [])
-            if tyypit:
-                for t in tyypit:
-                    indikaatiot.add(t)
-            else:
-                indikaatiot.add("Ei määritelty")
-        
-        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ["Kaikki"] + sorted(list(indikaatiot)))
+        valittu_syopatyyppi = st.selectbox("Syöpätyyppi", ("Kaikki",) + SYOPATYYPPI_OPTS)
         
         if valittu_syopatyyppi == "Kaikki":
-            protokollat = list(Tietokanta.data.keys())
-        elif valittu_syopatyyppi == "Ei määritelty":
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if not data.get('syöpätyypit')
-            ]
+            protokollat = ALL_PROTOKOLLAT
         else:
-            protokollat = [
-                nimi for nimi, data in Tietokanta.data.items() 
-                if valittu_syopatyyppi in data.get('syöpätyypit', [])
-            ]
+            protokollat = PROTOKOLLA_MAP.get(valittu_syopatyyppi, ())
             
-        valittu_protokolla = st.selectbox("Protokolla", [""] + sorted(protokollat))
+        valittu_protokolla = st.selectbox("Protokolla", ("",) + protokollat)
 
         labrat_default = ""
         protokolla_data = None
