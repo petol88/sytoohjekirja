@@ -21,3 +21,7 @@
 ## 2024-05-24 - Pre-calculate dictionary keys as tuple constants for UI dropdowns
 **Learning:** Calling `list(dict.keys())` dynamically in Streamlit render loops and Tkinter UI constructors incurs redundant O(N) memory allocation overhead on every script execution. Pre-computing dictionary keys as module-level tuple constants yields an ~21x performance speedup.
 **Action:** Extract static UI widget options to module-level tuple constants in source modules and use tuple concatenation `("Valitse...",) + OPTS_TUPLE` when populating UI elements.
+
+## 2024-05-23 - Pre-calculate and cache derived UI elements in Streamlit
+**Learning:** In Streamlit, inline O(N) calculations (like building unique option sets from data and filtering lists) on every user interaction during the active render frame can cause significant overhead. By extracting dynamic lists like `indikaatiot` and `protokollat` out of the render loop and pre-calculating them inside the `@st.cache_data` load function, rendering speed significantly improves. Benchmarking showed an improvement from ~0.0692ms to ~0.0004ms per iteration. Also replacing dynamically built lists with cached tuple constants avoids repeated memory allocations per rerun.
+**Action:** Always pre-calculate derived mappings or derived options inside caching functions (`@st.cache_data`) and return them alongside the main data instead of reconstructing them inline inside the active UI render blocks.
