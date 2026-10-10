@@ -4,7 +4,8 @@ from oncology_helper.calculators import (
     laske_calvert, 
     laske_cockcroft_gault, 
     laske_yksiloity_annos,
-    Sukupuoli
+    Sukupuoli,
+    hae_flipi_riskiryhma
 )
 
 def test_laske_bsa():
@@ -55,3 +56,18 @@ def test_laske_yksiloity_annos():
     assert laske_yksiloity_annos(5, "AUC", bsa=2.0, paino=80, gfr=100) == 625.0
     # Kiinteä annos
     assert laske_yksiloity_annos(50, "mg (kiinteä)", bsa=2.0, paino=80, gfr=100) == 50.0
+
+def test_hae_flipi_riskiryhma():
+    # Matala riski (0-1 p)
+    assert hae_flipi_riskiryhma(0) == "Matala riski (0-1 p) - 5-vuoden elossaoloennuste n. 91 % (10-vuoden n. 71 %)"
+    assert hae_flipi_riskiryhma(1) == "Matala riski (0-1 p) - 5-vuoden elossaoloennuste n. 91 % (10-vuoden n. 71 %)"
+    assert hae_flipi_riskiryhma(-1) == "Matala riski (0-1 p) - 5-vuoden elossaoloennuste n. 91 % (10-vuoden n. 71 %)"
+
+    # Kohtalainen riski (2 p)
+    assert hae_flipi_riskiryhma(2) == "Kohtalainen riski (2 p) - 5-vuoden elossaoloennuste n. 78 % (10-vuoden n. 51 %)"
+
+    # Korkea riski (3-5 p)
+    assert hae_flipi_riskiryhma(3) == "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"
+    assert hae_flipi_riskiryhma(4) == "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"
+    assert hae_flipi_riskiryhma(5) == "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"
+    assert hae_flipi_riskiryhma(10) == "Korkea riski (3-5 p) - 5-vuoden elossaoloennuste n. 53 % (10-vuoden n. 36 %)"
