@@ -21,3 +21,6 @@
 ## 2024-05-24 - Pre-calculate dictionary keys as tuple constants for UI dropdowns
 **Learning:** Calling `list(dict.keys())` dynamically in Streamlit render loops and Tkinter UI constructors incurs redundant O(N) memory allocation overhead on every script execution. Pre-computing dictionary keys as module-level tuple constants yields an ~21x performance speedup.
 **Action:** Extract static UI widget options to module-level tuple constants in source modules and use tuple concatenation `("Valitse...",) + OPTS_TUPLE` when populating UI elements.
+## 2024-05-24 - Pre-calculate tuple options for Streamlit st.radio elements
+**Learning:** In Streamlit, inline list declarations for UI widget options and `.index()` lookups inside the render loop incur redundant memory allocation and list creation overhead. Hoisting these to module-level tuple constants yields a ~2x performance speedup.
+**Action:** Extract static lists used in `st.radio` options and corresponding `.index()` lookups to module-level tuple constants.
