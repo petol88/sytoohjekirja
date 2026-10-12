@@ -857,14 +857,14 @@ elif view == "Haittavaikutukset":
     st.header("Haittavaikutusten hallinta")
     st.write("Valitse tablettilääke ja kyseisen lääkkeen tyyppihaitta nähdäksesi valmisteyhteenvedon mukaiset annosreduktio- ja tauotusohjeet.")
     
-    from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
+    from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT, LAAKKEET_OPTS, HAITAT_OPTS_MAP
     
     col1, col2 = st.columns(2)
     with col1:
-        laake = st.selectbox("Valitse lääkeaine", ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET.keys())))
+        laake = st.selectbox("Valitse lääkeaine", ("Valitse...",) + LAAKKEET_OPTS)
         
     with col2:
-        haitat = ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET[laake].keys())) if laake and laake != "Valitse..." else ["Valitse lääke ensin"]
+        haitat = ("Valitse...",) + HAITAT_OPTS_MAP[laake] if laake and laake != "Valitse..." else ("Valitse lääke ensin",)
         haitta = st.selectbox("Valitse haittavaikutus", haitat)
         
     if laake and laake != "Valitse...":
@@ -887,9 +887,9 @@ elif view == "IO-haitat":
     st.header("Immuno-onkologisten haittojen hoito")
     st.write("Valitse immunoterapiaan (PD-1, PD-L1, CTLA-4 estäjät) liittyvä haittavaikutus nähdäksesi hoitosuositukset (esim. ESMO/SITC).")
     
-    from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET
+    from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET, IO_HAITAT_OPTS
     
-    haitta = st.selectbox("Valitse IO-haittavaikutus", ["Valitse..."] + sorted(list(IO_HAITTAVAIKUTUKSET.keys())))
+    haitta = st.selectbox("Valitse IO-haittavaikutus", ("Valitse...",) + IO_HAITAT_OPTS)
     
     if haitta and haitta != "Valitse...":
         st.markdown("---")
