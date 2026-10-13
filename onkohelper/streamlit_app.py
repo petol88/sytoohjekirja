@@ -84,6 +84,16 @@ def load_data():
 
 YKSIKKO_OPTS_BASE = ("mg/m2", "mg/kg", "AUC", "mg")
 
+_LASKURI_OPTS = (
+    "Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)",
+    "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)",
+    "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)",
+    "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)",
+    "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät",
+    "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)",
+    "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"
+)
+
 try:
     Tietokanta.data = load_data()
 except Exception as e:
@@ -465,7 +475,7 @@ elif view == "Levinneisyys":
 elif view == "Pisteytykset":
     st.header("Lääketieteelliset pisteytykset")
     
-    laskuri_valinta = st.selectbox("Valitse laskuri", ["Valitse...", "ECOG-suorituskyky", "Kertyvä annos (Antrasykliinit)", "QTc-ajan korjauslaskuri (Bazett & Fridericia)", "MASCC-pisteytys (Kuumeinen neutropenia)", "IPI (International Prognostic Index)", "CNS-IPI (CNS International Prognostic Index)", "MIPI (Mantle Cell Lymphoma International Prognostic Index)", "FLIPI (Follicular Lymphoma International Prognostic Index)", "IPS (International Prognostic Score - Hodgkin lymfooma)", "Hodgkin lymfooma - Paikallisen taudin (Stage I-II) riskitekijät", "GELF-kriteerit (Follikulaarisen lymfooman hoidon aloitus)", "CPS+EG (Rintasyövän neoadjuvanttihoidon jälkeinen ennuste)", "Child-Pugh -luokitus (Maksan vajaatoiminta)", "PSA:n kahdentumisaika (PSADT)"], key="pisteytys_laskuri_valinta")
+    laskuri_valinta = st.selectbox("Valitse laskuri", _LASKURI_OPTS, key="pisteytys_laskuri_valinta")
     
     if laskuri_valinta == "ECOG-suorituskyky":
         st.subheader("ECOG (Eastern Cooperative Oncology Group) -suorituskykyluokitus")
@@ -857,14 +867,14 @@ elif view == "Haittavaikutukset":
     st.header("Haittavaikutusten hallinta")
     st.write("Valitse tablettilääke ja kyseisen lääkkeen tyyppihaitta nähdäksesi valmisteyhteenvedon mukaiset annosreduktio- ja tauotusohjeet.")
     
-    from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT
+    from oncology_helper.toxicity import HAITTAVAIKUTUKSET, ANNOSTASOT, LAAKKEET_OPTS, HAITAT_OPTS_MAP
     
     col1, col2 = st.columns(2)
     with col1:
-        laake = st.selectbox("Valitse lääkeaine", ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET.keys())))
+        laake = st.selectbox("Valitse lääkeaine", LAAKKEET_OPTS)
         
     with col2:
-        haitat = ["Valitse..."] + sorted(list(HAITTAVAIKUTUKSET[laake].keys())) if laake and laake != "Valitse..." else ["Valitse lääke ensin"]
+        haitat = HAITAT_OPTS_MAP.get(laake, ["Valitse lääke ensin"]) if laake and laake != "Valitse..." else ["Valitse lääke ensin"]
         haitta = st.selectbox("Valitse haittavaikutus", haitat)
         
     if laake and laake != "Valitse...":
@@ -887,9 +897,9 @@ elif view == "IO-haitat":
     st.header("Immuno-onkologisten haittojen hoito")
     st.write("Valitse immunoterapiaan (PD-1, PD-L1, CTLA-4 estäjät) liittyvä haittavaikutus nähdäksesi hoitosuositukset (esim. ESMO/SITC).")
     
-    from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET
+    from oncology_helper.toxicity import IO_HAITTAVAIKUTUKSET, IO_HAITAT_OPTS
     
-    haitta = st.selectbox("Valitse IO-haittavaikutus", ["Valitse..."] + sorted(list(IO_HAITTAVAIKUTUKSET.keys())))
+    haitta = st.selectbox("Valitse IO-haittavaikutus", IO_HAITAT_OPTS)
     
     if haitta and haitta != "Valitse...":
         st.markdown("---")
